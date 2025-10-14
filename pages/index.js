@@ -1,0 +1,209 @@
+import { useState, useEffect } from "react";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+export default function AtlanticWalkResearch() {
+  const [page, setPage] = useState("home");
+  const [trackerData, setTrackerData] = useState([]);
+
+  useEffect(() => {
+    if (page === "performance") {
+      const fetchData = async () => {
+        try {
+          const res = await fetch("/api/tracker");
+          const json = await res.json();
+          setTrackerData(json);
+        } catch (err) {
+          console.error("Error fetching tracker data:", err);
+        }
+      };
+      fetchData();
+    }
+  }, [page]);
+
+  const renderPage = () => {
+    if (page === "research") {
+      return (
+        <section className="space-y-6">
+          <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
+
+          <div className="grid grid-cols-4 font-medium border-b pb-2">
+            <div>Name</div>
+            <div>Ticker</div>
+            <div>Model</div>
+            <div>Report</div>
+          </div>
+
+          <div className="space-y-2">
+            <div className="grid grid-cols-4 items-center border-b py-2 text-sm">
+              <div className="font-semibold text-white">MP Materials</div>
+              <div className="font-semibold text-white">(NYSE: MP)</div>
+              <div>
+                <a href="/models/mp-model.xlsx" className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a href="/reports/mp-report.pdf" className="text-black hover:underline">
+                  View
+                </a>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 items-center border-b py-2 text-sm">
+              <div className="font-semibold text-white">ACM Research</div>
+              <div className="font-semibold text-white">(NASDAQ: ACMR)</div>
+              <div>
+                <a href="/models/acmr-model.xlsx" className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <span className="text-gray-400 italic">Coming soon</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    if (page === "about") {
+      return (
+        <section className="max-w-2xl">
+          <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
+          <p className="text-base text-gray-700">
+            Atlantic Walk Research is an independent equity research platform focused on
+            deep fundamental analysis, asymmetric market opportunities, and long-term
+            business modeling. All work is self-directed and unaffiliated with any financial
+            institution.
+          </p>
+        </section>
+      );
+    }
+
+    if (page === "contact") {
+      return (
+        <section className="max-w-md">
+          <h2 className="text-2xl font-semibold mb-4">Contact</h2>
+          <p className="text-base text-gray-700 mb-2">
+            Reach out via email:{" "}
+            <a
+              href="mailto:glenn@atlanticwalk.com"
+              className="text-blue-600 hover:underline"
+            >
+              glenn@atlanticwalk.com
+            </a>
+          </p>
+        </section>
+      );
+    }
+
+    if (page === "performance") {
+      return (
+        <section className="max-w-5xl mx-auto space-y-6">
+          <h2 className="text-2xl font-semibold mb-4">Performance Tracker</h2>
+          <p className="text-gray-600 mb-6">
+            Tracking cumulative returns of Atlantic Walk Research picks versus the S&P 500.
+            Returns are normalized to 100 at inception.
+          </p>
+
+          {trackerData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={400}>
+              <LineChart data={trackerData}>
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line
+                  type="monotone"
+                  dataKey="atlanticWalk"
+                  stroke="#2563eb"
+                  name="Atlantic Walk Picks"
+                  strokeWidth={2}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="sp500"
+                  stroke="#10b981"
+                  name="S&P 500"
+                  strokeWidth={2}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          ) : (
+            <p className="text-gray-500 italic">Loading performance data...</p>
+          )}
+        </section>
+      );
+    }
+
+    // Default home page
+    return (
+      <section className="text-center">
+        <h2 className="text-3xl font-bold mb-2">Atlantic Walk Research</h2>
+        <p className="text-lg text-gray-600 mb-6">Independent equity research</p>
+      </section>
+    );
+  };
+
+  return (
+    <main className="min-h-screen">
+      {page === "home" ? (
+        <div className="flex flex-col items-center justify-center h-screen">
+          <img
+            src="/atlantic_walk_logo_transparent.png"
+            alt="Atlantic Walk Research Logo"
+            className="w-1/2 max-w-xs md:max-w-md lg:max-w-lg cursor-pointer"
+            onClick={() => setPage("research")}
+          />
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-center mt-6">
+            <img
+              src="/atlantic_walk_logo_transparent.png"
+              alt="Atlantic Walk Research Logo"
+              className="h-16 w-auto"
+            />
+          </div>
+
+          <div className="p-8 max-w-5xl mx-auto">
+            <nav className="mb-12 flex gap-6 text-lg font-medium justify-center">
+              <button onClick={() => setPage("home")} className="text-black hover:underline">
+                Home
+              </button>
+              <button onClick={() => setPage("research")} className="text-black hover:underline">
+                Research
+              </button>
+              <button onClick={() => setPage("performance")} className="text-black hover:underline">
+                Performance
+              </button>
+              <button onClick={() => setPage("about")} className="text-black hover:underline">
+                About
+              </button>
+              <button onClick={() => setPage("contact")} className="text-black hover:underline">
+                Contact
+              </button>
+            </nav>
+
+            {renderPage()}
+
+            <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
+              <p>
+                &copy; 2025 Atlantic Walk Research. Independent research only. Not investment
+                advice.
+              </p>
+            </footer>
+          </div>
+        </>
+      )}
+    </main>
+  );
+}

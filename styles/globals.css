@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html, body {
+  background-image: url('/background.jpg');
+  background-size: cover;              /* zoom in horizontally */
+  background-position: 30% center;         /* shift image left */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: #0a0a0a;
+  min-height: 100vh;
+}
+
