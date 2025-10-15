@@ -93,11 +93,11 @@ export default function AtlanticWalkResearch() {
         <section className="max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
           <p className="text-base text-black">
-           Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop. 
-           The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow. 
-           Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value. 
-           Coverage has included Semi-cap, Basic Materials, Biotech, and AI. Atlantic Walk is self-directed and unaffiliated with any financial institution. 
-           All views are personal and do not constitute investment advice.
+            Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
+            The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow.
+            Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value.
+            Coverage has included Semi-cap, Basic Materials, Biotech, and AI. Atlantic Walk is self-directed and unaffiliated with any financial institution.
+            All views are personal and do not constitute investment advice.
           </p>
         </section>
       );
@@ -130,38 +130,51 @@ export default function AtlanticWalkResearch() {
           </p>
 
           {trackerData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={420}>
-              <LineChart data={trackerData}>
-                <XAxis dataKey="date" />
-                <YAxis
-                  tickFormatter={(v) => `${v.toFixed(0)}%`}
-                  domain={["auto", "auto"]}
-                />
-                <Tooltip formatter={(v) => `${v.toFixed(2)}%`} />
-                <Legend />
-                <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
+            <div className="bg-gray-200 bg-opacity-60 rounded-xl p-4">
+              <ResponsiveContainer width="100%" height={420}>
+                <LineChart data={trackerData}>
+                  <XAxis
+                    dataKey="date"
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontWeight: 500 }}
+                  />
+                  <YAxis
+                    tickFormatter={(v) => `${v.toFixed(0)}%`}
+                    domain={["auto", "auto"]}
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontWeight: 500 }}
+                  />
+                  <Tooltip formatter={(v) => `${v.toFixed(2)}%`} />
+                  <Legend
+                    wrapperStyle={{
+                      color: "#000000",
+                      fontWeight: "bold",
+                    }}
+                  />
+                  <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
-                <Line
-                  type="monotone"
-                  dataKey="sp500"
-                  stroke="#10b981"
-                  name="S&P 500"
-                  strokeWidth={2}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="portfolio"
-                  stroke="#000000"
-                  name="Atlantic Walk Portfolio"
-                />
-                <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
-                <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
-                <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" />
-                <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" />
-                <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" />
-                <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" />
-              </LineChart>
-            </ResponsiveContainer>
+                  <Line
+                    type="monotone"
+                    dataKey="sp500"
+                    stroke="#10b981"
+                    name="S&P 500"
+                    strokeWidth={2}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="portfolio"
+                    stroke="#000000"
+                    name="Atlantic Walk Portfolio"
+                  />
+                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
+                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
+                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" />
+                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" />
+                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" />
+                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           ) : (
             <p>Loading performance data...</p>
           )}
