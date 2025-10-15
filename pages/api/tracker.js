@@ -1,7 +1,9 @@
+// pages/api/tracker.js
 export default async function handler(req, res) {
   try {
+    // Portfolio tickers and start dates
     const picks = [
-      { symbol: "^GSPC", name: "sp500", date: "2024-01-01" },
+      { symbol: "^GSPC", name: "sp500", date: "2024-11-21" }, // baseline start
       { symbol: "AVDL", name: "avdl", date: "2025-09-12" },
       { symbol: "MP", name: "mp", date: "2025-04-29" },
       { symbol: "ACMR", name: "acmr", date: "2025-06-03" },
@@ -9,6 +11,12 @@ export default async function handler(req, res) {
       { symbol: "AMAT", name: "amat", date: "2024-11-21" },
       { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
     ];
+
+    // Determine earliest start date
+    const earliestDate = picks.reduce(
+      (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
+      picks[0].date
+    );
 
     const endDate = new Date().toISOString().slice(0, 10);
 
@@ -31,9 +39,9 @@ export default async function handler(req, res) {
       }));
     };
 
-    // fetch all data concurrently
+    // Fetch all tickers from the earliest date
     const datasets = await Promise.all(
-      picks.map((p) => fetchYahooData(p.symbol, "2024-01-01"))
+      picks.map((p) => fetchYahooData(p.symbol, earliestDate))
     );
 
     const baseline = datasets[0]; // S&P 500
@@ -42,7 +50,8 @@ export default async function handler(req, res) {
       data: datasets[i + 1],
     }));
 
-    const data = baseline.map((b, i) => {
+    // Build normalized dataset
+    const data = baseline.map((b) => {
       const entry = { date: b.date };
       const sp500Norm = (b.close / baseline[0].close) * 100;
       entry.sp500 = sp500Norm;
@@ -50,15 +59,13 @@ export default async function handler(req, res) {
       let blendSum = 0;
       let validCount = 0;
 
-      // for each stock
+      // Each stock branches from S&P value at its start date
       stocks.forEach(({ name, date, data }) => {
-        // skip if before stock’s inception date
         if (new Date(b.date) < new Date(date)) {
           entry[name] = null;
           return;
         }
 
-        // find S&P return at inception
         const spStart = baseline.find(
           (bp) => new Date(bp.date) >= new Date(date)
         );
@@ -66,7 +73,6 @@ export default async function handler(req, res) {
           ? (spStart.close / baseline[0].close) * 100
           : sp500Norm;
 
-        // normalize stock from its first available close
         const baseClose = data.find((d) => new Date(d.date) >= new Date(date))
           ?.close;
         const stockClose = data.find((d) => d.date === b.date)?.close;
@@ -85,12 +91,12 @@ export default async function handler(req, res) {
       return entry;
     });
 
-    // fallback
+    // Fallback
     if (!data.length) {
       return res.status(200).json([
-        { date: "2024-01-01", sp500: 100, portfolio: 100 },
-        { date: "2024-02-01", sp500: 102, portfolio: 108 },
-        { date: "2024-03-01", sp500: 104, portfolio: 115 },
+        { date: earliestDate, sp500: 100, portfolio: 100 },
+        { date: "2025-01-01", sp500: 102, portfolio: 108 },
+        { date: "2025-02-01", sp500: 104, portfolio: 115 },
       ]);
     }
 
