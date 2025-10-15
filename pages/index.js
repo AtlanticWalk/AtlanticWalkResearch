@@ -124,7 +124,7 @@ export default function AtlanticWalkResearch() {
       return (
         <section className="max-w-5xl mx-auto space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Performance Tracker</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-black mb-4">
             Tracking cumulative percentage returns of Atlantic Walk Research picks versus
             the S&amp;P 500. Returns are normalized to 0% at inception.
           </p>
