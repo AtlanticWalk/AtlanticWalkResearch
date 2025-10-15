@@ -1,4 +1,3 @@
-// pages/api/tracker.js
 export default async function handler(req, res) {
   try {
     // ✅ Portfolio tickers and valuation dates
@@ -76,13 +75,9 @@ export default async function handler(req, res) {
       ]);
     }
 
+    // ✅ correct placement: return data *before* exiting try block
     res.status(200).json(data);
-  } catch (error) {
-    console.error("Tracker API fatal error:", error);
-    res.status(500).json({ error: "Failed to fetch tracker data" });
-  }
-}
-    res.status(200).json(data);
+
   } catch (error) {
     console.error("Tracker API fatal error:", error);
     res.status(500).json({ error: "Failed to fetch tracker data" });
