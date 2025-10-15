@@ -43,9 +43,9 @@ export default function AtlanticWalkResearch() {
   }, [page]);
 
   const renderPage = () => {
-   if (page === "research") {
+  if (page === "research") {
   return (
-    <section className="space-y-6 pb-24">
+    <section className="space-y-6 pb-24 -ml-3">
       <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
 
       <div className="grid grid-cols-5 font-medium pb-2 border-b border-gray-300">
@@ -80,7 +80,7 @@ export default function AtlanticWalkResearch() {
               View
             </a>
           </div>
-          <div className="text-gray-600">Sep 21, 2025</div>
+          <div className="text-black">Sep 21, 2025</div>
         </div>
 
         {/* ACMR — Jun 24, 2025 */}
@@ -106,7 +106,7 @@ export default function AtlanticWalkResearch() {
               View
             </a>
           </div>
-          <div className="text-gray-600">Jun 24, 2025</div>
+          <div className="text-black">Jun 24, 2025</div>
         </div>
 
         {/* MP — May 26, 2025 */}
@@ -132,7 +132,7 @@ export default function AtlanticWalkResearch() {
               View
             </a>
           </div>
-          <div className="text-gray-600">May 26, 2025</div>
+          <div className="text-black">May 26, 2025</div>
         </div>
 
         {/* NBIS — Dec 29, 2024 */}
@@ -157,7 +157,7 @@ export default function AtlanticWalkResearch() {
               Download
             </a>
           </div>
-          <div className="text-gray-600">Dec 29, 2024</div>
+          <div className="text-black">Dec 29, 2024</div>
         </div>
 
         {/* LRCX — Nov 30, 2024 */}
@@ -182,7 +182,7 @@ export default function AtlanticWalkResearch() {
               Download
             </a>
           </div>
-          <div className="text-gray-600">Nov 30, 2024</div>
+          <div className="text-black">Nov 30, 2024</div>
         </div>
 
         {/* AMAT — Nov 21, 2024 */}
@@ -207,7 +207,7 @@ export default function AtlanticWalkResearch() {
               Download
             </a>
           </div>
-          <div className="text-gray-600">Nov 21, 2024</div>
+          <div className="text-black">Nov 21, 2024</div>
         </div>
       </div>
     </section>
