@@ -43,9 +43,9 @@ export default function AtlanticWalkResearch() {
           </div>
 
           <div className="space-y-2">
-            <div className="grid grid-cols-4 items-center border-b py-2 text-sm">
-              <div className="font-semibold text-white">MP Materials</div>
-              <div className="font-semibold text-white">(NYSE: MP)</div>
+            <div className="grid grid-cols-4 items-center py-2 text-sm">
+              <div className="font-semibold text-black">MP Materials</div>
+              <div className="font-semibold text-black">(NYSE: MP)</div>
               <div>
                 <a href="/models/mp-model.xlsx" className="text-black hover:underline">
                   Download
@@ -58,9 +58,9 @@ export default function AtlanticWalkResearch() {
               </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center border-b py-2 text-sm">
-              <div className="font-semibold text-white">ACM Research</div>
-              <div className="font-semibold text-white">(NASDAQ: ACMR)</div>
+            <div className="grid grid-cols-4 items-center py-2 text-sm">
+              <div className="font-semibold text-black">ACM Research</div>
+              <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
               <div>
                 <a href="/models/acmr-model.xlsx" className="text-black hover:underline">
                   Download
