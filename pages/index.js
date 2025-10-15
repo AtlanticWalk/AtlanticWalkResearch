@@ -80,10 +80,11 @@ export default function AtlanticWalkResearch() {
         <section className="max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
           <p className="text-base text-gray-700">
-            Atlantic Walk Research is an independent equity research platform focused on
-            deep fundamental analysis, asymmetric market opportunities, and long-term
-            business modeling. All work is self-directed and unaffiliated with any financial
-            institution.
+           Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop. 
+           The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow. 
+           Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value. 
+           coverage has included Semi-cap, Basic Materials, Biotech, and AI. 
+           Atlantic Walk is self-directed and unaffiliated with any financial institution. All views are personal and do not constitute investment advice.
           </p>
         </section>
       );
