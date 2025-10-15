@@ -236,10 +236,10 @@ export default function AtlanticWalkResearch() {
           <p className="text-base text-gray-700 mb-2">
             Reach out via email:{" "}
             <a
-              href="mailto:glenn@atlanticwalk.com"
-              className="text-blue-600 hover:underline"
+              href="mailto:grentrop@atlanticwalkresearch.com"
+              className="text-grey-500 hover:underline"
             >
-              glenn@atlanticwalk.com
+              grentrop@atlanticwalkresearch.com
             </a>
           </p>
         </section>
