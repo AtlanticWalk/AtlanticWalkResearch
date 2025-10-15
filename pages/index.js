@@ -134,7 +134,7 @@ export default function AtlanticWalkResearch() {
             {/* NBIS */}
             <div className="grid grid-cols-4 items-center py-2">
               <div className="font-semibold text-black">NBIS</div>
-              <div className="font-semibold text-black">(Private)</div>
+              <div className="font-semibold text-black">(NASDAQ: NBIS)</div>
               <div>
                 <a
                   href="/models/NBISMODEL.xlsx"
