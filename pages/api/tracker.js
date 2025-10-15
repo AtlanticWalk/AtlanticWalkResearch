@@ -1,14 +1,13 @@
 export default async function handler(req, res) {
   try {
-    // ✅ Portfolio tickers and valuation dates
     const picks = [
-      { symbol: "^GSPC", date: "2024-01-01" }, // baseline
-      { symbol: "AVDL", date: "2025-09-12" },
-      { symbol: "MP", date: "2025-04-29" },
-      { symbol: "ACMR", date: "2025-06-03" },
-      { symbol: "NBIS", date: "2024-12-12" },
-      { symbol: "AMAT", date: "2024-11-21" },
-      { symbol: "LRCX", date: "2024-11-30" },
+      { symbol: "^GSPC", name: "sp500", date: "2024-01-01" },
+      { symbol: "AVDL", name: "avdl", date: "2025-09-12" },
+      { symbol: "MP", name: "mp", date: "2025-04-29" },
+      { symbol: "ACMR", name: "acmr", date: "2025-06-03" },
+      { symbol: "NBIS", name: "nbis", date: "2024-12-12" },
+      { symbol: "AMAT", name: "amat", date: "2024-11-21" },
+      { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
     ];
 
     const endDate = new Date().toISOString().slice(0, 10);
@@ -32,33 +31,53 @@ export default async function handler(req, res) {
       }));
     };
 
-    // Fetch all tickers concurrently
+    // fetch all data concurrently
     const datasets = await Promise.all(
-      picks.map((p) => fetchYahooData(p.symbol, p.date))
+      picks.map((p) => fetchYahooData(p.symbol, "2024-01-01"))
     );
 
-    // Build blended dataset
     const baseline = datasets[0]; // S&P 500
-    const stockData = picks.slice(1).map((p, i) => ({
-      name: p.symbol,
+    const stocks = picks.slice(1).map((p, i) => ({
+      ...p,
       data: datasets[i + 1],
     }));
 
-    // Align by date (using baseline timestamps)
     const data = baseline.map((b, i) => {
       const entry = { date: b.date };
-      entry.sp500 = (b.close / baseline[0].close) * 100;
+      const sp500Norm = (b.close / baseline[0].close) * 100;
+      entry.sp500 = sp500Norm;
 
-      // Normalize each stock from its first available close
       let blendSum = 0;
       let validCount = 0;
 
-      stockData.forEach(({ name, data }) => {
-        if (i < data.length && data[i]?.close) {
-          const normalized = (data[i].close / data[0].close) * 100;
-          entry[name.toLowerCase()] = normalized;
-          blendSum += normalized;
+      // for each stock
+      stocks.forEach(({ name, date, data }) => {
+        // skip if before stock’s inception date
+        if (new Date(b.date) < new Date(date)) {
+          entry[name] = null;
+          return;
+        }
+
+        // find S&P return at inception
+        const spStart = baseline.find(
+          (bp) => new Date(bp.date) >= new Date(date)
+        );
+        const spStartNorm = spStart
+          ? (spStart.close / baseline[0].close) * 100
+          : sp500Norm;
+
+        // normalize stock from its first available close
+        const baseClose = data.find((d) => new Date(d.date) >= new Date(date))
+          ?.close;
+        const stockClose = data.find((d) => d.date === b.date)?.close;
+
+        if (baseClose && stockClose) {
+          const stockNorm = (stockClose / baseClose) * 100;
+          entry[name] = (stockNorm / 100) * spStartNorm;
+          blendSum += entry[name];
           validCount++;
+        } else {
+          entry[name] = null;
         }
       });
 
@@ -66,7 +85,7 @@ export default async function handler(req, res) {
       return entry;
     });
 
-    // Fallback in case of failure
+    // fallback
     if (!data.length) {
       return res.status(200).json([
         { date: "2024-01-01", sp500: 100, portfolio: 100 },
@@ -75,9 +94,7 @@ export default async function handler(req, res) {
       ]);
     }
 
-    // ✅ correct placement: return data *before* exiting try block
     res.status(200).json(data);
-
   } catch (error) {
     console.error("Tracker API fatal error:", error);
     res.status(500).json({ error: "Failed to fetch tracker data" });
