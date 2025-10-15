@@ -46,7 +46,7 @@ export default function AtlanticWalkResearch() {
   if (page === "research") {
   return (
     <section className="space-y-6 pb-24 ml-3">
-      <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
+      <h2 className="text-2xl font-semibold mb-5">Research Library</h2>
 
       <div className="grid grid-cols-5 font-medium pb-2 border-b border-gray-300">
         <div>Name</div>
