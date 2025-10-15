@@ -43,176 +43,176 @@ export default function AtlanticWalkResearch() {
   }, [page]);
 
   const renderPage = () => {
-    if (page === "research") {
-      return (
-        <section className="space-y-6 pb-24">
-          <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
+   if (page === "research") {
+  return (
+    <section className="space-y-6 pb-24">
+      <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
 
-          <div className="grid grid-cols-5 font-medium pb-2 border-b border-gray-300">
-            <div>Name</div>
-            <div>Ticker</div>
-            <div>Model</div>
-            <div>Report</div>
-            <div>Date</div>
+      <div className="grid grid-cols-5 font-medium pb-2 border-b border-gray-300">
+        <div>Name</div>
+        <div>Ticker</div>
+        <div>Model</div>
+        <div>Report</div>
+        <div>Date</div>
+      </div>
+
+      <div className="space-y-2 text-sm">
+        {/* AVDL — Sep 21, 2025 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">Avadel Pharmaceuticals</div>
+          <div className="font-semibold text-black">(NASDAQ: AVDL)</div>
+          <div>
+            <a
+              href="/models/AVDLMODEL.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
           </div>
-
-          <div className="space-y-2 text-sm">
-            {/* Avadel Pharmaceuticals */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">Avadel Pharmaceuticals</div>
-              <div className="font-semibold text-black">(NASDAQ: AVDL)</div>
-              <div>
-                <a
-                  href="/models/AVDLMODEL.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  View
-                </a>
-              </div>
-              <div className="text-gray-600">Sep 2025</div>
-            </div>
-
-            {/* ACM Research */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">ACM Research</div>
-              <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
-              <div>
-                <a
-                  href="/models/ACMRMODEL.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  View
-                </a>
-              </div>
-              <div className="text-gray-600">Feb 2025</div>
-            </div>
-
-            {/* NBIS */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">NBIS</div>
-              <div className="font-semibold text-black">(NASDAQ: NBIS)</div>
-              <div>
-                <a
-                  href="/models/NBISMODEL.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="/reports/nbis-report.pdf"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div className="text-gray-600">Mar 2024</div>
-            </div>
-
-            {/* Applied Materials */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">Applied Materials</div>
-              <div className="font-semibold text-black">(NASDAQ: AMAT)</div>
-              <div>
-                <a
-                  href="/models/AMAT_MODEL_FULL.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="/reports/amat-report.pdf"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div className="text-gray-600">Apr 2024</div>
-            </div>
-
-            {/* Lam Research */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">Lam Research</div>
-              <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
-              <div>
-                <a
-                  href="/models/lrcx-model.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="/reports/lrcx-report.pdf"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div className="text-gray-600">May 2024</div>
-            </div>
-
-            {/* MP Materials */}
-            <div className="grid grid-cols-5 items-center py-2">
-              <div className="font-semibold text-black">MP Materials</div>
-              <div className="font-semibold text-black">(NYSE: MP)</div>
-              <div>
-                <a
-                  href="/models/MPMODEL.xlsx"
-                  download
-                  className="text-black hover:underline"
-                >
-                  Download
-                </a>
-              </div>
-              <div>
-                <a
-                  href="https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                >
-                  View
-                </a>
-              </div>
-              <div className="text-gray-600">May 2023</div>
-            </div>
+          <div>
+            <a
+              href="https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </a>
           </div>
-        </section>
-      );
-    }
+          <div className="text-gray-600">Sep 21, 2025</div>
+        </div>
+
+        {/* ACMR — Jun 24, 2025 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">ACM Research</div>
+          <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
+          <div>
+            <a
+              href="/models/ACMRMODEL.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </a>
+          </div>
+          <div className="text-gray-600">Jun 24, 2025</div>
+        </div>
+
+        {/* MP — May 26, 2025 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">MP Materials</div>
+          <div className="font-semibold text-black">(NYSE: MP)</div>
+          <div>
+            <a
+              href="/models/MPMODEL.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div>
+            <a
+              href="https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              View
+            </a>
+          </div>
+          <div className="text-gray-600">May 26, 2025</div>
+        </div>
+
+        {/* NBIS — Dec 29, 2024 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">NBIS</div>
+          <div className="font-semibold text-black">(NASDAQ: NBIS)</div>
+          <div>
+            <a
+              href="/models/NBISMODEL.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div>
+            <a
+              href="/reports/nbis-report.pdf"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div className="text-gray-600">Dec 29, 2024</div>
+        </div>
+
+        {/* LRCX — Nov 30, 2024 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">Lam Research</div>
+          <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
+          <div>
+            <a
+              href="/models/lrcx-model.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div>
+            <a
+              href="/reports/lrcx-report.pdf"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div className="text-gray-600">Nov 30, 2024</div>
+        </div>
+
+        {/* AMAT — Nov 21, 2024 */}
+        <div className="grid grid-cols-5 items-center py-2">
+          <div className="font-semibold text-black">Applied Materials</div>
+          <div className="font-semibold text-black">(NASDAQ: AMAT)</div>
+          <div>
+            <a
+              href="/models/AMAT_MODEL_FULL.xlsx"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div>
+            <a
+              href="/reports/amat-report.pdf"
+              download
+              className="text-black hover:underline"
+            >
+              Download
+            </a>
+          </div>
+          <div className="text-gray-600">Nov 21, 2024</div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
     if (page === "about") {
       return (
