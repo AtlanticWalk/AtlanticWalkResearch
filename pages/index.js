@@ -35,7 +35,7 @@ export default function AtlanticWalkResearch() {
         <section className="space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Research Library</h2>
 
-          <div className="grid grid-cols-4 font-medium border-b pb-2">
+          <div className="grid grid-cols-4 font-medium pb-2">
             <div>Name</div>
             <div>Ticker</div>
             <div>Model</div>
