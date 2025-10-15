@@ -14,6 +14,19 @@ export default function AtlanticWalkResearch() {
   const [page, setPage] = useState("home");
   const [trackerData, setTrackerData] = useState([]);
 
+  // Load saved page from localStorage (if any)
+  useEffect(() => {
+    const savedPage = localStorage.getItem("atlanticwalk_page");
+    if (savedPage) {
+      setPage(savedPage);
+    }
+  }, []);
+
+  // Save page to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("atlanticwalk_page", page);
+  }, [page]);
+
   useEffect(() => {
     if (page === "performance") {
       const fetchData = async () => {
@@ -79,12 +92,12 @@ export default function AtlanticWalkResearch() {
       return (
         <section className="max-w-2xl">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
-          <p className="text-base text-gray-700">
+          <p className="text-base text-black">
            Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop. 
            The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow. 
            Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value. 
-           coverage has included Semi-cap, Basic Materials, Biotech, and AI. 
-           Atlantic Walk is self-directed and unaffiliated with any financial institution. All views are personal and do not constitute investment advice.
+           Coverage has included Semi-cap, Basic Materials, Biotech, and AI. Atlantic Walk is self-directed and unaffiliated with any financial institution. 
+           All views are personal and do not constitute investment advice.
           </p>
         </section>
       );
@@ -128,7 +141,6 @@ export default function AtlanticWalkResearch() {
                 <Legend />
                 <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
-                {/* S&P 500 baseline */}
                 <Line
                   type="monotone"
                   dataKey="sp500"
@@ -136,16 +148,12 @@ export default function AtlanticWalkResearch() {
                   name="S&P 500"
                   strokeWidth={2}
                 />
-
-                {/* Blended portfolio */}
                 <Line
                   type="monotone"
                   dataKey="portfolio"
                   stroke="#000000"
                   name="Atlantic Walk Portfolio"
                 />
-
-                {/* Individual picks */}
                 <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
                 <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
                 <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" />
@@ -161,7 +169,6 @@ export default function AtlanticWalkResearch() {
       );
     }
 
-    // Default home page
     return (
       <section className="text-center">
         <h2 className="text-3xl font-bold mb-2">Atlantic Walk Research</h2>
