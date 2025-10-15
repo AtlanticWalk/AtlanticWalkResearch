@@ -114,20 +114,15 @@ export default function AtlanticWalkResearch() {
             Returns are normalized to 100 at inception.
           </p>
 
-          {trackerData.length > 0 ? (
+                  {trackerData.length > 0 ? (
             <ResponsiveContainer width="100%" height={400}>
               <LineChart data={trackerData}>
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="atlanticWalk"
-                  stroke="#2563eb"
-                  name="Atlantic Walk Picks"
-                  strokeWidth={2}
-                />
+          
+                {/* S&P 500 baseline */}
                 <Line
                   type="monotone"
                   dataKey="sp500"
@@ -135,10 +130,26 @@ export default function AtlanticWalkResearch() {
                   name="S&P 500"
                   strokeWidth={2}
                 />
+          
+                {/* Blended portfolio */}
+                <Line
+                  type="monotone"
+                  dataKey="portfolio"
+                  stroke="#000000"
+                  name="Atlantic Walk Portfolio"
+                />
+          
+                {/* Individual picks */}
+                <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
+                <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
+                <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" />
+                <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" />
+                <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" />
+                <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" />
               </LineChart>
             </ResponsiveContainer>
           ) : (
-            <p className="text-gray-500 italic">Loading performance data...</p>
+            <p>Loading performance data...</p>
           )}
         </section>
       );
