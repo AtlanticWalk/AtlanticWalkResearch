@@ -55,32 +55,151 @@ export default function AtlanticWalkResearch() {
             <div>Report</div>
           </div>
 
-          <div className="space-y-2">
-            <div className="grid grid-cols-4 items-center py-2 text-sm">
+          <div className="space-y-2 text-sm">
+            {/* MP Materials */}
+            <div className="grid grid-cols-4 items-center py-2">
               <div className="font-semibold text-black">MP Materials</div>
               <div className="font-semibold text-black">(NYSE: MP)</div>
               <div>
-                <a href="/models/mp-model.xlsx" className="text-black hover:underline">
+                <a
+                  href="/models/MPMODEL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
                   Download
                 </a>
               </div>
               <div>
-                <a href="/reports/mp-report.pdf" className="text-black hover:underline">
+                <a
+                  href="https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
                   View
                 </a>
               </div>
             </div>
 
-            <div className="grid grid-cols-4 items-center py-2 text-sm">
+            {/* ACM Research */}
+            <div className="grid grid-cols-4 items-center py-2">
               <div className="font-semibold text-black">ACM Research</div>
               <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
               <div>
-                <a href="/models/acmr-model.xlsx" className="text-black hover:underline">
+                <a
+                  href="/models/ACMRMODEL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
                   Download
                 </a>
               </div>
               <div>
-                <span className="text-gray-400 italic">Coming soon</span>
+                <a
+                  href="https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              </div>
+            </div>
+
+            {/* Avadel Pharmaceuticals */}
+            <div className="grid grid-cols-4 items-center py-2">
+              <div className="font-semibold text-black">Avadel Pharmaceuticals</div>
+              <div className="font-semibold text-black">(NASDAQ: AVDL)</div>
+              <div>
+                <a
+                  href="/models/AVDLMODEL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              </div>
+            </div>
+
+            {/* NBIS */}
+            <div className="grid grid-cols-4 items-center py-2">
+              <div className="font-semibold text-black">NBIS</div>
+              <div className="font-semibold text-black">(Private)</div>
+              <div>
+                <a
+                  href="/models/NBISMODEL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/reports/nbis-report.pdf"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+
+            {/* Applied Materials */}
+            <div className="grid grid-cols-4 items-center py-2">
+              <div className="font-semibold text-black">Applied Materials</div>
+              <div className="font-semibold text-black">(NASDAQ: AMAT)</div>
+              <div>
+                <a
+                  href="/models/AMAT_MODEL_FULL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/reports/amat-report.pdf"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+            </div>
+
+            {/* Lam Research */}
+            <div className="grid grid-cols-4 items-center py-2">
+              <div className="font-semibold text-black">Lam Research</div>
+              <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
+              <div>
+                <a
+                  href="/models/lrcx-model.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="/reports/lrcx-report.pdf"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
               </div>
             </div>
           </div>
@@ -88,20 +207,20 @@ export default function AtlanticWalkResearch() {
       );
     }
 
-      if (page === "about") {
-    return (
-      <section className="max-w-2xl ml-auto text-right pr-8">
-        <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
-        <p className="text-base text-black leading-relaxed">
-          Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
-          The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow.
-          Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value.
-          Coverage has included Semi-cap, Basic Materials, Biotech, and AI. Atlantic Walk is self-directed and unaffiliated with any financial institution.
-          All views are personal and do not constitute investment advice.
-        </p>
-      </section>
-    );
-  }
+    if (page === "about") {
+      return (
+        <section className="max-w-2xl ml-auto text-right pr-8">
+          <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
+          <p className="text-base text-black leading-relaxed">
+            Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
+            The focus is simple: rigorous fundamentals, driver-based models, and special-situations work at the intersection of policy and cash flow.
+            Coverage emphasizes catalysts such as regulatory changes, capital allocation, corporate actions, and litigation outcomes that can unlock mispriced value.
+            Coverage has included Semi-cap, Basic Materials, Biotech, and AI. Atlantic Walk is self-directed and unaffiliated with any financial institution.
+            All views are personal and do not constitute investment advice.
+          </p>
+        </section>
+      );
+    }
 
     if (page === "contact") {
       return (
