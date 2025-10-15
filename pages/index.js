@@ -130,7 +130,7 @@ export default function AtlanticWalkResearch() {
           </p>
 
           {trackerData.length > 0 ? (
-            <div className="bg-gray-200 bg-opacity-60 rounded-xl p-4">
+            <div className="bg-gray-700 bg-opacity-40 rounded-xl p-4">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
                   <XAxis
