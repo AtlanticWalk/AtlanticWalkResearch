@@ -6,7 +6,7 @@
 html, body {
   background-image: url('/background.jpg');
   background-size: cover;              /* zoom in horizontally */
-  background-position: 20% center;         /* shift image left */
+  background-position: 50% left;         /* shift image left */
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-color: #0a0a0a;
