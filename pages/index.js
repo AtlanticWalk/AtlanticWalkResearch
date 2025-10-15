@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 
 export default function AtlanticWalkResearch() {
@@ -110,18 +111,22 @@ export default function AtlanticWalkResearch() {
         <section className="max-w-5xl mx-auto space-y-6">
           <h2 className="text-2xl font-semibold mb-4">Performance Tracker</h2>
           <p className="text-gray-600 mb-6">
-            Tracking cumulative returns of Atlantic Walk Research picks versus the S&P 500.
-            Returns are normalized to 100 at inception.
+            Tracking cumulative percentage returns of Atlantic Walk Research picks versus
+            the S&amp;P 500. Returns are normalized to 0% at inception.
           </p>
 
-                  {trackerData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={400}>
+          {trackerData.length > 0 ? (
+            <ResponsiveContainer width="100%" height={420}>
               <LineChart data={trackerData}>
                 <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
+                <YAxis
+                  tickFormatter={(v) => `${v.toFixed(0)}%`}
+                  domain={["auto", "auto"]}
+                />
+                <Tooltip formatter={(v) => `${v.toFixed(2)}%`} />
                 <Legend />
-          
+                <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
+
                 {/* S&P 500 baseline */}
                 <Line
                   type="monotone"
@@ -130,7 +135,7 @@ export default function AtlanticWalkResearch() {
                   name="S&P 500"
                   strokeWidth={2}
                 />
-          
+
                 {/* Blended portfolio */}
                 <Line
                   type="monotone"
@@ -138,7 +143,7 @@ export default function AtlanticWalkResearch() {
                   stroke="#000000"
                   name="Atlantic Walk Portfolio"
                 />
-          
+
                 {/* Individual picks */}
                 <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
                 <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
