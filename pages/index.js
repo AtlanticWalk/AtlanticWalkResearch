@@ -252,7 +252,34 @@ export default function AtlanticWalkResearch() {
                     stroke="#000000"
                     tick={{ fill: "#000000", fontWeight: 500 }}
                   />
-                  <Tooltip formatter={(v) => `${v.toFixed(2)}%`} />
+                    <Tooltip
+                    contentStyle={{
+                      backgroundColor: "rgba(45, 45, 45, 0.85)", // dark grey translucent
+                      color: "#ffffff",
+                      borderRadius: "8px",
+                      border: "none",
+                      boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+                    }}
+                    formatter={(value, name, props, all) => {
+                      // `all` contains all payload values for the current hover date
+                      if (all && all.payload) {
+                        // Collect values and sort by performance descending
+                        const sorted = Object.entries(all.payload)
+                          .filter(([k, v]) => typeof v === "number")
+                          .sort((a, b) => b[1] - a[1]);
+                  
+                        // Find this line’s position in sorted order
+                        const rank = sorted.findIndex(([k]) => k === name) + 1;
+                  
+                        // Format: e.g., "#1  +23.5%"
+                        return [`${value.toFixed(2)}%`, `${rank}. ${name}`];
+                      }
+                  
+                      // Default fallback
+                      return [`${value.toFixed(2)}%`, name];
+                    }}
+                    labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
+                  />
                   <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
                   <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
