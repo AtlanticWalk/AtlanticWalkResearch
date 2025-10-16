@@ -14,15 +14,11 @@ export default function AtlanticWalkResearch() {
   const [page, setPage] = useState("home");
   const [trackerData, setTrackerData] = useState([]);
 
-  // Load saved page from localStorage (if any)
   useEffect(() => {
     const savedPage = localStorage.getItem("atlanticwalk_page");
-    if (savedPage) {
-      setPage(savedPage);
-    }
+    if (savedPage) setPage(savedPage);
   }, []);
 
-  // Save page to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem("atlanticwalk_page", page);
   }, [page]);
@@ -43,177 +39,147 @@ export default function AtlanticWalkResearch() {
   }, [page]);
 
   const renderPage = () => {
-  if (page === "research") {
-  return (
-    <section className="space-y-6 pb-24 ml-9">
-      <h2 className="text-2xl font-semibold mb-5">Research Library</h2>
+    // --- RESEARCH PAGE ---
+    if (page === "research") {
+      return (
+        <section className="space-y-6 pb-24 ml-9">
+          <h2 className="text-2xl font-semibold mb-5">Research Library</h2>
 
-      <div className="grid grid-cols-5 font-medium pb-2 border-b border-gray-300">
-        <div>Name</div>
-        <div>Ticker</div>
-        <div>Model</div>
-        <div>Report</div>
-        <div>Valuation Date</div>
-      </div>
+          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] font-medium pb-2 border-b border-gray-300">
+            <div>Name</div>
+            <div>Ticker</div>
+            <div>Model</div>
+            <div>Report</div>
+            <div>Valuation Date</div>
+          </div>
 
-      <div className="space-y-2 text-sm">
-        {/* AVDL — Sep 21, 2025 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">Avadel Pharmaceuticals</div>
-          <div className="font-semibold text-black">(NASDAQ: AVDL)</div>
-          <div>
-            <a
-              href="/models/AVDLMODEL.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div>
-            <a
-              href="https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              View
-            </a>
-          </div>
-          <div className="text-black">Sep 21, 2025</div>
-        </div>
+          <div className="space-y-2 text-sm">
+            {/* AVDL */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">Avadel Pharmaceuticals</div>
+              <div className="font-semibold text-black">(NASDAQ: AVDL)</div>
+              <div>
+                <a href="/models/AVDLMODEL.xlsx" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              </div>
+              <div className="text-black">Sep 21, 2025</div>
+            </div>
 
-        {/* ACMR — Jun 24, 2025 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">ACM Research</div>
-          <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
-          <div>
-            <a
-              href="/models/ACMRMODEL.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div>
-            <a
-              href="https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              View
-            </a>
-          </div>
-          <div className="text-black">Jun 24, 2025</div>
-        </div>
+            {/* ACMR */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">ACM Research</div>
+              <div className="font-semibold text-black">(NASDAQ: ACMR)</div>
+              <div>
+                <a href="/models/ACMRMODEL.xlsx" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              </div>
+              <div className="text-black">Jun 24, 2025</div>
+            </div>
 
-        {/* MP — May 26, 2025 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">MP Materials</div>
-          <div className="font-semibold text-black">(NYSE: MP)</div>
-          <div>
-            <a
-              href="/models/MPMODEL.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div>
-            <a
-              href="https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 hover:underline"
-            >
-              View
-            </a>
-          </div>
-          <div className="text-black">May 26, 2025</div>
-        </div>
+            {/* MP */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">MP Materials</div>
+              <div className="font-semibold text-black">(NYSE: MP)</div>
+              <div>
+                <a href="/models/MPMODEL.xlsx" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a
+                  href="https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              </div>
+              <div className="text-black">May 26, 2025</div>
+            </div>
 
-        {/* NBIS — Dec 29, 2024 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">NBIS</div>
-          <div className="font-semibold text-black">(NASDAQ: NBIS)</div>
-          <div>
-            <a
-              href="/models/NBISMODEL.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div>
-            <a
-              href="/reports/nbis-report.pdf"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div className="text-black">Dec 29, 2024</div>
-        </div>
+            {/* NBIS */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">NBIS</div>
+              <div className="font-semibold text-black">(NASDAQ: NBIS)</div>
+              <div>
+                <a href="/models/NBISMODEL.xlsx" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a href="/reports/nbis-report.pdf" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div className="text-black">Dec 29, 2024</div>
+            </div>
 
-        {/* LRCX — Nov 30, 2024 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">Lam Research</div>
-          <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
-          <div>
-            <a
-              href="/models/lrcx-model.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div>
-            <a
-              href="/reports/lrcx-report.pdf"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div className="text-black">Nov 30, 2024</div>
-        </div>
+            {/* LRCX */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">Lam Research</div>
+              <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
+              <div>
+                <a href="/models/lrcx-model.xlsx" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div>
+                <a href="/reports/lrcx-report.pdf" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div className="text-black">Nov 30, 2024</div>
+            </div>
 
-        {/* AMAT — Nov 21, 2024 */}
-        <div className="grid grid-cols-5 items-center py-2">
-          <div className="font-semibold text-black">Applied Materials</div>
-          <div className="font-semibold text-black">(NASDAQ: AMAT)</div>
-          <div>
-            <a
-              href="/models/AMAT_MODEL_FULL.xlsx"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
+            {/* AMAT */}
+            <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center py-2">
+              <div className="font-semibold text-black">Applied Materials</div>
+              <div className="font-semibold text-black">(NASDAQ: AMAT)</div>
+              <div>
+                <a
+                  href="/models/AMAT_MODEL_FULL.xlsx"
+                  download
+                  className="text-black hover:underline"
+                >
+                  Download
+                </a>
+              </div>
+              <div>
+                <a href="/reports/amat-report.pdf" download className="text-black hover:underline">
+                  Download
+                </a>
+              </div>
+              <div className="text-black">Nov 21, 2024</div>
+            </div>
           </div>
-          <div>
-            <a
-              href="/reports/amat-report.pdf"
-              download
-              className="text-black hover:underline"
-            >
-              Download
-            </a>
-          </div>
-          <div className="text-black">Nov 21, 2024</div>
-        </div>
-      </div>
-    </section>
-  );
-}
+        </section>
+      );
+    }
 
+    // --- ABOUT PAGE ---
     if (page === "about") {
       return (
         <section className="max-w-md ml-auto mr-[8rem] text-left">
@@ -229,23 +195,43 @@ export default function AtlanticWalkResearch() {
       );
     }
 
+    // --- CONTACT PAGE ---
     if (page === "contact") {
       return (
-               <section className="max-w-md ml-auto mr-[8rem] text-right">
-          <h2 className="text-2xl font-semibold mb-4"></h2>
-          <p className="text-base text-black text-semibold mb-2">
-             Contact:{" "}
+        <section className="max-w-md ml-auto mr-[8rem] text-right">
+          <h2 className="text-2xl font-semibold mb-4">Contact</h2>
+          <p className="text-lg text-black font-semibold mb-3">
+            Contact:{" "}
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
-              className="text-black text-semibold hover:underline"
+              className="text-blue-600 hover:underline"
             >
               grentrop@atlanticwalkresearch.com
             </a>
           </p>
+          <div className="text-lg text-black space-y-2">
+            <a
+              href="https://seekingalpha.com/author/glenn-rentrop"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline block"
+            >
+              Seeking Alpha Profile
+            </a>
+            <a
+              href="https://www.linkedin.com/in/grentrop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline block"
+            >
+              LinkedIn Profile
+            </a>
+          </div>
         </section>
       );
     }
 
+    // --- PERFORMANCE PAGE ---
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto space-y-6">
@@ -259,11 +245,7 @@ export default function AtlanticWalkResearch() {
             <div className="bg-gray-700 bg-opacity-40 rounded-xl p-4">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
-                  <XAxis
-                    dataKey="date"
-                    stroke="#000000"
-                    tick={{ fill: "#000000", fontWeight: 500 }}
-                  />
+                  <XAxis dataKey="date" stroke="#000000" tick={{ fill: "#000000", fontWeight: 500 }} />
                   <YAxis
                     tickFormatter={(v) => `${v.toFixed(0)}%`}
                     domain={["auto", "auto"]}
@@ -271,33 +253,18 @@ export default function AtlanticWalkResearch() {
                     tick={{ fill: "#000000", fontWeight: 500 }}
                   />
                   <Tooltip formatter={(v) => `${v.toFixed(2)}%`} />
-                  <Legend
-                    wrapperStyle={{
-                      color: "#000000",
-                      fontWeight: "bold",
-                    }}
-                  />
+                  <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
                   <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
-                  <Line
-                    type="monotone"
-                    dataKey="sp500"
-                    stroke="#10b981"
-                    name="S&P 500"
-                    strokeWidth={2}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="portfolio"
-                    stroke="#000000"
-                    name="Atlantic Walk Portfolio"
-                  />
-                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" />
-                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" />
-                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" />
-                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" />
-                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" />
-                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" />
+                  {/* Lines without dots */}
+                  <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" strokeWidth={2} dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="portfolio" stroke="#000000" name="Atlantic Walk Portfolio" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} activeDot={false} />
+                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} activeDot={false} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -308,6 +275,7 @@ export default function AtlanticWalkResearch() {
       );
     }
 
+    // --- HOME PAGE ---
     return (
       <section className="text-center">
         <h2 className="text-3xl font-bold mb-2">Atlantic Walk Research</h2>
@@ -330,11 +298,7 @@ export default function AtlanticWalkResearch() {
       ) : (
         <>
           <div className="flex justify-center mt-6">
-            <img
-              src="/atlantic_walk_logo_transparent.png"
-              alt="Atlantic Walk Research Logo"
-              className="h-16 w-auto"
-            />
+            <img src="/atlantic_walk_logo_transparent.png" alt="Atlantic Walk Research Logo" className="h-16 w-auto" />
           </div>
 
           <div className="p-8 max-w-5xl mx-auto">
@@ -359,10 +323,7 @@ export default function AtlanticWalkResearch() {
             {renderPage()}
 
             <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
-              <p>
-                &copy; 2025 Atlantic Walk Research. Independent research only. Not investment
-                advice.
-              </p>
+              <p>&copy; 2025 Atlantic Walk Research. Independent research only. Not investment advice.</p>
             </footer>
           </div>
         </>
