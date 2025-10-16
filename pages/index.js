@@ -42,7 +42,7 @@ export default function AtlanticWalkResearch() {
     // --- RESEARCH PAGE ---
     if (page === "research") {
       return (
-        <section className="space-y-6 pb-24 ml-9">
+        <section className="space-y-6 pb-24 ml-4">
           <h2 className="text-2xl font-semibold mb-5">Research Library</h2>
 
           <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] font-medium pb-2 border-b border-gray-300">
