@@ -256,38 +256,55 @@ export default function AtlanticWalkResearch() {
                       content={({ active, payload, label }) => {
                         if (!active || !payload) return null;
                     
-                        // Sort all payloads by descending performance
+                        // Sort tickers by performance descending
                         const sorted = [...payload].sort((a, b) => b.value - a.value);
                     
                         return (
                           <div
                             style={{
-                              backgroundColor: "rgba(45,45,45,0.85)",
-                              color: "#fff",
+                              backgroundColor: "rgba(45, 45, 45, 0.85)", // dark translucent
+                              color: "#ffffff",
                               padding: "10px 14px",
                               borderRadius: "8px",
                               boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
-                              minWidth: "160px",
+                              minWidth: "180px",
                             }}
                           >
-                            <p style={{ margin: 0, fontWeight: "bold" }}>{label}</p>
+                            {/* Date label */}
+                            <p style={{ margin: 0, fontWeight: "bold", borderBottom: "1px solid rgba(255,255,255,0.2)", paddingBottom: "4px" }}>
+                              {label}
+                            </p>
+                    
+                            {/* Ranked + colored entries */}
                             {sorted.map((entry, i) => (
                               <p
                                 key={entry.name}
                                 style={{
-                                  margin: "2px 0",
+                                  margin: "4px 0",
                                   display: "flex",
                                   justifyContent: "space-between",
+                                  alignItems: "center",
+                                  gap: "8px",
                                 }}
                               >
-                                <span>{`${i + 1}. ${entry.name}`}</span>
+                                <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                                  <span
+                                    style={{
+                                      width: "10px",
+                                      height: "10px",
+                                      borderRadius: "50%",
+                                      backgroundColor: entry.color || "#ccc", // keep each line’s color
+                                    }}
+                                  />
+                                  {`${i + 1}. ${entry.name}`}
+                                </span>
                                 <span>{`${entry.value.toFixed(2)}%`}</span>
                               </p>
                             ))}
                           </div>
                         );
                       }}
-                    />
+                    />     
                   <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
                   <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
