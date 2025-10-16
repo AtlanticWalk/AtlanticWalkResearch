@@ -216,7 +216,7 @@ export default function AtlanticWalkResearch() {
 
     if (page === "about") {
       return (
-        <section className="max-w-2xl ml-84 text-left pr-8">
+        <section className="max-w-md ml-auto mr-[8rem] text-left">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
           <p className="text-base text-black leading-relaxed">
             Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
