@@ -262,7 +262,7 @@ export default function AtlanticWalkResearch() {
                         return (
                           <div
                             style={{
-                              backgroundColor: "rgba(45, 45, 45, 0.85)", // dark translucent
+                              backgroundColor: "rgba(45, 45, 45, 0.30)", // dark translucent
                               color: "#ffffff",
                               padding: "10px 14px",
                               borderRadius: "8px",
