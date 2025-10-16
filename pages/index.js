@@ -204,7 +204,7 @@ export default function AtlanticWalkResearch() {
             Contact:{" "}
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
-              className="text-blue-600 hover:underline"
+              className="text-black hover:underline"
             >
               grentrop@atlanticwalkresearch.com
             </a>
@@ -214,7 +214,7 @@ export default function AtlanticWalkResearch() {
               href="https://seekingalpha.com/author/glenn-rentrop"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline block"
+              className="text-black hover:underline block"
             >
               Seeking Alpha Profile
             </a>
@@ -222,7 +222,7 @@ export default function AtlanticWalkResearch() {
               href="https://www.linkedin.com/in/grentrop/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline block"
+              className="text-black hover:underline block"
             >
               LinkedIn Profile
             </a>
