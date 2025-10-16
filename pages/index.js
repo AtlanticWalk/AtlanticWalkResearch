@@ -216,7 +216,7 @@ export default function AtlanticWalkResearch() {
 
     if (page === "about") {
       return (
-        <section className="max-w-2xl ml-24 text-left pr-8">
+        <section className="max-w-2xl ml-64 text-left pr-8">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
           <p className="text-base text-black leading-relaxed">
             Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
@@ -237,7 +237,7 @@ export default function AtlanticWalkResearch() {
             Contact:{" "}
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
-              className="text-grey-500 hover:underline"
+              className="text-black text-right hover:underline"
             >
               grentrop@atlanticwalkresearch.com
             </a>
