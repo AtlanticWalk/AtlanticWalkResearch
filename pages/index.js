@@ -252,33 +252,41 @@ export default function AtlanticWalkResearch() {
                     stroke="#000000"
                     tick={{ fill: "#000000", fontWeight: 500 }}
                   />
-                    <Tooltip
-                    contentStyle={{
-                      backgroundColor: "rgba(45, 45, 45, 0.5)", // dark grey translucent
-                      color: "#ffffff",
-                      borderRadius: "8px",
-                      border: black,
-                      boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+                   <Tooltip
+                    content={({ active, payload, label }) => {
+                      if (!active || !payload) return null;
+                  
+                      // Sort tickers by performance descending
+                      const sorted = [...payload].sort((a, b) => b.value - a.value);
+                  
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: "rgba(45, 45, 45, 0.85)", // dark translucent gray
+                            color: "#ffffff",
+                            padding: "10px 14px",
+                            borderRadius: "8px",
+                            boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+                            minWidth: "160px",
+                          }}
+                        >
+                          <p style={{ margin: 0, fontWeight: "bold" }}>{label}</p>
+                          {sorted.map((entry, i) => (
+                            <p
+                              key={entry.name}
+                              style={{
+                                margin: "2px 0",
+                                display: "flex",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <span>{`${i + 1}. ${entry.name}`}</span>
+                              <span>{`${entry.value.toFixed(2)}%`}</span>
+                            </p>
+                          ))}
+                        </div>
+                      );
                     }}
-                    formatter={(value, name, props, all) => {
-                      // `all` contains all payload values for the current hover date
-                      if (all && all.payload) {
-                        // Collect values and sort by performance descending
-                        const sorted = Object.entries(all.payload)
-                          .filter(([k, v]) => typeof v === "number")
-                          .sort((a, b) => b[1] - a[1]);
-                  
-                        // Find this line’s position in sorted order
-                        const rank = sorted.findIndex(([k]) => k === name) + 1;
-                  
-                        // Format: e.g., "#1  +23.5%"
-                        return [`${value.toFixed(2)}%`, `${rank}. ${name}`];
-                      }
-                  
-                      // Default fallback
-                      return [`${value.toFixed(2)}%`, name];
-                    }}
-                    labelStyle={{ color: "#ffffff", fontWeight: "bold" }}
                   />
                   <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
                   <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
