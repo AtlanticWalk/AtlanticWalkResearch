@@ -53,7 +53,7 @@ export default function AtlanticWalkResearch() {
         <div>Ticker</div>
         <div>Model</div>
         <div>Report</div>
-        <div>Date</div>
+        <div>Valuation Date</div>
       </div>
 
       <div className="space-y-2 text-sm">
@@ -216,7 +216,7 @@ export default function AtlanticWalkResearch() {
 
     if (page === "about") {
       return (
-        <section className="max-w-2xl ml-auto text-right pr-8">
+        <section className="max-w-2xl ml-15 text-left pr-8">
           <h2 className="text-2xl font-semibold mb-4">About Atlantic Walk Research</h2>
           <p className="text-base text-black leading-relaxed">
             Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop.
@@ -234,7 +234,7 @@ export default function AtlanticWalkResearch() {
         <section className="max-w-md text-right">
           <h2 className="text-2xl font-semibold mb-4">Contact</h2>
           <p className="text-base text-gray-700 mb-2">
-            Reach out via email:{" "}
+            Contact:{" "}
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
               className="text-grey-500 hover:underline"
@@ -252,7 +252,7 @@ export default function AtlanticWalkResearch() {
           <h2 className="text-2xl font-semibold mb-4">Performance Tracker</h2>
           <p className="text-black mb-4">
             Tracking cumulative percentage returns of Atlantic Walk Research picks versus
-            the S&amp;P 500. Returns are normalized to 0% at inception.
+            the S&amp;P 500. Returns are normalized to 0% at time of valuation.
           </p>
 
           {trackerData.length > 0 ? (
