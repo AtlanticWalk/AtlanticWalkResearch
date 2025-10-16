@@ -254,10 +254,10 @@ export default function AtlanticWalkResearch() {
                   />
                     <Tooltip
                     contentStyle={{
-                      backgroundColor: "rgba(45, 45, 45, 0.85)", // dark grey translucent
+                      backgroundColor: "rgba(45, 45, 45, 0.5)", // dark grey translucent
                       color: "#ffffff",
                       borderRadius: "8px",
-                      border: "none",
+                      border: black,
                       boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
                     }}
                     formatter={(value, name, props, all) => {
