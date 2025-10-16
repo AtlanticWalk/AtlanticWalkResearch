@@ -231,13 +231,13 @@ export default function AtlanticWalkResearch() {
 
     if (page === "contact") {
       return (
-        <section className="max-w-md text-right">
-          <h2 className="text-2xl font-semibold mb-4">Contact</h2>
-          <p className="text-base text-gray-700 mb-2">
+        <section className="max-w-md ml-90 text-right">
+          <h2 className="text-2xl font-semibold ml-90 mb-4">Contact</h2>
+          <p className="text-base text-black ml-90 mb-2">
             Contact:{" "}
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
-              className="text-black text-right hover:underline"
+              className="text-black ml-90 text-right hover:underline"
             >
               grentrop@atlanticwalkresearch.com
             </a>
