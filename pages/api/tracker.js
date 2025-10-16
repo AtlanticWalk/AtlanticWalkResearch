@@ -11,6 +11,7 @@ export default async function handler(req, res) {
       { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
     ];
 
+    // Find earliest valuation date
     const earliestDate = picks.reduce(
       (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
       picks[0].date
@@ -18,6 +19,7 @@ export default async function handler(req, res) {
 
     const endDate = new Date().toISOString().slice(0, 10);
 
+    // Helper to fetch Yahoo Finance weekly data safely
     const fetchYahooData = async (symbol, startDate) => {
       const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
         symbol
@@ -38,6 +40,7 @@ export default async function handler(req, res) {
         const quotes = result.indicators.quote[0].close;
         const timestamps = result.timestamp || [];
 
+        // Return valid (non-null) weekly data points
         return timestamps
           .map((t, i) => ({
             date: new Date(t * 1000).toISOString().slice(0, 10),
@@ -50,7 +53,7 @@ export default async function handler(req, res) {
       }
     };
 
-    // Fetch data safely
+    // Fetch all datasets concurrently
     const datasets = await Promise.all(
       picks.map((p) => fetchYahooData(p.symbol, earliestDate))
     );
@@ -62,14 +65,15 @@ export default async function handler(req, res) {
     }));
 
     if (!sp500.length) {
-      console.warn("⚠️ No S&P 500 data fetched; using fallback sample data.");
+      console.warn("⚠️ No S&P 500 data fetched; returning fallback sample.");
       return res.status(200).json([
         { date: earliestDate, sp500: 0, portfolio: 0 },
-        { date: "2025-01-01", sp500: 2, portfolio: 6 },
-        { date: "2025-02-01", sp500: 4, portfolio: 12 },
+        { date: "2025-01-01", sp500: 2, portfolio: 5 },
+        { date: "2025-03-01", sp500: 4, portfolio: 9 },
       ]);
     }
 
+    // Build time-aligned dataset
     const data = sp500.map((sp) => {
       const entry = { date: sp.date };
       entry.sp500 = ((sp.close / sp500[0].close) - 1) * 100;
@@ -99,7 +103,7 @@ export default async function handler(req, res) {
       return entry;
     });
 
-    // Keep only the past 12 months of weekly data
+    // Keep only last 12 months of data
     const cutoff = new Date();
     cutoff.setMonth(cutoff.getMonth() - 12);
     const filteredData = data.filter((d) => new Date(d.date) >= cutoff);
