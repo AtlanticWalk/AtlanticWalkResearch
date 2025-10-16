@@ -199,7 +199,7 @@ export default function AtlanticWalkResearch() {
     if (page === "contact") {
       return (
         <section className="max-w-md ml-auto mr-[8rem] text-right">
-          <h2 className="text-2xl font-semibold mb-4">Contact</h2>
+          <h2 className="text-2xl font-semibold mb-4"></h2>
           <p className="text-lg text-black font-semibold mb-3">
             Contact:{" "}
             <a
