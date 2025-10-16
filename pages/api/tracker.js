@@ -11,19 +11,21 @@ export default async function handler(req, res) {
       { symbol: "AVDL", name: "avdl", date: "2025-09-12" },
     ];
 
-    const earliestDate = picks.reduce(
-      (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
-      picks[0].date
-    );
+    // --- Date range setup: limit to last 12 months (52 weeks)
+    const today = new Date();
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
 
-    const endDate = new Date().toISOString().slice(0, 10);
+    const startDate = oneYearAgo.toISOString().slice(0, 10);
+    const endDate = today.toISOString().slice(0, 10);
 
+    // --- Yahoo Finance weekly fetch function
     const fetchYahooData = async (symbol, startDate) => {
       const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
         symbol
       )}?period1=${Math.floor(new Date(startDate).getTime() / 1000)}&period2=${Math.floor(
         new Date(endDate).getTime() / 1000
-      )}&interval=1mo`;
+      )}&interval=1wk`;
 
       const resData = await fetch(url);
       const json = await resData.json();
@@ -37,8 +39,9 @@ export default async function handler(req, res) {
       }));
     };
 
+    // --- Fetch data for all symbols
     const datasets = await Promise.all(
-      picks.map((p) => fetchYahooData(p.symbol, earliestDate))
+      picks.map((p) => fetchYahooData(p.symbol, startDate))
     );
 
     const sp500 = datasets[0];
@@ -47,6 +50,7 @@ export default async function handler(req, res) {
       data: datasets[i + 1],
     }));
 
+    // --- Construct unified dataset (weekly)
     const data = sp500.map((sp) => {
       const entry = { date: sp.date };
 
@@ -79,9 +83,10 @@ export default async function handler(req, res) {
       return entry;
     });
 
+    // --- Handle empty or failed cases
     if (!data.length) {
       return res.status(200).json([
-        { date: earliestDate, sp500: 0, portfolio: 0 },
+        { date: startDate, sp500: 0, portfolio: 0 },
         { date: "2025-01-01", sp500: 2, portfolio: 6 },
         { date: "2025-02-01", sp500: 4, portfolio: 12 },
       ]);
