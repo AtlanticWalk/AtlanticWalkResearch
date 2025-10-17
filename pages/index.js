@@ -187,7 +187,7 @@ export default function AtlanticWalkResearch() {
     
           {/* Mission */}
           <div className="p-4">
-            <p className="text-base text-gray-800 font-medium">
+            <p className="text-base text-black font-medium">
               <strong>Mission:</strong>{" "}
               Turn complex policy, capital-allocation, and structural change into clear,
               asymmetric investment ideas through driver-based models, rigorous primary research,
@@ -216,7 +216,7 @@ export default function AtlanticWalkResearch() {
             </p>
     
             {/* Contact / social links line (small) */}
-            <p className="text-sm text-gray-600 mt-3">
+            <p className="text-sm text-black mt-3">
               <strong>Contact:</strong>{" "}
               <a href="mailto:grentrop@atlanticwalkresearch.com" className="text-blue-600 hover:underline">
                 grentrop@atlanticwalkresearch.com
