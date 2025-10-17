@@ -430,7 +430,7 @@ if (page === "about") {
             <title>Atlantic Walk Research | Independent Equity Research</title>
             <meta
               name="description"
-              content="Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop, focused on deep fundamental analysis, driver-based models, and special-situations investing."
+              content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
             />
             <meta name="keywords" content="equity research, fundamental analysis, Atlantic Walk Research, Glenn Rentrop, financial modeling, Seeking Alpha" />
             <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
