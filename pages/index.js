@@ -312,7 +312,7 @@ if (page === "about") {
                       rel="noopener noreferrer"
                       className="text-black hover:underline"
                     >
-                      X (Twitter)
+                      X
                     </a>
                   </p>
                 </div>
