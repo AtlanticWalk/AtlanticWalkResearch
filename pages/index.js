@@ -417,30 +417,35 @@ if (page === "about") {
     }
 
     // --- HOME PAGE ---
-    return (
-      <section className="text-center">
-        <h2 className="text-3xl font-bold mb-2">Atlantic Walk Research</h2>
-        <p className="text-lg text-gray-600 mb-6">Independent equity research</p>
-      </section>
-    );
-  };
+   return (
+  <>
+    <Head>
+      <title>Atlantic Walk Research | Independent Equity Research</title>
+      <meta
+        name="description"
+        content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
+      />
+      <meta
+        name="keywords"
+        content="equity research, fundamental analysis, Atlantic Walk Research, Glenn Rentrop, financial modeling, Seeking Alpha"
+      />
+      <meta
+        property="og:title"
+        content="Atlantic Walk Research | Independent Equity Research"
+      />
+      <meta
+        property="og:description"
+        content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
+      />
+      <meta property="og:url" content="https://atlanticwalkresearch.com" />
+      <meta property="og:type" content="website" />
+      <meta
+        property="og:image"
+        content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png"
+      />
+      <link rel="canonical" href="https://atlanticwalkresearch.com" />
+    </Head>
 
-  return (
-          <Head>
-            <title>Atlantic Walk Research | Independent Equity Research</title>
-            <meta
-              name="description"
-              content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
-            />
-            <meta name="keywords" content="equity research, fundamental analysis, Atlantic Walk Research, Glenn Rentrop, financial modeling, Seeking Alpha" />
-            <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
-            <meta property="og:description" content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models." />
-            <meta property="og:url" content="https://atlanticwalkresearch.com" />
-            <meta property="og:type" content="website" />
-            <meta property="og:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
-            <link rel="canonical" href="https://atlanticwalkresearch.com" />
-          </Head> 
-                
     <main className="min-h-screen">
       {page === "home" ? (
         <div className="flex flex-col items-center justify-center h-screen">
@@ -454,24 +459,43 @@ if (page === "about") {
       ) : (
         <>
           <div className="flex justify-center mt-6">
-            <img src="/atlantic_walk_logo_transparent.png" alt="Atlantic Walk Research Logo" className="h-16 w-auto" />
+            <img
+              src="/atlantic_walk_logo_transparent.png"
+              alt="Atlantic Walk Research Logo"
+              className="h-16 w-auto"
+            />
           </div>
 
           <div className="p-8 max-w-5xl mx-auto">
             <nav className="mb-12 flex gap-6 text-lg font-medium justify-center">
-              <button onClick={() => setPage("home")} className="text-black hover:underline">
+              <button
+                onClick={() => setPage("home")}
+                className="text-black hover:underline"
+              >
                 Home
               </button>
-              <button onClick={() => setPage("research")} className="text-black hover:underline">
+              <button
+                onClick={() => setPage("research")}
+                className="text-black hover:underline"
+              >
                 Research
               </button>
-              <button onClick={() => setPage("performance")} className="text-black hover:underline">
+              <button
+                onClick={() => setPage("performance")}
+                className="text-black hover:underline"
+              >
                 Performance
               </button>
-              <button onClick={() => setPage("about")} className="text-black hover:underline">
+              <button
+                onClick={() => setPage("about")}
+                className="text-black hover:underline"
+              >
                 About
               </button>
-              <button onClick={() => setPage("contact")} className="text-black hover:underline">
+              <button
+                onClick={() => setPage("contact")}
+                className="text-black hover:underline"
+              >
                 Contact
               </button>
             </nav>
@@ -479,11 +503,14 @@ if (page === "about") {
             {renderPage()}
 
             <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
-              <p>&copy; 2025 Atlantic Walk Research. Independent research only. Not investment advice.</p>
+              <p>
+                &copy; 2025 Atlantic Walk Research. Independent research only.
+                Not investment advice.
+              </p>
             </footer>
           </div>
         </>
       )}
     </main>
-  );
-}
+  </>
+);
