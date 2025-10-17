@@ -203,7 +203,7 @@ if (page === "about") {
 
       {/* Managing Partner */}
       <div className="pt-2 border-t border-gray-200">
-        <h3 className="text-lg font-semibold mt-4">Glenn Rentrop — Managing Partner</h3>
+        <h3 className="text-lg font-semibold mt-4">Glenn Rentrop — Managing Partner & Founder</h3>
 
         <p className="text-base text-black mt-2 leading-relaxed">
           Glenn founded Atlantic Walk Research to pursue deep fundamental coverage of companies
