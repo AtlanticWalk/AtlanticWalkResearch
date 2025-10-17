@@ -272,7 +272,7 @@ if (page === "about") {
                       rel="noopener noreferrer"
                       className="text-black hover:underline"
                     >
-                      Seeking Alpha Profile
+                      Seeking Alpha
                     </a>
                   </p>
           
@@ -292,7 +292,7 @@ if (page === "about") {
                       rel="noopener noreferrer"
                       className="text-black hover:underline"
                     >
-                      LinkedIn Profile
+                      LinkedIn
                     </a>
                   </p>
           
