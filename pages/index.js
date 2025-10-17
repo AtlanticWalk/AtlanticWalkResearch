@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Head from "next/head";
 import {
   LineChart,
   Line,
@@ -425,6 +426,21 @@ if (page === "about") {
   };
 
   return (
+          <Head>
+            <title>Atlantic Walk Research | Independent Equity Research</title>
+            <meta
+              name="description"
+              content="Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop, focused on deep fundamental analysis, driver-based models, and special-situations investing."
+            />
+            <meta name="keywords" content="equity research, fundamental analysis, Atlantic Walk Research, Glenn Rentrop, financial modeling, Seeking Alpha" />
+            <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
+            <meta property="og:description" content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models." />
+            <meta property="og:url" content="https://atlanticwalkresearch.com" />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
+            <link rel="canonical" href="https://atlanticwalkresearch.com" />
+          </Head> 
+                
     <main className="min-h-screen">
       {page === "home" ? (
         <div className="flex flex-col items-center justify-center h-screen">
