@@ -215,55 +215,106 @@ export default function AtlanticWalkResearch() {
       );
     }
 
-    // --- CONTACT PAGE ---
-    if (page === "contact") {
-      return (
-        <section className="max-w-md ml-auto mr-[8rem] text-right">
-          <p className="text-lg text-black font-semibold mb-4">
-            <a
-              href="mailto:grentrop@atlanticwalkresearch.com"
-              className="text-black hover:underline"
-            >
-              grentrop@atlanticwalkresearch.com
-            </a>
-          </p>
+// --- CONTACT PAGE ---
+if (page === "contact") {
+  return (
+    <section className="max-w-md ml-auto mr-[8rem] text-right">
+      {/* Email */}
+      <p className="text-lg text-black font-semibold mb-4 flex items-center justify-end gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-5 h-5 text-black"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16 12H8m0 0l4 4m-4-4l4-4M4 6h16v12H4V6z"
+          />
+        </svg>
+        <a
+          href="mailto:grentrop@atlanticwalkresearch.com"
+          className="text-black hover:underline"
+        >
+          grentrop@atlanticwalkresearch.com
+        </a>
+      </p>
 
-          <div className="text-lg text-black space-y-3">
-            <p>
-              <a
-                href="https://seekingalpha.com/author/glenn-rentrop"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black hover:underline"
-              >
-                Seeking Alpha
-              </a>
-            </p>
-            <p>
-              <a
-                href="https://www.linkedin.com/in/grentrop/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black hover:underline"
-              >
-                LinkedIn
-              </a>
-            </p>
-            <p>
-              <a
-                href="https://x.com/AtlanticWalk"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-black hover:underline"
-              >
-                X / Twitter
-              </a>
-            </p>
-          </div>
-        </section>
-      );
-    }
+      {/* Links */}
+      <div className="text-lg text-black space-y-3">
+        {/* Seeking Alpha */}
+        <p className="flex items-center justify-end gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-black"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+          <a
+            href="https://seekingalpha.com/author/glenn-rentrop"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black hover:underline"
+          >
+            Seeking Alpha
+          </a>
+        </p>
 
+        {/* LinkedIn */}
+        <p className="flex items-center justify-end gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-black"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-.9 1.7-2.2 3.6-2.2 3.9 0 4.6 2.5 4.6 5.8V24h-4v-7.7c0-1.8 0-4.2-2.6-4.2-2.6 0-3 2-3 4V24h-4V8z" />
+          </svg>
+          <a
+            href="https://www.linkedin.com/in/grentrop/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black hover:underline"
+          >
+            LinkedIn
+          </a>
+        </p>
+
+        {/* X */}
+        <p className="flex items-center justify-end gap-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-5 h-5 text-black"
+            fill="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 1.838 24h20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
+          </svg>
+          <a
+            href="https://x.com/AtlanticWalk"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-black hover:underline"
+          >
+            X
+          </a>
+        </p>
+      </div>
+    </section>
+  );
+}  
+ 
     // --- PERFORMANCE PAGE ---
     if (page === "performance") {
       return (
