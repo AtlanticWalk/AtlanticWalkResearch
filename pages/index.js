@@ -182,7 +182,7 @@ export default function AtlanticWalkResearch() {
 // --- ABOUT PAGE ---
 if (page === "about") {
   return (
-    <section className="max-w-2xl ml-auto mr-0 text-left pr-8 pb-24 space-y-6">
+    <section className="max-w-2xl ml-[8rem] mr-0 text-left pr-8 pb-24 space-y-6">
       <h2 className="text-2xl font-semibold mb-2">About Atlantic Walk Research</h2>
 
       {/* Mission */}
