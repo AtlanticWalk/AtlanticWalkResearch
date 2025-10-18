@@ -143,7 +143,7 @@ export default function AtlanticWalkResearch() {
               <div className="font-semibold text-black">Lam Research</div>
               <div className="font-semibold text-black">(NASDAQ: LRCX)</div>
               <div>
-                <a href="/models/lrcx-model.xlsx" download className="text-black hover:underline">
+                <a href="/models/LRCXMODEL.xlsx" download className="text-black hover:underline">
                   Download
                 </a>
               </div>
