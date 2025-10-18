@@ -44,7 +44,7 @@ export default function AtlanticWalkResearch() {
     if (page === "research") {
       return (
         <section className="space-y-6 pb-24 ml-4">
-          <h2 className="text-2xl font-semibold mb-5">Research Library</h2>
+          <h2 className="text-2xl font-semibold mb-5">Library</h2>
 
           <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] font-medium pb-2 border-b border-gray-300">
             <div>Name</div>
@@ -184,7 +184,6 @@ export default function AtlanticWalkResearch() {
     if (page === "about") {
       return (
         <section className="max-w-2xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
-          <h2 className="text-2xl font-semibold mb-2">About Atlantic Walk Research</h2>
 
           <p className="text-base text-black leading-relaxed">
             <strong>Mission:</strong>{" "}
