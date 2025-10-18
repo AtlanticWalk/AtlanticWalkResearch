@@ -315,85 +315,118 @@ if (page === "contact") {
   );
 }  
  
-    // --- PERFORMANCE PAGE ---
-    if (page === "performance") {
-      return (
-        <section className="max-w-5xl mx-auto space-y-6">
-          <h2 className="text-2xl font-semibold mb-4">Performance Tracker</h2>
-          <p className="text-black mb-4">
-            Tracking cumulative percentage returns of Atlantic Walk Research picks versus
-            the S&amp;P 500. Returns are normalized to 0% at time of valuation.
-          </p>
-
-          {trackerData.length > 0 ? (
-            <div className="bg-gray-700 bg-opacity-25 rounded-xl p-4">
-              <ResponsiveContainer width="100%" height={420}>
-                <LineChart data={trackerData}>
-                  <XAxis dataKey="date" stroke="#000000" tick={{ fill: "#000000", fontWeight: 500 }} />
-                  <YAxis
-                    tickFormatter={(v) => `${v.toFixed(0)}%`}
-                    domain={["auto", "auto"]}
-                    stroke="#000000"
-                    tick={{ fill: "#000000", fontWeight: 500 }}
-                  />
-                  <Tooltip
-                    content={({ active, payload, label }) => {
-                      if (!active || !payload) return null;
-                      const sorted = [...payload].sort((a, b) => b.value - a.value);
-                      return (
-                        <div
+// --- PERFORMANCE PAGE ---
+if (page === "performance") {
+  return (
+    <section className="max-w-5xl mx-auto mt-[-1rem]">
+      {trackerData.length > 0 ? (
+        <div className="bg-gray-700 bg-opacity-25 rounded-xl p-3 mt-0">
+          <ResponsiveContainer width="100%" height={420}>
+            <LineChart data={trackerData}>
+              <XAxis
+                dataKey="date"
+                stroke="#000000"
+                tick={{ fill: "#000000", fontWeight: 500 }}
+              />
+              <YAxis
+                tickFormatter={(v) => `${v.toFixed(0)}%`}
+                domain={["auto", "auto"]}
+                stroke="#000000"
+                tick={{ fill: "#000000", fontWeight: 500 }}
+              />
+              <Tooltip
+                content={({ active, payload, label }) => {
+                  if (!active || !payload) return null;
+                  const sorted = [...payload].sort((a, b) => b.value - a.value);
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: "rgba(45, 45, 45, 0.1)",
+                        color: "#ffffff",
+                        padding: "10px 14px",
+                        borderRadius: "8px",
+                        boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+                        minWidth: "180px",
+                      }}
+                    >
+                      <p
+                        style={{
+                          margin: 0,
+                          fontWeight: "bold",
+                          borderBottom: "1px solid rgba(255,255,255,0.2)",
+                          paddingBottom: "4px",
+                        }}
+                      >
+                        {label}
+                      </p>
+                      {sorted.map((entry, i) => (
+                        <p
+                          key={entry.name}
                           style={{
-                            backgroundColor: "rgba(45, 45, 45, 0.1)",
-                            color: "#ffffff",
-                            padding: "10px 14px",
-                            borderRadius: "8px",
-                            boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
-                            minWidth: "180px",
+                            margin: "4px 0",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: "8px",
                           }}
                         >
-                          <p style={{ margin: 0, fontWeight: "bold", borderBottom: "1px solid rgba(255,255,255,0.2)", paddingBottom: "4px" }}>
-                            {label}
-                          </p>
-                          {sorted.map((entry, i) => (
-                            <p key={entry.name} style={{ margin: "4px 0", display: "flex", justifyContent: "space-between", gap: "8px" }}>
-                              <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                                <span
-                                  style={{
-                                    width: "10px",
-                                    height: "10px",
-                                    borderRadius: "50%",
-                                    backgroundColor: entry.color || "#ccc",
-                                  }}
-                                />
-                                {`${i + 1}. ${entry.name}`}
-                              </span>
-                              <span>{`${entry.value.toFixed(2)}%`}</span>
-                            </p>
-                          ))}
-                        </div>
-                      );
-                    }}
-                  />
-                  <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
-                  <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
-                  <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" strokeWidth={2} dot={false} />
-                  <Line type="monotone" dataKey="portfolio" stroke="#000000" name="Atlantic Walk Portfolio" dot={false} />
-                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
-                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
-                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
-                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
-                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
-                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <p>Loading performance data...</p>
-          )}
-        </section>
-      );
-    }
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                            }}
+                          >
+                            <span
+                              style={{
+                                width: "10px",
+                                height: "10px",
+                                borderRadius: "50%",
+                                backgroundColor: entry.color || "#ccc",
+                              }}
+                            />
+                            {`${i + 1}. ${entry.name}`}
+                          </span>
+                          <span>{`${entry.value.toFixed(2)}%`}</span>
+                        </p>
+                      ))}
+                    </div>
+                  );
+                }}
+              />
+              <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
+              <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
+              {/* Lines without dots */}
+              <Line
+                type="monotone"
+                dataKey="sp500"
+                stroke="#10b981"
+                name="S&P 500"
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="portfolio"
+                stroke="#000000"
+                name="Atlantic Walk Portfolio"
+                dot={false}
+              />
+              <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
+              <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
+              <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
+              <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
+              <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
+              <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      ) : (
+        <p>Loading performance data...</p>
+      )}
+    </section>
+  );
+}
     // --- HOME PAGE ---
     return (
       <section className="text-center">
