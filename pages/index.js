@@ -319,6 +319,12 @@ if (page === "contact") {
 if (page === "performance") {
   return (
     <section className="max-w-5xl mx-auto mt-[-1rem]">
+      <h2 className="text-2xl font-semibold mb-4"></h2> 
+      <p className="text-black mb-4"> 
+      Tracking cumulative percentage returns of Atlantic Walk Research picks versus the S&amp;P 500. 
+      Returns are normalized to 0% at time of valuation. 
+      </p>
+  
       {trackerData.length > 0 ? (
         <div className="bg-gray-700 bg-opacity-25 rounded-xl p-3 mt-0">
           <ResponsiveContainer width="100%" height={420}>
