@@ -343,7 +343,7 @@ if (page === "contact") {
                       return (
                         <div
                           style={{
-                            backgroundColor: "rgba(45, 45, 45, 0.3)",
+                            backgroundColor: "rgba(45, 45, 45, 0.1)",
                             color: "#ffffff",
                             padding: "10px 14px",
                             borderRadius: "8px",
