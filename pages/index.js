@@ -186,7 +186,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // --- NEW RESEARCH LIBRARY PAGE ---
     if (page === "research") {
       return (
-        <section className="max-w-5xl mx-auto px-6 py-10 text-gray-800">
+        <section className="max-w-5xl mx-auto px-6 py-10 text-black">
           <h1 className="text-3xl font-bold mb-8">Research Library</h1>
 
           <div className="grid grid-cols-4 font-semibold border-b border-gray-300 pb-2 mb-4">
@@ -209,7 +209,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   <div>
                     <a
                       href={`/research/${r.slug}`}
-                      className="text-blue-600 hover:underline"
+                      className="text-black hover:underline"
                     >
                       View Online
                     </a>
