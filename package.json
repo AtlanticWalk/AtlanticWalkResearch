@@ -12,7 +12,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recharts": "^3.2.1",
-    "yahoo-finance2": "^2.13.3"
+    "yahoo-finance2": "^2.13.3",
+    "gray-matter": "^4.0.3",
+    "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
