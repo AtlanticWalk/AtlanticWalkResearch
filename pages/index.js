@@ -43,8 +43,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
   }, [page]);
 
   const renderPage = () => {
-    // --- MODELS (old Research) PAGE ---
-    if (page === "research") {
+    // --- MODELS PAGE (renamed from Research) ---
+    if (page === "models") {
       return (
         <section className="space-y-6 pb-24 ml-4">
           <h2 className="text-2xl font-semibold mb-5">Valuation Models</h2>
@@ -184,7 +184,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     }
 
     // --- NEW RESEARCH LIBRARY PAGE ---
-    if (page === "library") {
+    if (page === "research") {
       return (
         <section className="max-w-5xl mx-auto px-6 py-10 text-gray-800">
           <h1 className="text-3xl font-bold mb-8">Research Library</h1>
@@ -228,6 +228,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     if (page === "about") {
       return (
         <section className="max-w-2xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
+
           <p className="text-base text-black leading-relaxed">
             <strong>Mission:</strong>{" "}
             Turn complex policy, capital-allocation, and structural change into clear,
@@ -237,16 +238,20 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
           <p className="text-base text-black leading-relaxed">
             Atlantic Walk Research is an independent equity research platform founded to deliver
-            deep fundamental analysis and actionable, conviction-driven ideas.
+            deep fundamental analysis and actionable, conviction-driven ideas. Coverage emphasizes
+            catalysts such as regulatory changes, capital allocation, corporate actions, and
+            litigation outcomes that can unlock mispriced value.
           </p>
 
           <div className="pt-2 border-t border-gray-200">
-            <h3 className="text-lg font-semibold mt-4">
-              Glenn Rentrop — Managing Partner & Founder
-            </h3>
+            <h3 className="text-lg font-semibold mt-4">Glenn Rentrop — Managing Partner & Founder</h3>
             <p className="text-base text-black mt-2 leading-relaxed">
               Glenn founded Atlantic Walk Research to pursue deep fundamental coverage of companies
-              exposed to structural and policy-driven inflection points.
+              exposed to structural and policy-driven inflection points. He focuses on driver-based
+              financial models, corporate actions, and special-situations work across semi-cap,
+              basic materials, biotech, and AI. Glenn brings hands-on valuation modeling,
+              primary-source diligence, and a long-horizon investor perspective to identify
+              asymmetric risk/reward opportunities.
             </p>
           </div>
         </section>
@@ -257,7 +262,22 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     if (page === "contact") {
       return (
         <section className="max-w-md ml-auto mr-[8rem] text-right">
+          {/* Email */}
           <p className="text-lg text-black font-semibold mb-4 flex items-center justify-end gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-black"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 12H8m0 0l4 4m-4-4l4-4M4 6h16v12H4V6z"
+              />
+            </svg>
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
               className="text-black hover:underline"
@@ -266,8 +286,24 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </a>
           </p>
 
+          {/* Links */}
           <div className="text-lg text-black space-y-3">
+            {/* Seeking Alpha */}
             <p className="flex items-center justify-end gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-black"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4v16m8-8H4"
+                />
+              </svg>
               <a
                 href="https://seekingalpha.com/author/glenn-rentrop"
                 target="_blank"
@@ -278,7 +314,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </a>
             </p>
 
+            {/* LinkedIn */}
             <p className="flex items-center justify-end gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-black"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-.9 1.7-2.2 3.6-2.2 3.9 0 4.6 2.5 4.6 5.8V24h-4v-7.7c0-1.8 0-4.2-2.6-4.2-2.6 0-3 2-3 4V24h-4V8z" />
+              </svg>
               <a
                 href="https://www.linkedin.com/in/grentrop/"
                 target="_blank"
@@ -289,7 +334,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </a>
             </p>
 
+            {/* X */}
             <p className="flex items-center justify-end gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-5 h-5 text-black"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 1.838 24h20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
+              </svg>
               <a
                 href="https://x.com/AtlanticWalk"
                 target="_blank"
@@ -308,35 +362,120 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto mt-[-1rem]">
-          <p className="text-black mb-4">
-            Tracking cumulative percentage returns of Atlantic Walk Research picks versus the S&P 500.
+          <h2 className="text-2xl font-semibold mb-4"></h2> 
+          <p className="text-black mb-4"> 
+          Tracking cumulative percentage returns of Atlantic Walk Research picks versus the S&amp;P 500. 
+          Returns are normalized to 0% at time of valuation. 
           </p>
+      
           {trackerData.length > 0 ? (
             <div className="bg-gray-700 bg-opacity-25 rounded-xl p-3 mt-0">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
-                  <XAxis dataKey="date" stroke="#000" />
-                  <YAxis tickFormatter={(v) => `${v.toFixed(0)}%`} stroke="#000" />
-                  <Tooltip />
-                  <Legend wrapperStyle={{ color: "#000", fontWeight: "bold" }} />
-                  <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
-                  <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" dot={false} />
-                  <Line type="monotone" dataKey="portfolio" stroke="#000" name="Atlantic Walk Portfolio" dot={false} />
-                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
-                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
-                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
-                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
-                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
-                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <p>Loading performance data...</p>
-          )}
-        </section>
-      );
-    }
+                  <XAxis
+                    dataKey="date"
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontWeight: 500 }}
+                  />
+                  <YAxis
+                    tickFormatter={(v) => `${v.toFixed(0)}%`}
+                    domain={["auto", "auto"]}
+                    stroke="#000000"
+                    tick={{ fill: "#000000", fontWeight: 500 }}
+                  />
+                  <Tooltip
+                    content={({ active, payload, label }) => {
+                      if (!active || !payload) return null;
+                      const sorted = [...payload].sort((a, b) => b.value - a.value);
+                      return (
+                        <div
+                          style={{
+                            backgroundColor: "rgba(45, 45, 45, 0.1)",
+                            color: "#ffffff",
+                            padding: "10px 14px",
+                            borderRadius: "8px",
+                            boxShadow: "0px 2px 8px rgba(0,0,0,0.3)",
+                            minWidth: "180px",
+                          }}
+                        >
+                          <p
+                            style={{
+                              margin: 0,
+                              fontWeight: "bold",
+                              borderBottom: "1px solid rgba(255,255,255,0.2)",
+                              paddingBottom: "4px",
+                            }}
+                          >
+                            {label}
+                          </p>
+                          {sorted.map((entry, i) => (
+                            <p
+                              key={entry.name}
+                              style={{
+                                margin: "4px 0",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                gap: "8px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "6px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    backgroundColor: entry.color || "#ccc",
+                                  }}
+                                />
+                                  {`${i + 1}. ${entry.name}`}
+                                </span>
+                                <span>{`${entry.value.toFixed(2)}%`}</span>
+                              </p>
+                            ))}
+                          </div>
+                        );
+                      }}
+                    />
+                    <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
+                    <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
+  
+                    {/* Lines without dots */}
+                    <Line
+                      type="monotone"
+                      dataKey="sp500"
+                      stroke="#10b981"
+                      name="S&P 500"
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="portfolio"
+                      stroke="#000000"
+                      name="Atlantic Walk Portfolio"
+                      dot={false}
+                    />
+                    <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
+                    <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
+                    <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
+                    <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
+                    <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
+                    <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            ) : (
+              <p>Loading performance data...</p>
+            )}
+          </section>
+        );
+      }
 
     // --- HOME PAGE ---
     return (
@@ -355,6 +494,23 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           name="description"
           content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
         />
+        <meta name="author" content="Glenn Rentrop" />
+        <meta name="robots" content="index, follow" />
+        <meta
+          property="og:title"
+          content="Atlantic Walk Research | Independent Equity Research"
+        />
+        <meta
+          property="og:description"
+          content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
+        />
+        <meta property="og:url" content="https://atlanticwalkresearch.com" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:image"
+          content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png"
+        />
+        <link rel="canonical" href="https://atlanticwalkresearch.com" />
       </Head>
 
       <main className="min-h-screen">
@@ -364,7 +520,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               src="/atlantic_walk_logo_transparent.png"
               alt="Atlantic Walk Research Logo"
               className="w-1/2 max-w-xs md:max-w-md lg:max-w-lg cursor-pointer"
-              onClick={() => setPage("research")}
+              onClick={() => setPage("models")}
             />
           </div>
         ) : (
@@ -382,13 +538,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                 <button onClick={() => setPage("home")} className="text-black hover:underline">
                   Home
                 </button>
-                <button onClick={() => setPage("research")} className="text-black hover:underline">
+                <button onClick={() => setPage("models")} className="text-black hover:underline">
                   Models
                 </button>
-                <button onClick={() => setPage("library")} className="text-black hover:underline">
+                <button onClick={() => setPage("research")} className="text-black hover:underline">
                   Research Library
                 </button>
-                <button onClick={() => setPage("performance")} className="text-black hover:underline">
+                <button
+                  onClick={() => setPage("performance")}
+                  className="text-black hover:underline"
+                >
                   Performance
                 </button>
                 <button onClick={() => setPage("about")} className="text-black hover:underline">
@@ -403,7 +562,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
               <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
                 <p>
-                  &copy; 2025 Atlantic Walk Research. Independent research only. Not investment advice.
+                  &copy; 2025 Atlantic Walk Research. Independent research only. Not investment
+                  advice.
                 </p>
               </footer>
             </div>
@@ -414,7 +574,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
   );
 }
 
-// --- Static Props for Library ---
+// --- Static Props for Research Library ---
 export async function getStaticProps() {
   const reportsDir = path.join(process.cwd(), "content", "reports");
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
