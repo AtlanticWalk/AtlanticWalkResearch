@@ -5,7 +5,7 @@ import matter from "gray-matter";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import Head from "next/head";
-import Layout from "@/components/Layout";
+import Layout from "../../components/Layout";
 
 const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
 
