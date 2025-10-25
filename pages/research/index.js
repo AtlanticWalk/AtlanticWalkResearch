@@ -28,7 +28,7 @@ export default function ResearchLibrary({ reports }) {
         backgroundSize: "cover",
       }}
     >
-      <div className="bg-white/85 backdrop-blur-md rounded-2xl max-w-4xl mx-auto p-10 shadow-xl text-black">
+      <div className="bg-white/40 backdrop-blur-md rounded-2xl max-w-4xl mx-auto p-10 shadow-xl text-black">
         <h1 className="text-3xl font-bold mb-8 text-center">Research Library</h1>
         <ul className="space-y-6">
           {reports.map((r) => (
