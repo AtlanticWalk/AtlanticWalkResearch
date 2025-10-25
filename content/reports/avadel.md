@@ -10,7 +10,7 @@ description: "An in-depth analysis of the Alkermes acquisition of Avadel."
 
 image: "/reports/ab.jpg"
 
-slug: "avadel"
+slug: "avadel-addendum"
 
 ---
 
@@ -35,4 +35,5 @@ I continue to stand by the valuation work presented in my earlier analysis of Av
 On the acquisition call, neither management team mentioned XW Pharma’s pipeline. Valiloxybate, the only salt-free oxybate with patent protection extending to 2037, is being evaluated for both narcolepsy and the treatment of non-motor symptoms associated with Parkinson’s disease, an area for which there are currently no FDA-approved therapies. By assigning no apparent value to these programs, Alkermes effectively underscored how little weight it places on Avadel’s broader R&D optionality and long-term growth potential.
 
 Taken together, the evidence suggests that Alkermes’ offer is not the final word on Avadel’s value. While there is no certainty that a competing bid will materialize, the deal’s structure and the strategic importance of Lumryz and Valiloxybate make the prospect of competing bids plausible. What is certain is that Alkermes’ price captures only the near-term economics of Avadel’s oxybate franchise and leaves little recognition for the pipeline or long-duration cash flows. If the transaction closes on current terms, that long-term upside will transfer to Alkermes shareholders rather than Avadel’s. For existing investors, the market’s willingness to accept $18.50 as fair value says more about short-term deal fatigue than about the true worth of a company that remains fundamentally mispriced. 
+
 
