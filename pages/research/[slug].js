@@ -76,8 +76,8 @@ export default function ReportPage({ frontmatter, content, slug }) {
           </article>
 
           <div className="mt-10 border-t border-gray-400 pt-6 flex flex-wrap gap-4 items-center justify-between">
-            <a href="/research" className="text-black hover:underline">
-              ← Back to Library
+           <a href="/research" className="text-black hover:underline">
+            ← Back to Research Library
             </a>
             <div className="flex gap-4 text-sm">
               <a
