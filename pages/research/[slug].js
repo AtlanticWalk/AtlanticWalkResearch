@@ -52,7 +52,7 @@ export default function ReportPage({ frontmatter, content, slug, filename }) {
         backgroundSize: "cover",
       }}
     >
-      <div className="backdrop-blur-md bg-white/90 text-black max-w-3xl w-full rounded-2xl shadow-2xl p-10">
+      <div className="backdrop-blur-md bg-white/40 text-black max-w-3xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={description} />
@@ -77,7 +77,7 @@ export default function ReportPage({ frontmatter, content, slug, filename }) {
           <img
             src={image}
             alt={title}
-            className="my-6 rounded-xl shadow-md w-full"
+            className="my-6 rounded-xl max-h-72 shadow-md w-full"
           />
         )}
 
