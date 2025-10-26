@@ -523,10 +523,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   Home
                 </button>
                 <button onClick={() => setPage("models")} className="text-black hover:underline">
-                  Models
+                  Models & Initiation Reports
                 </button>
                 <button onClick={() => setPage("research")} className="text-black hover:underline">
-                  Reports
+                  Research Notes
                 </button>
                 <button
                   onClick={() => setPage("performance")}
