@@ -187,7 +187,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <h1 className="text-3xl font-bold mb-8">Research Library</h1>
 
       {/* Header row with wider Title column */}
-      <div className="grid grid-cols-[3fr_1fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-24">
+      <div className="grid grid-cols-[3fr_1fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-48">
         <div>Title</div>
         <div>Ticker</div>
         <div>Date</div>
