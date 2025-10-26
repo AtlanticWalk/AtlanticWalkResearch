@@ -43,12 +43,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
   }, [page]);
 
   const renderPage = () => {
-    // --- MODELS PAGE (renamed from Research) ---
     if (page === "models") {
       return (
         <section className="space-y-6 pb-24 ml-4">
           <h2 className="text-2xl font-semibold mb-5">Valuation Models</h2>
-
           <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr] font-medium pb-2 border-b border-gray-300">
             <div>Name</div>
             <div>Ticker</div>
@@ -183,19 +181,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // --- NEW RESEARCH LIBRARY PAGE ---
     if (page === "research") {
       return (
         <section className="max-w-5xl mx-auto px-6 py-10 text-black">
           <h1 className="text-3xl font-bold mb-8">Research Library</h1>
-
           <div className="grid grid-cols-4 font-semibold border-b border-gray-300 pb-2 mb-4">
             <div>Title</div>
             <div>Ticker</div>
             <div>Date</div>
             <div>Link</div>
           </div>
-
           <div className="space-y-2 text-sm">
             {reports.length > 0 ? (
               reports.map((r) => (
@@ -224,11 +219,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // --- ABOUT PAGE ---
     if (page === "about") {
       return (
         <section className="max-w-2xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
-
           <p className="text-base text-black leading-relaxed">
             <strong>Mission:</strong>{" "}
             Turn complex policy, capital-allocation, and structural change into clear,
@@ -258,11 +251,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // --- CONTACT PAGE ---
     if (page === "contact") {
       return (
         <section className="max-w-md ml-auto mr-[8rem] text-right">
-          {/* Email */}
           <p className="text-lg text-black font-semibold mb-4 flex items-center justify-end gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -286,9 +277,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </a>
           </p>
 
-          {/* Links */}
           <div className="text-lg text-black space-y-3">
-            {/* Seeking Alpha */}
             <p className="flex items-center justify-end gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -314,7 +303,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </a>
             </p>
 
-            {/* LinkedIn */}
             <p className="flex items-center justify-end gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +322,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </a>
             </p>
 
-            {/* X */}
             <p className="flex items-center justify-end gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -358,16 +345,15 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // --- PERFORMANCE PAGE ---
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto mt-[-1rem]">
-          <h2 className="text-2xl font-semibold mb-4"></h2> 
-          <p className="text-black mb-4"> 
-          Tracking cumulative percentage returns of Atlantic Walk Research picks versus the S&amp;P 500. 
-          Returns are normalized to 0% at time of valuation. 
+          <h2 className="text-2xl font-semibold mb-4"></h2>
+          <p className="text-black mb-4">
+            Tracking cumulative percentage returns of Atlantic Walk Research picks versus the S&amp;P 500.
+            Returns are normalized to 0% at time of valuation.
           </p>
-      
+
           {trackerData.length > 0 ? (
             <div className="bg-gray-700 bg-opacity-25 rounded-xl p-3 mt-0">
               <ResponsiveContainer width="100%" height={420}>
@@ -433,51 +419,36 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                                     backgroundColor: entry.color || "#ccc",
                                   }}
                                 />
-                                  {`${i + 1}. ${entry.name}`}
-                                </span>
-                                <span>{`${entry.value.toFixed(2)}%`}</span>
-                              </p>
-                            ))}
-                          </div>
-                        );
-                      }}
-                    />
-                    <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
-                    <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
-  
-                    {/* Lines without dots */}
-                    <Line
-                      type="monotone"
-                      dataKey="sp500"
-                      stroke="#10b981"
-                      name="S&P 500"
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="portfolio"
-                      stroke="#000000"
-                      name="Atlantic Walk Portfolio"
-                      dot={false}
-                    />
-                    <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
-                    <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
-                    <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
-                    <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
-                    <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
-                    <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            ) : (
-              <p>Loading performance data...</p>
-            )}
-          </section>
-        );
-      }
+                                {`${i + 1}. ${entry.name}`}
+                              </span>
+                              <span>{`${entry.value.toFixed(2)}%`}</span>
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }}
+                  />
+                  <Legend wrapperStyle={{ color: "#000000", fontWeight: "bold" }} />
+                  <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
-    // --- HOME PAGE ---
+                  <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" strokeWidth={2} dot={false} />
+                  <Line type="monotone" dataKey="portfolio" stroke="#000000" name="Atlantic Walk Portfolio" dot={false} />
+                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
+                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
+                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
+                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
+                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
+                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p>Loading performance data...</p>
+          )}
+        </section>
+      );
+    }
+
     return (
       <section className="text-center">
         <h2 className="text-3xl font-bold mb-2">Atlantic Walk Research</h2>
@@ -513,7 +484,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         <link rel="canonical" href="https://atlanticwalkresearch.com" />
       </Head>
 
-      <main className="min-h-screen">
+      {/* ✅ Updated main element with conditional background */}
+      <main
+        className="min-h-screen bg-cover bg-center transition-all duration-700"
+        style={{
+          backgroundImage:
+            page === "home"
+              ? "url('/backgrounds/home-bg.jpg')"
+              : "url('/backgrounds/other-bg.jpg')",
+        }}
+      >
         {page === "home" ? (
           <div className="flex flex-col items-center justify-center h-screen">
             <img
