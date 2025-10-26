@@ -181,44 +181,49 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    if (page === "research") {
-      return (
-        <section className="max-w-2xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
-          <h1 className="text-3xl font-bold mb-8"></h1>
-          <div className="grid grid-cols-4 font-semibold border-b border-gray-300 pb-2 mb-4">
-            <div>Title</div>
-            <div>Ticker</div>
-            <div>Date</div>
-            <div>Link</div>
-          </div>
-          <div className="space-y-2 text-sm">
-            {reports.length > 0 ? (
-              reports.map((r) => (
-                <div
-                  key={r.slug}
-                  className="grid grid-cols-4 items-center border-b border-gray-200 py-2"
-                >
-                  <div className="font-medium">{r.title}</div>
-                  <div>{r.ticker}</div>
-                  <div>{new Date(r.date).toLocaleDateString()}</div>
-                  <div>
-                    <a
-                      href={`/research/${r.slug}`}
-                      className="text-black hover:underline"
-                    >
-                      View Online
-                    </a>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p>No research reports found.</p>
-            )}
-          </div>
-        </section>
-      );
-    }
+   if (page === "research") {
+  return (
+    <section className="max-w-5xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
+      <h1 className="text-3xl font-bold mb-8">Research Library</h1>
 
+      {/* Header row with wider Title column */}
+      <div className="grid grid-cols-[3fr_1fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-24">
+        <div>Title</div>
+        <div>Ticker</div>
+        <div>Date</div>
+        <div>Link</div>
+      </div>
+
+      {/* Data rows */}
+      <div className="space-y-2 text-sm ml-24">
+        {reports.length > 0 ? (
+          reports.map((r) => (
+            <div
+              key={r.slug}
+              className="grid grid-cols-[3fr_1fr_1fr_1fr] items-center border-b border-gray-200 py-2"
+            >
+              <div className="font-medium">{r.title}</div>
+              <div>{r.ticker}</div>
+              <div className="text-right">
+                {new Date(r.date).toLocaleDateString()}
+              </div>
+              <div className="text-right">
+                <a
+                  href={`/research/${r.slug}`}
+                  className="text-black hover:underline"
+                >
+                  View Online
+                </a>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No research reports found.</p>
+        )}
+      </div>
+    </section>
+  );
+}
     if (page === "about") {
       return (
         <section className="max-w-2xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
