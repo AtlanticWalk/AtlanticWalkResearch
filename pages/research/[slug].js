@@ -42,6 +42,13 @@ export default function ReportPage({ frontmatter, content }) {
   const { title, date, description, image, ticker } = frontmatter;
   const pageUrl = `https://atlanticwalkresearch.com/research/${frontmatter.slug}`;
 
+  // ✅ Custom handler: returns to integrated Research Library view
+  const handleReturnToLibrary = (e) => {
+    e.preventDefault();
+    localStorage.setItem("atlanticwalk_page", "research");
+    window.location.href = "/"; // reloads main SPA with navbar
+  };
+
   return (
     <div className="min-h-screen flex justify-center items-start py-16 px-4">
       <div className="bg-white/30 text-black max-w-3xl w-full rounded-2xl shadow-2xl p-10">
@@ -56,9 +63,14 @@ export default function ReportPage({ frontmatter, content }) {
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
 
-        <Link href="/research" className="text-sm text-blue-600 hover:underline">
+        {/* ✅ Back button now reloads main SPA */}
+        <a
+          href="/"
+          onClick={handleReturnToLibrary}
+          className="text-sm text-blue-600 hover:underline cursor-pointer"
+        >
           ← Back to Research Library
-        </Link>
+        </a>
 
         <h1 className="text-3xl font-bold mt-4 mb-2">{title}</h1>
         <p className="text-sm text-gray-600">
@@ -80,9 +92,14 @@ export default function ReportPage({ frontmatter, content }) {
         </article>
 
         <div className="mt-10 border-t border-gray-300 pt-6 flex flex-wrap gap-4 items-center justify-between">
-          <Link href="/research" className="text-blue-600 hover:underline">
+          <a
+            href="/"
+            onClick={handleReturnToLibrary}
+            className="text-blue-600 hover:underline cursor-pointer"
+          >
             ← Back to Research Library
-          </Link>
+          </a>
+
           <div className="flex gap-4 text-sm">
             <a
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`}
