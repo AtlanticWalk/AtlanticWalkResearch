@@ -184,7 +184,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
    if (page === "research") {
   return (
     <section className="max-w-5xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
-      <h1 className="text-3xl font-bold mb-8">Research Library</h1>
 
       {/* Header row with wider Title column */}
       <div className="grid grid-cols-[3fr_1fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-48">
@@ -195,7 +194,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       </div>
 
       {/* Data rows */}
-      <div className="space-y-2 text-sm ml-24">
+      <div className="space-y-2 text-sm ml-48">
         {reports.length > 0 ? (
           reports.map((r) => (
             <div
