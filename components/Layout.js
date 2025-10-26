@@ -1,14 +1,18 @@
 // components/Layout.js
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Layout({ children }) {
+  const router = useRouter();
+  const isHome = router.pathname === "/";
+
   return (
     <div
-      className="min-h-screen bg-cover bg-center bg-fixed"
+      className="min-h-screen bg-cover bg-fixed"
       style={{
         backgroundImage: `url('/background.jpg')`,
         backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundPosition: isHome ? "center center" : "left 60%",
       }}
     >
       <header className="flex justify-center py-6">
