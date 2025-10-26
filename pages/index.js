@@ -464,28 +464,55 @@ export default function AtlanticWalkResearch({ reports = [] }) {
   return (
     <>
       <Head>
-        <title>Atlantic Walk Research | Independent Equity Research</title>
-        <meta
-          name="description"
-          content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
-        />
-        <meta name="author" content="Glenn Rentrop" />
-        <meta name="robots" content="index, follow" />
-        <meta
-          property="og:title"
-          content="Atlantic Walk Research | Independent Equity Research"
-        />
-        <meta
-          property="og:description"
-          content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
-        />
-        <meta property="og:url" content="https://atlanticwalkresearch.com" />
-        <meta property="og:type" content="website" />
-        <meta
-          property="og:image"
-          content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png"
-        />
-        <link rel="canonical" href="https://atlanticwalkresearch.com" />
+         <title>Atlantic Walk Research | Independent Equity Research</title>
+
+  <meta
+    name="description"
+    content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
+  />
+  <meta name="author" content="Glenn Rentrop" />
+  <meta name="robots" content="index, follow" />
+
+  {/* Open Graph / Social */}
+  <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
+  <meta
+    property="og:description"
+    content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://atlanticwalkresearch.com" />
+  <meta
+    property="og:image"
+    content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png"
+  />
+
+  {/* Canonical URL */}
+  <link rel="canonical" href="https://atlanticwalkresearch.com/" />
+
+  {/* ✅ Structured data for Google (Schema.org JSON-LD) */}
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Atlantic Walk Research",
+        "url": "https://atlanticwalkresearch.com",
+        "logo": "https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png",
+        "description":
+          "Independent equity research platform providing deep fundamental analysis, driver-based models, and special-situations coverage.",
+        "founder": {
+          "@type": "Person",
+          "name": "Glenn Rentrop",
+        },
+        "sameAs": [
+          "https://www.linkedin.com/in/grentrop/",
+          "https://x.com/AtlanticWalk",
+          "https://seekingalpha.com/author/glenn-rentrop"
+        ],
+      }),
+    }}
+  />
       </Head>
 
       {/* ✅ Updated main element with conditional background */}
