@@ -8,19 +8,30 @@ import Link from "next/link";
 
 const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
 
+// ✅ Only include markdown files — prevents ab.jpg.md errors
 export async function getStaticPaths() {
-  const files = fs.readdirSync(REPORTS_DIR);
+  const files = fs
+    .readdirSync(REPORTS_DIR)
+    .filter((file) => file.endsWith(".md"));
+
   const paths = files.map((filename) => {
     const raw = fs.readFileSync(path.join(REPORTS_DIR, filename), "utf-8");
     const { data } = matter(raw);
     const slug = data?.slug || filename.replace(/\.md$/, "");
     return { params: { slug } };
   });
+
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
   const filePath = path.join(REPORTS_DIR, `${params.slug}.md`);
+
+  // ✅ Guard clause: if markdown file doesn't exist, skip
+  if (!fs.existsSync(filePath)) {
+    return { notFound: true };
+  }
+
   const raw = fs.readFileSync(filePath, "utf-8");
   const { data: frontmatter, content } = matter(raw);
 
