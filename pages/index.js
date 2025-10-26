@@ -526,7 +526,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   Models
                 </button>
                 <button onClick={() => setPage("research")} className="text-black hover:underline">
-                  Research Library
+                  Reports
                 </button>
                 <button
                   onClick={() => setPage("performance")}
