@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import Link from "next/link";
-import { reportsMeta } from "../data/reportsMeta"; // <-- you'll add this file next
+import { reportsMeta } from "../../data/reportsMeta";
 
 export async function getStaticProps() {
   // ✅ Look for PDFs in /public/reports
