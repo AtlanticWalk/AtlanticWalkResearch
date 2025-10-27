@@ -1,10 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import Head from "next/head";
-import Link from "next/link";
 
 const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
 
@@ -33,14 +30,15 @@ export async function getStaticProps({ params }) {
   }
 
   const raw = fs.readFileSync(filePath, "utf-8");
-  const { data: frontmatter, content } = matter(raw);
+  const { data: frontmatter } = matter(raw);
 
-  return { props: { frontmatter, content } };
+  return { props: { frontmatter } };
 }
 
-export default function ReportPage({ frontmatter, content }) {
-  const { title, date, description, image, ticker } = frontmatter;
+export default function ReportPage({ frontmatter }) {
+  const { title, date, description, image, ticker, pdf } = frontmatter;
   const pageUrl = `https://atlanticwalkresearch.com/research/${frontmatter.slug}`;
+  const pdfSrc = pdf || `/reports/${frontmatter.slug}.pdf`;
 
   // ✅ Custom handler: returns to integrated Research Library view
   const handleReturnToLibrary = (e) => {
@@ -51,7 +49,7 @@ export default function ReportPage({ frontmatter, content }) {
 
   return (
     <div className="min-h-screen flex justify-center items-start py-16 px-4">
-      <div className="bg-white/70 text-black max-w-3xl w-full rounded-2xl shadow-2xl p-10">
+      <div className="bg-white/70 text-black max-w-5xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={description} />
@@ -87,9 +85,14 @@ export default function ReportPage({ frontmatter, content }) {
           </div>
         )}
 
-        <article className="prose prose-lg max-w-none">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
-        </article>
+        {/* ✅ Inline PDF viewer */}
+        <div className="w-full h-[90vh] mt-6 mb-8">
+          <iframe
+            src={pdfSrc}
+            title={title}
+            className="w-full h-full rounded-xl shadow-md"
+          />
+        </div>
 
         <div className="mt-10 border-t border-gray-300 pt-6 flex flex-wrap gap-4 items-center justify-between">
           <a
@@ -102,7 +105,9 @@ export default function ReportPage({ frontmatter, content }) {
 
           <div className="flex gap-4 text-sm">
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                title
+              )}&url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline text-black"
@@ -110,7 +115,9 @@ export default function ReportPage({ frontmatter, content }) {
               Share on X
             </a>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                pageUrl
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline text-black"
