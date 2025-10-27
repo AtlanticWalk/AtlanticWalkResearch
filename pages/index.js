@@ -587,13 +587,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
 // --- Static Props for Research Library ---
 export async function getStaticProps() {
-  // ✅ Updated path points to /public/reports
   const reportsDir = path.join(process.cwd(), "public", "reports");
-
-  // ✅ Read files safely
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
-  // ✅ Map PDF filenames to report objects
   const reports = files
     .filter((f) => f.endsWith(".pdf"))
     .map((filename) => {
@@ -602,7 +598,7 @@ export async function getStaticProps() {
       return {
         slug,
         title,
-        ticker: "",
+        ticker: "", // optional — you can hardcode a few if you want
         date: null,
       };
     });
