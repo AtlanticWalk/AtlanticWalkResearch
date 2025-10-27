@@ -9,34 +9,22 @@ export async function getStaticProps() {
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
   // ✅ Build report list with metadata
-const reports = files
-  .filter((f) => f.endsWith(".pdf"))
-  .map((filename) => {
-    const slug = filename.replace(/\.pdf$/, "");
-    const meta = reportsMeta.find((m) => m.slug === slug); // 👈 match here
-    return {
-      slug,
-      title:
-        meta?.title ||
-        slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-      ticker: meta?.ticker || "",
-      date: meta?.date || null,
-    };
-  });
-
+  const reports = files
+    .filter((f) => f.endsWith(".pdf"))
+    .map((filename) => {
+      const slug = filename.replace(/\.pdf$/, "");
+      const meta = reportsMeta.find((m) => m.slug === slug); // 👈 match here
+      return {
+        slug,
+        title:
+          meta?.title ||
+          slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        ticker: meta?.ticker || "",
+        date: meta?.date || null,
+      };
+    });
 
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-  
-  console.log("DEBUG - reportsMeta content:", reportsMeta);
-console.log("DEBUG - files found:", files);
-console.log(
-  "DEBUG - matching results:",
-  files.map((filename) => {
-    const slug = filename.replace(/\.pdf$/, "");
-    const meta = reportsMeta.find((m) => m.slug === slug);
-    return { slug, found: !!meta, matchedMeta: meta || null };
-  })
-);
   return { props: { reports } };
 }
 
@@ -67,9 +55,34 @@ export default function ResearchLibrary({ reports }) {
                 key={r.slug}
                 className="grid grid-cols-[3fr_0.8fr_1fr_1fr] items-center border-b border-gray-200 py-2"
               >
-                <div className="font-medium">{r.title}</div>
+                {/* ✅ Title with ticker inline */}
+                <div className="font-medium">
+                  {r.title}
+                  {r.ticker && (
+                    <span className="ml-2 text-gray-600 text-sm">
+                      ({r.ticker})
+                    </span>
+                  )}
+                </div>
+
+                {/* ✅ Ticker column (for alignment) */}
                 <div>{r.ticker}</div>
-                <div>{r.date ? new Date(r.date).toLocaleDateString() : "—"}</div>
+
+                {/* ✅ Safely formatted date */}
+                <div>
+                  {r.date
+                    ? new Date(r.date + "T00:00:00").toLocaleDateString(
+                        "en-US",
+                        {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        }
+                      )
+                    : "—"}
+                </div>
+
+                {/* ✅ Link column */}
                 <div>
                   <Link
                     href={`/research/${r.slug}`}
