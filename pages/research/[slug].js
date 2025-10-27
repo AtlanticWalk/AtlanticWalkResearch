@@ -15,7 +15,7 @@ export async function getStaticPaths() {
     params: { slug: filename.replace(/\.pdf$/, "") },
   }));
 
-  return { paths, fallback: false };
+return { paths, fallback: "blocking" };
 }
 
 // ✅ Provide static props for each PDF
