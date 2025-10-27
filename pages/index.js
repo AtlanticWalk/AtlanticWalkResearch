@@ -587,20 +587,22 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
 // --- Static Props for Research Library ---
 export async function getStaticProps() {
-  const reportsDir = path.join(process.cwd(), "content", "reports");
+  const reportsDir = path.join(process.cwd(), "public", "reports");
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
-  const reports = files.map((filename) => {
-    const markdown = fs.readFileSync(path.join(reportsDir, filename), "utf-8");
-    const { data } = matter(markdown);
-    return {
-      slug: data.slug || filename.replace(/\.md$/, ""),
-      title: data.title || "Untitled",
-      date: data.date || null,
-      ticker: data.ticker || "",
-    };
-  });
+  const reports = files
+    .filter((f) => f.endsWith(".pdf"))
+    .map((filename) => {
+      const slug = filename.replace(/\.pdf$/, "");
+      const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      return {
+        slug,
+        title,
+        ticker: "", // optional — you can hardcode a few if you want
+        date: null,
+      };
+    });
 
-  reports.sort((a, b) => new Date(b.date) - new Date(a.date));
+  reports.sort((a, b) => a.title.localeCompare(b.title));
   return { props: { reports } };
 }
