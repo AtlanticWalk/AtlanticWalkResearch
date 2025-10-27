@@ -598,7 +598,7 @@ export async function getStaticProps() {
       return {
         slug,
         title,
-        ticker: "", // optional — you can hardcode a few if you want
+        ticker: "",
         date: null,
       };
     });
