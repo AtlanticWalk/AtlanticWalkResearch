@@ -26,6 +26,17 @@ const reports = files
 
 
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+  
+  console.log("DEBUG - reportsMeta content:", reportsMeta);
+console.log("DEBUG - files found:", files);
+console.log(
+  "DEBUG - matching results:",
+  files.map((filename) => {
+    const slug = filename.replace(/\.pdf$/, "");
+    const meta = reportsMeta.find((m) => m.slug === slug);
+    return { slug, found: !!meta, matchedMeta: meta || null };
+  })
+);
   return { props: { reports } };
 }
 
