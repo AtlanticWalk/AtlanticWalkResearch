@@ -603,18 +603,21 @@ export async function getStaticProps() {
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
   const reports = files
-    .filter((f) => f.endsWith(".pdf"))
+    .filter((f) => f.endsWith(".pdf")) // only PDFs
     .map((filename) => {
       const slug = filename.replace(/\.pdf$/, "");
-      const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const meta = reportsMeta.find((m) => m.slug === slug);
       return {
         slug,
-        title,
-        ticker: "", // optional — you can hardcode a few if you want
-        date: null,
+        title:
+          meta?.title ||
+          slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        ticker: meta?.ticker || "",
+        date: meta?.date || null,
       };
     });
 
-  reports.sort((a, b) => a.title.localeCompare(b.title));
+  // sort newest first, tolerate nulls
+  reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
 }
