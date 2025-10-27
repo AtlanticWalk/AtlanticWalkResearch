@@ -9,18 +9,21 @@ export async function getStaticProps() {
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
   // ✅ Build report list with metadata
-  const reports = files
-    .filter((f) => f.endsWith(".pdf"))
-    .map((filename) => {
-      const slug = filename.replace(/\.pdf$/, "");
-      const meta = reportsMeta.find((m) => m.slug === slug);
-      return {
-        slug,
-        title: meta?.title || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        ticker: meta?.ticker || "",
-        date: meta?.date || null,
-      };
-    });
+const reports = files
+  .filter((f) => f.endsWith(".pdf"))
+  .map((filename) => {
+    const slug = filename.replace(/\.pdf$/, "");
+    const meta = reportsMeta.find((m) => m.slug === slug); // 👈 match here
+    return {
+      slug,
+      title:
+        meta?.title ||
+        slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+      ticker: meta?.ticker || "",
+      date: meta?.date || null,
+    };
+  });
+
 
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
