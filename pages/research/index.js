@@ -1,30 +1,28 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 import Link from "next/link";
-
-const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
+import { reportsMeta } from "@/data/reportsMeta"; // <-- you'll add this file next
 
 export async function getStaticProps() {
-  // ✅ Point to the public/reports folder
+  // ✅ Look for PDFs in /public/reports
   const reportsDir = path.join(process.cwd(), "public", "reports");
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
-  // ✅ Build report list from PDFs
+  // ✅ Build report list with metadata
   const reports = files
     .filter((f) => f.endsWith(".pdf"))
     .map((filename) => {
       const slug = filename.replace(/\.pdf$/, "");
-      const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      const meta = reportsMeta.find((m) => m.slug === slug);
       return {
         slug,
-        title,
-        ticker: "",
-        date: null,
+        title: meta?.title || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+        ticker: meta?.ticker || "",
+        date: meta?.date || null,
       };
     });
 
-  reports.sort((a, b) => a.title.localeCompare(b.title));
+  reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
 }
 
@@ -38,33 +36,41 @@ export default function ResearchLibrary({ reports }) {
         backgroundSize: "cover",
       }}
     >
-      <div className="bg-white/40 backdrop-blur-md rounded-2xl max-w-4xl mx-auto p-10 shadow-xl text-black">
+      <div className="bg-white/40 backdrop-blur-md rounded-2xl max-w-5xl mx-auto p-10 shadow-xl text-black">
         <h1 className="text-3xl font-bold mb-8 text-center">Research Library</h1>
-        <ul className="space-y-6">
-          {reports.map((r) => (
-            <li key={r.slug} className="border-b border-gray-300 pb-4">
-              <Link
-                href={`/research/${r.slug}`}
-                className="text-xl font-semibold text-blue-700 hover:underline"
+
+        <div className="grid grid-cols-[3fr_0.8fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4">
+          <div>Title</div>
+          <div>Ticker</div>
+          <div>Date</div>
+          <div>Link</div>
+        </div>
+
+        <div className="space-y-2 text-sm">
+          {reports.length > 0 ? (
+            reports.map((r) => (
+              <div
+                key={r.slug}
+                className="grid grid-cols-[3fr_0.8fr_1fr_1fr] items-center border-b border-gray-200 py-2"
               >
-                {r.title}
-              </Link>
-              <p className="text-sm text-gray-600">
-                {new Date(r.date).toLocaleDateString()}
-              </p>
-              <p className="mt-1 text-gray-800">{r.description}</p>
-              <a
-                href={`/reports/${r.slug}.md`}
-                download
-                className="text-blue-600 text-sm hover:underline"
-              >
-                Download Report
-              </a>
-            </li>
-          ))}
-        </ul>
+                <div className="font-medium">{r.title}</div>
+                <div>{r.ticker}</div>
+                <div>{r.date ? new Date(r.date).toLocaleDateString() : "—"}</div>
+                <div>
+                  <Link
+                    href={`/research/${r.slug}`}
+                    className="text-blue-700 hover:underline"
+                  >
+                    View Online
+                  </Link>
+                </div>
+              </div>
+            ))
+          ) : (
+            <p>No research reports found.</p>
+          )}
+        </div>
       </div>
     </div>
   );
 }
-
