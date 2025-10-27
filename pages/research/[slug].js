@@ -41,7 +41,7 @@ export default function ReportPage({ slug, pdfSrc }) {
 
   return (
     <div className="min-h-screen flex justify-center items-start py-16 px-4">
-      <div className="bg-white/70 text-black max-w-5xl w-full rounded-2xl shadow-2xl p-10">
+      <div className="bg-grey-600/20 text-black max-w-5xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={`Full research report on ${title}.`} />
