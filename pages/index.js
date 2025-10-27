@@ -181,32 +181,44 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-   if (page === "research") {
+  if (page === "research") {
   return (
-    <section className="max-w-5xl ml-auto mr-[1rem] text-left pr-8 pb-20 space-y-6">
+    <section className="max-w-5xl mx-auto px-6 py-10 text-black">
+      <h1 className="text-3xl font-bold mb-8">Research Library</h1>
 
-      {/* Header row with wider Title column */}
-      <div className="grid grid-cols-[3fr_1fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-56">
+      {/* header row */}
+      <div className="grid grid-cols-[3fr_0.8fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-24">
         <div>Title</div>
         <div>Ticker</div>
         <div>Date</div>
         <div>Link</div>
       </div>
 
-      {/* Data rows */}
-      <div className="space-y-2 text-sm ml-56">
+      {/* rows */}
+      <div className="space-y-2 text-sm ml-24">
         {reports.length > 0 ? (
           reports.map((r) => (
             <div
               key={r.slug}
-              className="grid grid-cols-[3fr_1fr_1fr_1fr] items-center border-b border-gray-200 py-2"
+              className="grid grid-cols-[3fr_0.8fr_1fr_1fr] items-center border-b border-gray-200 py-2"
             >
-              <div className="font-medium">{r.title}</div>
-              <div>{r.ticker}</div>
-              <div className="text-right">
-                {new Date(r.date).toLocaleDateString()}
+              <div className="font-medium">
+                {r.title}
+                {r.ticker && (
+                  <span className="ml-2 text-gray-600 text-sm">({r.ticker})</span>
+                )}
               </div>
-              <div className="text-right">
+              <div>{r.ticker}</div>
+              <div>
+                {r.date
+                  ? new Date(r.date + "T00:00:00").toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : "—"}
+              </div>
+              <div>
                 <a
                   href={`/research/${r.slug}`}
                   className="text-black hover:underline"
