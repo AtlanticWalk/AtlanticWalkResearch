@@ -51,7 +51,7 @@ export default function ReportPage({ frontmatter, content }) {
 
   return (
     <div className="min-h-screen flex justify-center items-start py-16 px-4">
-      <div className="bg-gray-600/40 text-white max-w-3xl w-full rounded-2xl shadow-2xl p-10">
+      <div className="bg-white/70 text-black max-w-3xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={description} />
@@ -67,13 +67,13 @@ export default function ReportPage({ frontmatter, content }) {
         <a
           href="/"
           onClick={handleReturnToLibrary}
-          className="text-sm text-white hover:underline cursor-pointer"
+          className="text-sm text-black hover:underline cursor-pointer"
         >
           ← Back to Research Library
         </a>
 
         <h1 className="text-3xl font-bold mt-4 mb-2">{title}</h1>
-        <p className="text-sm text-white">
+        <p className="text-sm text-black">
           {ticker ? `$${ticker}` : ""} • {new Date(date).toLocaleDateString()}
         </p>
 
@@ -95,7 +95,7 @@ export default function ReportPage({ frontmatter, content }) {
           <a
             href="/"
             onClick={handleReturnToLibrary}
-            className="text-white hover:underline cursor-pointer"
+            className="text-black hover:underline cursor-pointer"
           >
             ← Back to Research Library
           </a>
@@ -105,7 +105,7 @@ export default function ReportPage({ frontmatter, content }) {
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-white"
+              className="hover:underline text-black"
             >
               Share on X
             </a>
@@ -113,7 +113,7 @@ export default function ReportPage({ frontmatter, content }) {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-white"
+              className="hover:underline text-black"
             >
               Share on LinkedIn
             </a>
