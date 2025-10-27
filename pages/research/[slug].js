@@ -67,13 +67,13 @@ export default function ReportPage({ frontmatter, content }) {
         <a
           href="/"
           onClick={handleReturnToLibrary}
-          className="text-sm text-black hover:underline cursor-pointer"
+          className="text-sm text-white hover:underline cursor-pointer"
         >
           ← Back to Research Library
         </a>
 
         <h1 className="text-3xl font-bold mt-4 mb-2">{title}</h1>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-white">
           {ticker ? `$${ticker}` : ""} • {new Date(date).toLocaleDateString()}
         </p>
 
@@ -95,7 +95,7 @@ export default function ReportPage({ frontmatter, content }) {
           <a
             href="/"
             onClick={handleReturnToLibrary}
-            className="text-black hover:underline cursor-pointer"
+            className="text-white hover:underline cursor-pointer"
           >
             ← Back to Research Library
           </a>
@@ -105,7 +105,7 @@ export default function ReportPage({ frontmatter, content }) {
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-black"
+              className="hover:underline text-white"
             >
               Share on X
             </a>
@@ -113,17 +113,9 @@ export default function ReportPage({ frontmatter, content }) {
               href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-black"
+              className="hover:underline text-white"
             >
               Share on LinkedIn
-            </a>
-            <a
-              href={`https://stocktwits.com/?q=${encodeURIComponent(`$${ticker || ""} ${pageUrl}`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-black"
-            >
-              Share on Stocktwits
             </a>
           </div>
         </div>
