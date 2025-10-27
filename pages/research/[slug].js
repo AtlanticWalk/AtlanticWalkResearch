@@ -51,7 +51,7 @@ export default function ReportPage({ frontmatter, content }) {
 
   return (
     <div className="min-h-screen flex justify-center items-start py-16 px-4">
-      <div className="bg-gray-600/70 text-white max-w-3xl w-full rounded-2xl shadow-2xl p-10">
+      <div className="bg-gray-600/40 text-white max-w-3xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={description} />
