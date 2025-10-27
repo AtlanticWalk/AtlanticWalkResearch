@@ -1,44 +1,47 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
 import Head from "next/head";
 
-const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
+// Directory where PDFs live
+const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
-// ✅ Only include markdown files — prevents ab.jpg.md errors
+// ✅ Build paths for all PDF files in /public/reports
 export async function getStaticPaths() {
   const files = fs
     .readdirSync(REPORTS_DIR)
-    .filter((file) => file.endsWith(".md"));
+    .filter((file) => file.endsWith(".pdf"));
 
-  const paths = files.map((filename) => {
-    const raw = fs.readFileSync(path.join(REPORTS_DIR, filename), "utf-8");
-    const { data } = matter(raw);
-    const slug = data?.slug || filename.replace(/\.md$/, "");
-    return { params: { slug } };
-  });
+  const paths = files.map((filename) => ({
+    params: { slug: filename.replace(/\.pdf$/, "") },
+  }));
 
   return { paths, fallback: false };
 }
 
+// ✅ Provide static props for each PDF
 export async function getStaticProps({ params }) {
-  const filePath = path.join(REPORTS_DIR, `${params.slug}.md`);
+  const slug = params.slug;
+  const filePath = path.join(REPORTS_DIR, `${slug}.pdf`);
 
-  // ✅ Guard clause: if markdown file doesn't exist, skip
+  // If no matching PDF, 404
   if (!fs.existsSync(filePath)) {
     return { notFound: true };
   }
 
-  const raw = fs.readFileSync(filePath, "utf-8");
-  const { data: frontmatter } = matter(raw);
-
-  return { props: { frontmatter } };
+  return {
+    props: {
+      slug,
+      pdfSrc: `/reports/${slug}.pdf`,
+    },
+  };
 }
 
-export default function ReportPage({ frontmatter }) {
-  const { title, date, description, image, ticker, pdf } = frontmatter;
-  const pageUrl = `https://atlanticwalkresearch.com/research/${frontmatter.slug}`;
-  const pdfSrc = pdf || `/reports/${frontmatter.slug}.pdf`;
+export default function ReportPage({ slug, pdfSrc }) {
+  // Auto-format title from slug (e.g., avadel-addendum → Avadel Addendum)
+  const title = slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+  const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
   // ✅ Custom handler: returns to integrated Research Library view
   const handleReturnToLibrary = (e) => {
@@ -52,12 +55,20 @@ export default function ReportPage({ frontmatter }) {
       <div className="bg-white/70 text-black max-w-5xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
-          <meta name="description" content={description} />
-          <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
-          <meta property="og:description" content={description} />
+          <meta
+            name="description"
+            content={`Independent equity research report: ${title} by Atlantic Walk Research.`}
+          />
+          <meta
+            property="og:title"
+            content={`${title} | Atlantic Walk Research`}
+          />
+          <meta
+            property="og:description"
+            content={`Full research report on ${title}.`}
+          />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={pageUrl} />
-          {image && <meta property="og:image" content={image} />}
           <meta name="twitter:card" content="summary_large_image" />
         </Head>
 
@@ -70,30 +81,18 @@ export default function ReportPage({ frontmatter }) {
           ← Back to Research Library
         </a>
 
-        <h1 className="text-3xl font-bold mt-4 mb-2">{title}</h1>
-        <p className="text-sm text-black">
-          {ticker ? `$${ticker}` : ""} • {new Date(date).toLocaleDateString()}
-        </p>
-
-        {image && (
-          <div className="flex justify-center my-6">
-            <img
-              src={image}
-              alt={title}
-              className="rounded-lg shadow-md w-24 h-24 object-cover"
-            />
-          </div>
-        )}
+        <h1 className="text-3xl font-bold mt-4 mb-6">{title}</h1>
 
         {/* ✅ Inline PDF viewer */}
-        <div className="w-full h-[90vh] mt-6 mb-8">
+        <div className="w-full h-[90vh] mb-8">
           <iframe
             src={pdfSrc}
             title={title}
-            className="w-full h-full rounded-xl shadow-md"
+            className="w-full h-full rounded-xl shadow-md border"
           />
         </div>
 
+        {/* ✅ Footer buttons */}
         <div className="mt-10 border-t border-gray-300 pt-6 flex flex-wrap gap-4 items-center justify-between">
           <a
             href="/"
@@ -123,6 +122,13 @@ export default function ReportPage({ frontmatter }) {
               className="hover:underline text-black"
             >
               Share on LinkedIn
+            </a>
+            <a
+              href={pdfSrc}
+              download
+              className="hover:underline text-black"
+            >
+              Download PDF
             </a>
           </div>
         </div>
