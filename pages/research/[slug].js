@@ -82,7 +82,7 @@ export default function ReportPage({ frontmatter, content }) {
             <img
               src={image}
               alt={title}
-              className="rounded-lg shadow-md w-48 h-48 object-cover"
+              className="rounded-lg shadow-md w-24 h-24 object-cover"
             />
           </div>
         )}
