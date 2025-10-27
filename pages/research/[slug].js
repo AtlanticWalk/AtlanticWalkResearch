@@ -2,10 +2,8 @@ import fs from "fs";
 import path from "path";
 import Head from "next/head";
 
-// Directory where PDFs live
 const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
-// ✅ Build paths for all PDF files in /public/reports
 export async function getStaticPaths() {
   const files = fs
     .readdirSync(REPORTS_DIR)
@@ -15,18 +13,13 @@ export async function getStaticPaths() {
     params: { slug: filename.replace(/\.pdf$/, "") },
   }));
 
-return { paths, fallback: "blocking" };
+  return { paths, fallback: "blocking" };
 }
 
-// ✅ Provide static props for each PDF
 export async function getStaticProps({ params }) {
   const slug = params.slug;
   const filePath = path.join(REPORTS_DIR, `${slug}.pdf`);
-
-  // If no matching PDF, 404
-  if (!fs.existsSync(filePath)) {
-    return { notFound: true };
-  }
+  if (!fs.existsSync(filePath)) return { notFound: true };
 
   return {
     props: {
@@ -37,17 +30,13 @@ export async function getStaticProps({ params }) {
 }
 
 export default function ReportPage({ slug, pdfSrc }) {
-  // Auto-format title from slug (e.g., avadel-addendum → Avadel Addendum)
-  const title = slug
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
-  // ✅ Custom handler: returns to integrated Research Library view
   const handleReturnToLibrary = (e) => {
     e.preventDefault();
     localStorage.setItem("atlanticwalk_page", "research");
-    window.location.href = "/"; // reloads main SPA with navbar
+    window.location.href = "/";
   };
 
   return (
@@ -55,24 +44,13 @@ export default function ReportPage({ slug, pdfSrc }) {
       <div className="bg-white/70 text-black max-w-5xl w-full rounded-2xl shadow-2xl p-10">
         <Head>
           <title>{title} | Atlantic Walk Research</title>
-          <meta
-            name="description"
-            content={`Independent equity research report: ${title} by Atlantic Walk Research.`}
-          />
-          <meta
-            property="og:title"
-            content={`${title} | Atlantic Walk Research`}
-          />
-          <meta
-            property="og:description"
-            content={`Full research report on ${title}.`}
-          />
+          <meta name="description" content={`Full research report on ${title}.`} />
+          <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
+          <meta property="og:description" content={`Independent equity research report on ${title}.`} />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={pageUrl} />
-          <meta name="twitter:card" content="summary_large_image" />
         </Head>
 
-        {/* ✅ Back button now reloads main SPA */}
         <a
           href="/"
           onClick={handleReturnToLibrary}
@@ -83,7 +61,6 @@ export default function ReportPage({ slug, pdfSrc }) {
 
         <h1 className="text-3xl font-bold mt-4 mb-6">{title}</h1>
 
-        {/* ✅ Inline PDF viewer */}
         <div className="w-full h-[90vh] mb-8">
           <iframe
             src={pdfSrc}
@@ -92,7 +69,6 @@ export default function ReportPage({ slug, pdfSrc }) {
           />
         </div>
 
-        {/* ✅ Footer buttons */}
         <div className="mt-10 border-t border-gray-300 pt-6 flex flex-wrap gap-4 items-center justify-between">
           <a
             href="/"
@@ -123,11 +99,7 @@ export default function ReportPage({ slug, pdfSrc }) {
             >
               Share on LinkedIn
             </a>
-            <a
-              href={pdfSrc}
-              download
-              className="hover:underline text-black"
-            >
+            <a href={pdfSrc} download className="hover:underline text-black">
               Download PDF
             </a>
           </div>
