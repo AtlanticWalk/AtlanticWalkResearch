@@ -184,7 +184,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
   if (page === "research") {
   return (
-   <section className="max-w-5xl ml-[12rem] mr-[1rem] text-left pr-8 pb-20 space-y-6">
+   <section className="max-w-5xl ml-[11rem] mr-[1rem] text-left pr-8 pb-20 space-y-6">
 
       {/* header row */}
       <div className="grid grid-cols-[3fr_0.8fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4 ml-24">
