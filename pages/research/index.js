@@ -6,15 +6,25 @@ import Link from "next/link";
 const REPORTS_DIR = path.join(process.cwd(), "content", "reports");
 
 export async function getStaticProps() {
-  const files = fs.readdirSync(REPORTS_DIR);
-  const reports = files
-    .map((filename) => {
-      const raw = fs.readFileSync(path.join(REPORTS_DIR, filename), "utf-8");
-      const { data } = matter(raw);
-      return data;
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  // ✅ Point to the public/reports folder
+  const reportsDir = path.join(process.cwd(), "public", "reports");
+  const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
+  // ✅ Build report list from PDFs
+  const reports = files
+    .filter((f) => f.endsWith(".pdf"))
+    .map((filename) => {
+      const slug = filename.replace(/\.pdf$/, "");
+      const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+      return {
+        slug,
+        title,
+        ticker: "",
+        date: null,
+      };
+    });
+
+  reports.sort((a, b) => a.title.localeCompare(b.title));
   return { props: { reports } };
 }
 
