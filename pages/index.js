@@ -232,7 +232,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <h3 className="text-lg font-semibold">
               Glenn Rentrop — Founder & Managing Partner
             </h3>
-            <p className="text-gray-300">
+            <p className="text-black">
               Glenn focuses on driver-based financial modeling, special
               situations, and long-horizon opportunities across semicap,
               materials, biotech, and AI. His work emphasizes clarity, primary
