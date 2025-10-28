@@ -246,7 +246,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // ---------------- CONTACT ----------------
     if (page === "contact") {
       return (
-        <section className="max-w-md ml-auto mr-[8rem] text-right text-gray-100 space-y-4">
+        <section className="max-w-md ml-auto mr-[8rem] text-right text-black space-y-4">
           <p>
             <a
               href="mailto:grentrop@atlanticwalkresearch.com"
@@ -282,7 +282,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               rel="noopener noreferrer"
               className="hover:underline"
             >
-              X (Twitter)
+              X
             </a>
           </p>
         </section>
