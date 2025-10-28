@@ -347,7 +347,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           </p>
 
           {trackerData.length > 0 ? (
-            <div className="bg-neutral-600 bg-opacity-25 rounded-xl p-3 mt-0">
+            <div className="bg-neutral-600 bg-opacity-20 rounded-xl p-3 mt-0">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
                   <XAxis
