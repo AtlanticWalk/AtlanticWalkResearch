@@ -213,7 +213,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // ---------------- ABOUT ----------------
     if (page === "about") {
       return (
-        <section className="max-w-3xl mx-auto text-gray-100 space-y-6">
+        <section className="max-w-3xl ml-[11-rem] mx-auto text-left text-gray-100 space-y-6">
           <p>
             <strong>Mission:</strong> Turn complex policy, capital allocation,
             and structural change into clear, asymmetric investment ideas
