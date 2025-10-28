@@ -52,7 +52,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           </h2>
 
           {reports.length > 0 ? (
-            <div className="bg-neutral-900 border border-gray-800 rounded-xl p-6 shadow-md">
+            <div className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl p-6 shadow-md">
               <h3 className="text-lg font-semibold mb-1 text-gray-300">
                 Latest Research
               </h3>
@@ -136,7 +136,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ].map((item) => (
               <div
                 key={item.name}
-                className="bg-neutral-900 border border-gray-800 p-6 rounded-xl shadow-md hover:shadow-xl transition"
+                className="bg-neutral-900 bg-opacity-50 border border-gray-800 p-6 rounded-xl shadow-md hover:shadow-xl transition"
               >
                 <h3 className="text-lg font-semibold">{item.name}</h3>
                 <p className="text-gray-400 text-sm mb-2">{item.ticker}</p>
@@ -178,7 +178,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               reports.map((r) => (
                 <div
                   key={r.slug}
-                  className="bg-neutral-900 border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition"
+                  className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition"
                 >
                   <h3 className="text-lg font-semibold mb-1">{r.title}</h3>
                   <p className="text-gray-400 text-sm mb-2">{r.ticker}</p>
@@ -299,7 +299,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           </p>
 
           {trackerData.length > 0 ? (
-            <div className="bg-neutral-900 bg-opacity-25 rounded-xl p-3 mt-0">
+            <div className="bg-neutral-600 bg-opacity-25 rounded-xl p-3 mt-0">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
                   <XAxis
@@ -320,7 +320,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                       return (
                         <div
                           style={{
-                            backgroundColor: "rgba(20, 20, 20, 0.9)",
+                            backgroundColor: "rgba(20, 20, 20, 0.2)",
                             color: "#ffffff",
                             padding: "10px 14px",
                             borderRadius: "8px",
@@ -400,7 +400,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         <img
           src="/atlantic_walk_logo_transparent.png"
           alt="Atlantic Walk Research Logo"
-          className="w-56 mb-0 cursor-pointer"
+          className="w-72 mb-0 cursor-pointer"
           onClick={() => setPage("models")}
         />
       </section>
