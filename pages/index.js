@@ -473,10 +473,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       >
         {/* Navbar hidden on home; visible elsewhere */}
         {page !== "home" && (
-          <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-sm text-gray-300">
-            {[
-              ["Highlights", "highlights"], // new first item
+          <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base text-semibold text-gray-300">
+            {[              
               ["Home", "home"],
+              ["Highlights", "highlights"],
               ["Models", "models"],
               ["Research", "research"],
               ["Performance", "performance"],
