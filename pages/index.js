@@ -547,7 +547,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
         {page !== "home" && (
           <footer className="mt-16 text-sm text-gray-500 border-t border-gray-800 py-6 text-center">
-            © 2025 Atlantic Walk Research · Independent Equity Research
+            © 2025 Atlantic Walk Research · Independent Equity Research · Not Financial Advice
           </footer>
         )}
       </main>
