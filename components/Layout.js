@@ -25,15 +25,6 @@ export default function Layout({ children }) {
         </Link>
       </header>
 
-      <nav className="flex justify-center gap-6 text-lg font-medium text-black mb-8">
-        <Link href="/" className="hover:underline">Home</Link>
-        <Link href="/models" className="hover:underline">Models</Link>
-        <Link href="/research" className="hover:underline">Research Library</Link>
-        <Link href="/performance" className="hover:underline">Performance</Link>
-        <Link href="/about" className="hover:underline">About</Link>
-        <Link href="/contact" className="hover:underline">Contact</Link>
-      </nav>
-
       <main>{children}</main>
 
       <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
