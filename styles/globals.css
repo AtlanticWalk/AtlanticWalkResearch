@@ -1,10 +1,15 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Keep the page neutral; backgrounds handled per-layout */
+
 html, body {
+  background-image: url('/background.jpg');
+  background-size: 100% auto;              /* zoom in horizontally */
+  background-position: 30% left;         /* shift image left */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-color: #0a0a0a;
   min-height: 100vh;
-  background-color: #0a0a0a; /* fallback color only */
-  overflow-x: hidden; /* prevent body-level sideways scrollbars */
 }
