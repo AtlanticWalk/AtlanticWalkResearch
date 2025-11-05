@@ -599,7 +599,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
         />
 
-        {/* Mobile header (hamburger) only when nav is visible */}
+                {/* Mobile header (hamburger) only when nav is visible */}
         {page !== "home" && <MobileHeader setPage={setPage} />}
 
         {/* Navbar hidden on home; visible elsewhere (desktop only here) */}
@@ -623,10 +623,12 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </button>
             ))}
           </nav>
+        )}
 
         {/* Page container (adds top padding only when nav is visible) */}
-        <div className={page !== "home" ? "pt-20 px-6" : ""}>{renderPage()}</div>
-        )}
+        <div className={page !== "home" ? "pt-20 px-6" : ""}>
+          {renderPage()}
+        </div>
       </main>
     </>
   );
