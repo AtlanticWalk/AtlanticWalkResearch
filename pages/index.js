@@ -516,14 +516,14 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           - other-bg.jpg
           - other-bg-mobile.jpg
       */}
- <main
+<main
   className={`
     min-h-svh bg-cover bg-center transition-all duration-700
     bg-scroll md:bg-fixed
     ${
       page === "home"
-        ? "bg-[url('/backgrounds/mobile-bg.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/backgrounds/other-bg-mobile.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
+        ? "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
+        : "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
     }
   `}
 >
