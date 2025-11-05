@@ -15,15 +15,6 @@ export default function Layout({ children }) {
         backgroundPosition: isHome ? "center center" : "left 60%",
       }}
     >
-      <header className="flex justify-center py-6">
-        <Link href="/">
-          <img
-            src="/atlantic_walk_logo_transparent.png"
-            alt="Atlantic Walk Research Logo"
-            className="h-16 w-auto cursor-pointer"
-          />
-        </Link>
-      </header>
 
       <main>{children}</main>
 
