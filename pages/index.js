@@ -316,7 +316,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // ---------------- CONTACT ----------------
     if (page === "contact") {
       return (
-        <section className="max-w-md ml-auto mr-[8rem] md:text-right text-center md:pr-8 px-4 md:px-0">
+        <section className="max-w-md w-full mx-auto md:ml-auto md:mr-[8rem] md:text-right text-center md:pr-8 px-4">
           <p className="text-lg text-black font-semibold mb-4 flex items-center justify-end gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
