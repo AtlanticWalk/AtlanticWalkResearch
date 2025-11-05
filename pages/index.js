@@ -586,3 +586,4 @@ export async function getStaticProps() {
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
 }
+
