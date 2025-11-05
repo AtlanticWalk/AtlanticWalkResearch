@@ -28,40 +28,46 @@ export default function Layout({ children }) {
         </Link>
       </header>
 
-      {/* --- Navigation with mobile scroll & fades --- */}
+      {/* --- Navigation: guaranteed horizontal scroll on mobile --- */}
       <div className="relative mb-8">
-        {/* fade on left */}
+        {/* left fade (mobile only) */}
         <div className="absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-white to-transparent pointer-events-none md:hidden" />
-        {/* fade on right */}
+        {/* right fade (mobile only) */}
         <div className="absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
 
-        <nav
-          className="
-            flex gap-6 justify-center md:justify-center
-            text-base md:text-lg font-medium text-black
-            overflow-x-auto whitespace-nowrap px-6 md:px-0
-            scroll-smooth
-          "
+        {/* Scroll container */}
+        <div
+          className="w-full px-6 md:px-0 -mx-6 md:mx-0"
+          style={{
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            WebkitOverflowScrolling: "touch",
+            touchAction: "pan-x",
+            scrollBehavior: "smooth",
+          }}
         >
-          <Link href="/" className="hover:underline flex-shrink-0">
-            Home
-          </Link>
-          <Link href="/models" className="hover:underline flex-shrink-0">
-            Models
-          </Link>
-          <Link href="/research" className="hover:underline flex-shrink-0">
-            Research Library
-          </Link>
-          <Link href="/performance" className="hover:underline flex-shrink-0">
-            Performance
-          </Link>
-          <Link href="/about" className="hover:underline flex-shrink-0">
-            About
-          </Link>
-          <Link href="/contact" className="hover:underline flex-shrink-0">
-            Contact
-          </Link>
-        </nav>
+          {/* Inline-flex row that can exceed viewport width */}
+          <nav className="inline-flex gap-6 min-w-max text-base md:text-lg font-medium text-black">
+            <Link href="/" className="hover:underline flex-shrink-0">
+              Home
+            </Link>
+            <Link href="/models" className="hover:underline flex-shrink-0">
+              Models
+            </Link>
+            <Link href="/research" className="hover:underline flex-shrink-0">
+              Research Library
+            </Link>
+            <Link href="/performance" className="hover:underline flex-shrink-0">
+              Performance
+            </Link>
+            <Link href="/about" className="hover:underline flex-shrink-0">
+              About
+            </Link>
+            <Link href="/contact" className="hover:underline flex-shrink-0">
+              Contact
+            </Link>
+          </nav>
+        </div>
       </div>
 
       {/* --- Main Content --- */}
