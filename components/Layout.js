@@ -11,20 +11,29 @@ export default function Layout({ children }) {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <div
-      className={`
-        min-h-screen bg-cover bg-center bg-no-repeat
-        bg-[url('/backgrounds/home-bg-mobile.jpg')]
-        md:bg-[url('/backgrounds/home-bg.jpg')]
-      `}
-      style={{
-        backgroundAttachment: "fixed",
-        WebkitBackgroundAttachment: "fixed",
-        backgroundPosition: isHome ? "center center" : "left 60%",
-      }}
-    >
+    <div className="relative min-h-screen">
+      {/* --- Fixed Background --- */}
+      <div
+        className="fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('/backgrounds/home-bg-mobile.jpg')",
+          backgroundAttachment: "fixed",
+          WebkitBackgroundAttachment: "fixed",
+        }}
+      />
+      <div
+        className="hidden md:block fixed inset-0 -z-10 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage:
+            "url('/backgrounds/home-bg.jpg')",
+          backgroundAttachment: "fixed",
+          WebkitBackgroundAttachment: "fixed",
+        }}
+      />
+
       {/* --- Header --- */}
-      <header className="flex items-center justify-between py-6 px-6 md:px-12 relative z-50">
+      <header className="flex items-center justify-between py-6 px-6 md:px-12 relative z-20">
         <Link href="/" onClick={closeMenu}>
           <img
             src="/atlantic_walk_logo_transparent.png"
@@ -35,7 +44,7 @@ export default function Layout({ children }) {
 
         {/* --- Hamburger (mobile only) --- */}
         <button
-          onClick={() => setMenuOpen((v) => !v)}
+          onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden flex flex-col justify-center items-center space-y-1 p-2 rounded-md bg-white/70 backdrop-blur-sm border border-black/10"
           aria-label="Toggle menu"
         >
@@ -58,39 +67,27 @@ export default function Layout({ children }) {
       </header>
 
       {/* --- Desktop Nav --- */}
-      <nav className="hidden md:flex justify-center gap-6 text-lg font-medium text-black mb-6">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
-        <Link href="/models" className="hover:underline">
-          Models
-        </Link>
-        <Link href="/research" className="hover:underline">
-          Research Library
-        </Link>
-        <Link href="/performance" className="hover:underline">
-          Performance
-        </Link>
-        <Link href="/about" className="hover:underline">
-          About
-        </Link>
-        <Link href="/contact" className="hover:underline">
-          Contact
-        </Link>
+      <nav className="hidden md:flex justify-center gap-6 text-lg font-medium text-black mb-6 relative z-20">
+        <Link href="/" className="hover:underline">Home</Link>
+        <Link href="/models" className="hover:underline">Models</Link>
+        <Link href="/research" className="hover:underline">Research Library</Link>
+        <Link href="/performance" className="hover:underline">Performance</Link>
+        <Link href="/about" className="hover:underline">About</Link>
+        <Link href="/contact" className="hover:underline">Contact</Link>
       </nav>
 
       {/* --- Backdrop for mobile menu --- */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 md:hidden"
+          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-10 md:hidden"
           onClick={closeMenu}
-        ></div>
+        />
       )}
 
       {/* --- Mobile Dropdown Nav --- */}
       <div
         className={`
-          fixed left-0 right-0 top-[88px] z-50 md:hidden
+          fixed left-0 right-0 top-[88px] z-20 md:hidden
           transition-all duration-300 ease-in-out
           ${
             menuOpen
@@ -123,14 +120,12 @@ export default function Layout({ children }) {
         </div>
       </div>
 
-      {/* --- Main Content --- */}
+      {/* --- Main --- */}
       <main className="relative z-10">{children}</main>
 
       {/* --- Footer --- */}
-      <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
-        <p>
-          © 2025 Atlantic Walk Research · Independent research only · Not investment advice.
-        </p>
+      <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center relative z-10">
+        <p>© 2025 Atlantic Walk Research · Independent research only · Not investment advice.</p>
       </footer>
     </div>
   );
