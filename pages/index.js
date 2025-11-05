@@ -14,6 +14,76 @@ import {
   ReferenceLine,
 } from "recharts";
 
+/* --- Mobile header + drawer (mobile only) --- */
+function MobileHeader({ setPage }) {
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const items = [
+    ["Home", "home"],
+    ["Highlights", "highlights"],
+    ["Models", "models"],
+    ["Research", "research"],
+    ["Performance", "performance"],
+    ["About", "about"],
+    ["Contact", "contact"],
+  ];
+
+  return (
+    <div className="md:hidden fixed top-0 left-0 right-0 z-50">
+      <div className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
+        <div className="px-4 h-14 flex items-center justify-between">
+          <button onClick={() => setPage("home")} className="flex items-center gap-2">
+            <img
+              src="/atlantic_walk_logo_transparent.png"
+              alt="Atlantic Walk Research"
+              className="h-8 w-auto"
+            />
+          </button>
+          <button
+            aria-label="Toggle menu"
+            onClick={() => setOpen((s) => !s)}
+            className="inline-flex items-center justify-center rounded-xl border border-gray-700 p-2 text-gray-200"
+          >
+            <span className="block h-0.5 w-5 bg-current mb-1" />
+            <span className="block h-0.5 w-5 bg-current mb-1" />
+            <span className="block h-0.5 w-5 bg-current" />
+          </button>
+        </div>
+      </div>
+
+      <div
+        className={`overflow-hidden transition-[max-height] duration-300 ease-out ${
+          open ? "max-h-96" : "max-h-0"
+        }`}
+      >
+        <div className="bg-black/80 backdrop-blur-sm border-b border-gray-800">
+          <nav className="px-4 py-3 flex flex-col gap-3 text-gray-200">
+            {items.map(([label, key]) => (
+              <button
+                key={key}
+                onClick={() => {
+                  setOpen(false);
+                  setPage(key);
+                }}
+                className="py-2 px-2 text-left rounded-lg hover:bg-white/5"
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AtlanticWalkResearch({ reports = [] }) {
   const [page, setPage] = useState("home");
   const [trackerData, setTrackerData] = useState([]);
@@ -337,6 +407,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         </section>
       );
     }
+
     // ---------------- PERFORMANCE ----------------
     if (page === "performance") {
       return (
@@ -460,6 +531,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <Head>
         <title>Atlantic Walk Research | Independent Equity Research</title>
 
+        {/* Viewport ensures Tailwind breakpoints work on phones */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
         <meta
           name="description"
           content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
@@ -509,9 +583,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         />
       </Head>
 
-      {/* Background images restored (home vs other) */}
+      {/* Background images (desktop via inline; mobile via extra layer) */}
       <main
-        className="min-h-screen bg-cover bg-center transition-all duration-700"
+        className="relative min-h-screen bg-cover bg-center transition-all duration-700"
         style={{
           backgroundImage:
             page === "home"
@@ -519,10 +593,19 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               : "url('/backgrounds/other-bg.jpg')",
         }}
       >
-        {/* Navbar hidden on home; visible elsewhere */}
+        {/* Mobile-only background layer (shows your /backgrounds/home-bg-mobile.JPG) */}
+        <div
+          className="md:hidden pointer-events-none fixed inset-0 -z-10 bg-cover bg-center"
+          style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
+        />
+
+        {/* Mobile header (hamburger) only when nav is visible */}
+        {page !== "home" && <MobileHeader setPage={setPage} />}
+
+        {/* Navbar hidden on home; visible elsewhere (desktop only here) */}
         {page !== "home" && (
-          <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base text-semibold text-gray-300">
-            {[              
+          <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 justify-center gap-6 py-4 text-base font-semibold text-gray-300">
+            {[
               ["Home", "home"],
               ["Highlights", "highlights"],
               ["Models", "models"],
