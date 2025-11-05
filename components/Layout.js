@@ -28,26 +28,41 @@ export default function Layout({ children }) {
         </Link>
       </header>
 
-      {/* --- Navigation: guaranteed horizontal scroll on mobile --- */}
-      <div className="relative mb-8">
-        {/* left fade (mobile only) */}
+      {/* --- NAVIGATION (bullet-proof scroll container) --- */}
+      <div
+        className="relative mb-8"
+        style={{
+          position: "relative",
+          overflow: "hidden", // isolate fades, not the nav scroll
+        }}
+      >
+        {/* fades (mobile only) */}
         <div className="absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-white to-transparent pointer-events-none md:hidden" />
-        {/* right fade (mobile only) */}
         <div className="absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
 
-        {/* Scroll container */}
+        {/* scroll container */}
         <div
-          className="w-full px-6 md:px-0 -mx-6 md:mx-0"
           style={{
+            display: "block",
             overflowX: "auto",
-            whiteSpace: "nowrap",
+            overflowY: "hidden",
             WebkitOverflowScrolling: "touch",
             touchAction: "pan-x",
-            scrollBehavior: "smooth",
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+            whiteSpace: "nowrap",
           }}
+          className="no-scrollbar px-6 md:px-0 -mx-6 md:mx-0"
         >
-          {/* Inline-flex row that can exceed viewport width */}
-          <nav className="inline-flex gap-6 min-w-max text-base md:text-lg font-medium text-black">
+          <nav
+            style={{
+              display: "inline-flex",
+              minWidth: "max-content",
+              gap: "1.5rem",
+              alignItems: "center",
+            }}
+            className="text-base md:text-lg font-medium text-black"
+          >
             <Link href="/" className="hover:underline flex-shrink-0">
               Home
             </Link>
