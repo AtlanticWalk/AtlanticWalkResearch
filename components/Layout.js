@@ -28,27 +28,41 @@ export default function Layout({ children }) {
         </Link>
       </header>
 
-      {/* --- Navigation --- */}
-      <nav className="flex justify-center gap-6 text-lg font-medium text-black mb-8">
-        <Link href="/" className="hover:underline">
-          Home
-        </Link>
-        <Link href="/models" className="hover:underline">
-          Models
-        </Link>
-        <Link href="/research" className="hover:underline">
-          Research Library
-        </Link>
-        <Link href="/performance" className="hover:underline">
-          Performance
-        </Link>
-        <Link href="/about" className="hover:underline">
-          About
-        </Link>
-        <Link href="/contact" className="hover:underline">
-          Contact
-        </Link>
-      </nav>
+      {/* --- Navigation with mobile scroll & fades --- */}
+      <div className="relative mb-8">
+        {/* fade on left */}
+        <div className="absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-white to-transparent pointer-events-none md:hidden" />
+        {/* fade on right */}
+        <div className="absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-white to-transparent pointer-events-none md:hidden" />
+
+        <nav
+          className="
+            flex gap-6 justify-center md:justify-center
+            text-base md:text-lg font-medium text-black
+            overflow-x-auto whitespace-nowrap px-6 md:px-0
+            scroll-smooth
+          "
+        >
+          <Link href="/" className="hover:underline flex-shrink-0">
+            Home
+          </Link>
+          <Link href="/models" className="hover:underline flex-shrink-0">
+            Models
+          </Link>
+          <Link href="/research" className="hover:underline flex-shrink-0">
+            Research Library
+          </Link>
+          <Link href="/performance" className="hover:underline flex-shrink-0">
+            Performance
+          </Link>
+          <Link href="/about" className="hover:underline flex-shrink-0">
+            About
+          </Link>
+          <Link href="/contact" className="hover:underline flex-shrink-0">
+            Contact
+          </Link>
+        </nav>
+      </div>
 
       {/* --- Main Content --- */}
       <main>{children}</main>
