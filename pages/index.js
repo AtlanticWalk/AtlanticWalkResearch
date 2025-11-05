@@ -522,8 +522,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     bg-scroll md:bg-fixed
     ${
       page === "home"
-        ? "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/backgrounds/other-bg-mobile.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
+        ? "bg-[url('/backgrounds/home-bg.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
+        : "bg-[url('/backgrounds/mobile-bg.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
     }
   `}
 >
