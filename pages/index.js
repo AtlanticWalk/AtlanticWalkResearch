@@ -316,7 +316,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // ---------------- CONTACT ----------------
     if (page === "contact") {
       return (
-        <section className="max-w-md ml-auto mr-[8rem] text-right">
+        <section className="max-w-md ml-auto mr-[8rem] md:text-right text-center md:pr-8 px-4 md:px-0">
           <p className="text-lg text-black font-semibold mb-4 flex items-center justify-end gap-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -519,7 +519,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         <img
           src="/atlantic_walk_logo_transparent.png"
           alt="Atlantic Walk Research Logo"
-          className="w-72 mb-0 cursor-pointer"
+          className="w-80 mb-0 cursor-pointer"
           onClick={() => setPage("models")}
         />
       </section>
@@ -627,11 +627,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
         {/* Page container (adds top padding only when nav is visible) */}
         <div className={page !== "home" ? "pt-20 px-6" : ""}>{renderPage()}</div>
-
-        {page !== "home" && (
-          <footer className="mt-16 text-sm text-gray-500 border-t border-gray-800 py-6 text-center">
-            © 2025 Atlantic Walk Research · Independent Equity Research
-          </footer>
         )}
       </main>
     </>
