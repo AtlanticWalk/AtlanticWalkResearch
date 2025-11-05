@@ -448,7 +448,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         <img
           src="/atlantic_walk_logo_transparent.png"
           alt="Atlantic Walk Research Logo"
-          className="w-72 mb-0 cursor-pointer"
+          className="w-80 mb-0 cursor-pointer"
           onClick={() => setPage("models")}
         />
       </section>
@@ -522,8 +522,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     bg-scroll md:bg-fixed
     ${
       page === "home"
-        ? "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
+        ? "bg-[url('/backgrounds/home-bg-mobile.JPG')] md:bg-[url('/backgrounds/home-bg.JPG')]"
+        : "bg-[url('/backgrounds/home-bg-mobile.JPG')] md:bg-[url('/backgrounds/home-bg.JPG')]"
     }
   `}
 >
