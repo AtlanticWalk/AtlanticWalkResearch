@@ -322,7 +322,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 1.838 24h20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
+                <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
               </svg>
               <a
                 href="https://x.com/AtlanticWalk"
@@ -509,20 +509,27 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         />
       </Head>
 
-      {/* Background images restored (home vs other) */}
+      {/* ✅ Responsive background images for desktop vs mobile.
+          Note: add these files under /public/backgrounds/
+          - home-bg.jpg
+          - home-bg-mobile.jpg
+          - other-bg.jpg
+          - other-bg-mobile.jpg
+      */}
       <main
-        className="min-h-screen bg-cover bg-center transition-all duration-700"
-        style={{
-          backgroundImage:
-            page === "home"
-              ? "url('/backgrounds/home-bg.jpg')"
-              : "url('/backgrounds/other-bg.jpg')",
-        }}
+        className={`
+          min-h-screen bg-cover bg-center transition-all duration-700
+          bg-fixed sm:bg-scroll
+          ${page === "home"
+            ? "bg-[url('/backgrounds/home-bg.jpg')] sm:bg-[url('/backgrounds/home-bg-mobile.jpg')]"
+            : "bg-[url('/backgrounds/other-bg.jpg')] sm:bg-[url('/backgrounds/other-bg-mobile.jpg')]"
+          }
+        `}
       >
         {/* Navbar hidden on home; visible elsewhere */}
         {page !== "home" && (
           <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base text-semibold text-gray-300">
-            {[              
+            {[
               ["Home", "home"],
               ["Highlights", "highlights"],
               ["Models & Initiation Reports", "models"],
