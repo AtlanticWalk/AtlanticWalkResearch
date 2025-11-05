@@ -623,7 +623,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               </button>
             ))}
           </nav>
-        )}
 
         {/* Page container (adds top padding only when nav is visible) */}
         <div className={page !== "home" ? "pt-20 px-6" : ""}>{renderPage()}</div>
