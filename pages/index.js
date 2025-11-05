@@ -525,7 +525,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             {[              
               ["Home", "home"],
               ["Highlights", "highlights"],
-              ["Models", "models"],
+              ["Models & Initiation Reports", "models"],
               ["Research", "research"],
               ["Performance", "performance"],
               ["About", "about"],
