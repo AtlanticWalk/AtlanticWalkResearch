@@ -516,18 +516,17 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           - other-bg.jpg
           - other-bg-mobile.jpg
       */}
-     <main
+  <main
   className={`
     min-h-svh bg-cover bg-center transition-all duration-700
     bg-scroll md:bg-fixed
     ${
       page === "home"
-        ? "bg-[url('/backgrounds/home-bg.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
+        ? "bg-[url('/backgrounds/mobile-bg.JPG')] md:bg-[url('/backgrounds/home-bg.JPG')]"
+        : "bg-[url('/backgrounds/mobile-bg.JPG')] md:bg-[url('/backgrounds/home-bg.JPG')]"
     }
   `}
 >
-
         {/* Navbar hidden on home; visible elsewhere */}
         {page !== "home" && (
           <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base text-semibold text-gray-300">
