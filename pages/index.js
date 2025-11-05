@@ -516,49 +516,50 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           - other-bg.jpg
           - other-bg-mobile.jpg
       */}
-  <main
+ <main
   className={`
     min-h-svh bg-cover bg-center transition-all duration-700
     bg-scroll md:bg-fixed
     ${
       page === "home"
-        ? "bg-[url('/public/backgrounds/mobile-bg.jpg')] md:bg-[url('/public/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/public/backgrounds/mobile-bg.jpg')] md:bg-[url('/public/backgrounds/home-bg.jpg')]"
+        ? "bg-[url('/backgrounds/mobile-bg.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
+        : "bg-[url('/backgrounds/other-bg-mobile.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
     }
   `}
 >
-        {/* Navbar hidden on home; visible elsewhere */}
-        {page !== "home" && (
-          <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base text-semibold text-gray-300">
-            {[
-              ["Home", "home"],
-              ["Highlights", "highlights"],
-              ["Models & Initiation Reports", "models"],
-              ["Research", "research"],
-              ["Performance", "performance"],
-              ["About", "about"],
-              ["Contact", "contact"],
-            ].map(([label, key]) => (
-              <button
-                key={key}
-                onClick={() => setPage(key)}
-                className="hover:text-white transition"
-              >
-                {label}
-              </button>
-            ))}
-          </nav>
-        )}
+  {/* Navbar hidden on home; visible elsewhere */}
+  {page !== "home" && (
+    <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 flex justify-center gap-6 py-4 text-base font-semibold text-gray-300">
+      {[
+        ["Home", "home"],
+        ["Highlights", "highlights"],
+        ["Models & Initiation Reports", "models"],
+        ["Research", "research"],
+        ["Performance", "performance"],
+        ["About", "about"],
+        ["Contact", "contact"],
+      ].map(([label, key]) => (
+        <button
+          key={key}
+          onClick={() => setPage(key)}
+          className="hover:text-white transition"
+        >
+          {label}
+        </button>
+      ))}
+    </nav>
+  )}
 
-        {/* Page container (adds top padding only when nav is visible) */}
-        <div className={page !== "home" ? "pt-20 px-6" : ""}>{renderPage()}</div>
+  {/* Page container (adds top padding only when nav is visible) */}
+  <div className={page !== "home" ? "pt-20 px-6" : ""}>{renderPage()}</div>
 
-        {page !== "home" && (
-          <footer className="mt-16 text-sm text-gray-500 border-t border-gray-800 py-6 text-center">
-            © 2025 Atlantic Walk Research · Independent Equity Research · Not Financial Advice
-          </footer>
-        )}
-      </main>
+  {page !== "home" && (
+    <footer className="mt-16 text-sm text-gray-500 border-t border-gray-800 py-6 text-center">
+      © 2025 Atlantic Walk Research · Independent Equity Research · Not Financial Advice
+    </footer>
+  )}
+</main>
+
     </>
   );
 }
