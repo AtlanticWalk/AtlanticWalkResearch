@@ -523,7 +523,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     ${
       page === "home"
         ? "bg-[url('/backgrounds/home-bg.jpg')] md:bg-[url('/backgrounds/home-bg.jpg')]"
-        : "bg-[url('/backgrounds/mobile-bg.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
+        : "bg-[url('/backgrounds/home-bg-mobile.jpg')] md:bg-[url('/backgrounds/other-bg.jpg')]"
     }
   `}
 >
