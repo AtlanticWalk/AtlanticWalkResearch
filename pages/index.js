@@ -519,7 +519,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         <img
           src="/atlantic_walk_logo_transparent.png"
           alt="Atlantic Walk Research Logo"
-          className="w-84 mb-0 cursor-pointer"
+          className="w-82 mb-0 cursor-pointer"
           onClick={() => setPage("models")}
         />
       </section>
