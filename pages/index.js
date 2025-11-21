@@ -248,7 +248,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               reports.map((r) => (
                 <div
                   key={r.slug}
-                  className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition"
+                  className="bg-neutral-900 bg-opacity-60 border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition"
                 >
                   <h3 className="text-lg font-semibold mb-1">{r.title}</h3>
                   <p className="text-gray-400 text-sm mb-2">{r.ticker}</p>
@@ -283,7 +283,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     // ---------------- ABOUT ----------------
     if (page === "about") {
       return (
-        <section className="max-w-2xl ml-auto mr-[4rem] text-left pr-8 pb-20 space-y-6">
+        <section className="bg-neutral-600 bg-opacity-20 max-w-2xl ml-auto mr-[4rem] text-white text-left pr-8 pb-20 space-y-6">
           <p>
             <strong>Mission:</strong> Turn complex policy, capital allocation,
             and structural change into clear, asymmetric investment ideas
@@ -302,7 +302,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <h3 className="text-lg font-semibold">
               Glenn Rentrop — Founder & Managing Partner
             </h3>
-            <p className="text-black">
+            <p className="text-white">
               Glenn focuses on driver-based financial modeling, special
               situations, and long-horizon opportunities across semicap,
               materials, biotech, and AI. His work emphasizes clarity, primary
