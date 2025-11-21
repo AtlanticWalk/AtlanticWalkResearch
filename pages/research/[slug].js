@@ -33,6 +33,27 @@ export default function ReportPage({ slug, pdfSrc }) {
   const title = slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
+  // ✅ JSON-LD article schema (this is the "json data")
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": title,
+    "author": {
+      "@type": "Person",
+      "name": "Glenn Rentrop",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Atlantic Walk Research",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png",
+      },
+    },
+    "url": pageUrl,
+    "mainEntityOfPage": pageUrl,
+  };
+
   const handleReturnToLibrary = (e) => {
     e.preventDefault();
     localStorage.setItem("atlanticwalk_page", "research");
@@ -45,16 +66,30 @@ export default function ReportPage({ slug, pdfSrc }) {
         <Head>
           <title>{title} | Atlantic Walk Research</title>
           <meta name="description" content={`Full research report on ${title}.`} />
-          <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
-          <meta property="og:description" content={`Independent equity research report on ${title}.`} />
+          <meta
+            property="og:title"
+            content={`${title} | Atlantic Walk Research`}
+          />
+          <meta
+            property="og:description"
+            content={`Independent equity research report on ${title}.`}
+          />
           <meta property="og:type" content="article" />
           <meta property="og:url" content={pageUrl} />
+
+          {/* ✅ JSON-LD goes here inside <Head> as a script tag */}
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(articleSchema),
+            }}
+          />
         </Head>
 
         <a
           href="/"
           onClick={handleReturnToLibrary}
-          className="text-sm text-black hover:underline cursor-pointer"
+          className="text-sm text-white hover:underline cursor-pointer"
         >
           ← Back to Research Library
         </a>
@@ -73,7 +108,7 @@ export default function ReportPage({ slug, pdfSrc }) {
           <a
             href="/"
             onClick={handleReturnToLibrary}
-            className="text-black hover:underline cursor-pointer"
+            className="text-white hover:underline cursor-pointer"
           >
             ← Back to Research Library
           </a>
@@ -85,7 +120,7 @@ export default function ReportPage({ slug, pdfSrc }) {
               )}&url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-black"
+              className="hover:underline text-white"
             >
               Share on X
             </a>
@@ -95,11 +130,11 @@ export default function ReportPage({ slug, pdfSrc }) {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:underline text-black"
+              className="hover:underline text-white"
             >
               Share on LinkedIn
             </a>
-            <a href={pdfSrc} download className="hover:underline text-black">
+            <a href={pdfSrc} download className="hover:underline text-white">
               Download PDF
             </a>
           </div>
