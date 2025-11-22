@@ -404,7 +404,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         px-4 
         pt-24      /* pushes content ~1 inch down */
         pb-6
-        min-h-[30vh]   /* reduces page height so footer is visible */
+        min-h-[20vh]   /* reduces page height so footer is visible */
         flex 
         flex-col 
         justify-start 
