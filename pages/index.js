@@ -404,7 +404,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         px-4 
         pt-24      /* pushes content ~1 inch down */
         pb-6
-        min-h-[50vh]   /* reduces page height so footer is visible */
+        min-h-[40vh]   /* reduces page height so footer is visible */
         flex 
         flex-col 
         justify-start 
@@ -414,7 +414,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <p className="text-lg text-black font-semibold flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-gray-200"
+          className="w-5 h-5 text-black"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -437,7 +437,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-gray-200"
+          className="w-5 h-5 text-black"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -458,7 +458,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-gray-200"
+          className="w-5 h-5 text-black"
           fill="currentColor"
           viewBox="0 0 24 24"
         >
@@ -477,7 +477,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-gray-200"
+          className="w-5 h-5 text-black"
           fill="currentColor"
           viewBox="0 0 24 24"
         >
@@ -500,7 +500,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto text-gray-100">
-          <p className="mb-6 text-gray-300">
+          <p className="mb-6 text-gray-200">
             Tracking cumulative percentage returns of Atlantic Walk Research
             picks versus the S&amp;P 500. Returns are normalized to 0% at time of valuation.
           </p>
