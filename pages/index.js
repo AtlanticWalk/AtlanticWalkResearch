@@ -404,7 +404,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         px-4 
         pt-24      /* pushes content ~1 inch down */
         pb-6
-        min-h-[40vh]   /* reduces page height so footer is visible */
+        min-h-[30vh]   /* reduces page height so footer is visible */
         flex 
         flex-col 
         justify-start 
@@ -500,7 +500,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto text-gray-100">
-          <p className="mb-6 text-gray-200">
+          <p className="mb-6 text-gray-300">
             Tracking cumulative percentage returns of Atlantic Walk Research
             picks versus the S&amp;P 500. Returns are normalized to 0% at time of valuation.
           </p>
