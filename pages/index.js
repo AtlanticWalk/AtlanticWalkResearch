@@ -411,7 +411,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         space-y-4
       "
     >
-      <p className="text-lg text-gray-100 font-semibold flex items-center md:justify-end justify-center gap-2">
+      <p className="text-lg text-black font-semibold flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-5 h-5 text-gray-200"
@@ -434,7 +434,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         </a>
       </p>
 
-      <p className="text-lg text-gray-100 flex items-center md:justify-end justify-center gap-2">
+      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-5 h-5 text-gray-200"
@@ -455,7 +455,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         </a>
       </p>
 
-      <p className="text-lg text-gray-100 flex items-center md:justify-end justify-center gap-2">
+      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-5 h-5 text-gray-200"
@@ -474,7 +474,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         </a>
       </p>
 
-      <p className="text-lg text-gray-100 flex items-center md:justify-end justify-center gap-2">
+      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="w-5 h-5 text-gray-200"
