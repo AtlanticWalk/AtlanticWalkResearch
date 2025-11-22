@@ -285,7 +285,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
 
       return (
-        <section className="max-w-5xl mx-auto text-gray-100 space-y-6 bg-neutral-900/40 p-6 rounded-xl border border-gray-800 shadow-lg">
+        <section className="max-w-5xl mx-auto text-gray-100 space-y-6 bg-neutral-900/50 p-6 rounded-xl border border-gray-800 shadow-lg">
           <h2 className="text-2xl font-semibold border-b border-gray-700 pb-3">
             Research Library
           </h2>
