@@ -235,26 +235,89 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // ---------------- RESEARCH ----------------
+    // ---------------- RESEARCH (UPDATED TO LIST + SA LINKS) ----------------
     if (page === "research") {
+      // External Seeking Alpha reports
+      const externalReports = [
+        {
+          id: "avdl-sa",
+          title: "Avadel: Mispriced Leader In Once-Nightly Sleep Therapies",
+          ticker: "NASDAQ: AVDL",
+          date: "2025-09-21",
+          url: "https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies",
+          external: true,
+          source: "Seeking Alpha",
+        },
+        {
+          id: "acmr-sa",
+          title:
+            "ACM Research: Margin Expansion And Product Ramp Drive Deep Undervaluation",
+          ticker: "NASDAQ: ACMR",
+          date: "2025-06-24",
+          url: "https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation",
+          external: true,
+          source: "Seeking Alpha",
+        },
+        {
+          id: "mp-sa",
+          title: "MP Materials: Onshoring The Rare Earth Supply Chain",
+          ticker: "NYSE: MP",
+          date: "2025-05-26",
+          url: "https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain",
+          external: true,
+          source: "Seeking Alpha",
+        },
+      ];
+
+      // Internal PDF-based reports
+      const internalReports = (reports || []).map((r) => ({
+        id: r.slug,
+        title: r.title,
+        ticker: r.ticker,
+        date: r.date,
+        url: `/research/${r.slug}`,
+        external: false,
+        source: "Atlantic Walk Research",
+      }));
+
+      const allReports = [...internalReports, ...externalReports].sort(
+        (a, b) => new Date(b.date || 0) - new Date(a.date || 0)
+      );
+
       return (
-        <section className="max-w-5xl mx-auto text-gray-100 space-y-8">
+        <section className="max-w-5xl mx-auto text-gray-100 space-y-6">
           <h2 className="text-2xl font-semibold border-b border-gray-700 pb-3">
-            Research Notes
+            Research Library
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-6">
-            {reports.length > 0 ? (
-              reports.map((r) => (
+          {/* Header row */}
+          <div className="grid grid-cols-[3fr_1fr_1fr_1.4fr] text-sm font-semibold border-b border-gray-700 pb-2">
+            <div>Title</div>
+            <div>Ticker</div>
+            <div>Date</div>
+            <div>Source / Link</div>
+          </div>
+
+          {/* Rows */}
+          <div className="divide-y divide-gray-800 text-sm">
+            {allReports.length > 0 ? (
+              allReports.map((item) => (
                 <div
-                  key={r.slug}
-                  className="bg-neutral-900 bg-opacity-60 border border-gray-800 rounded-xl p-6 shadow-md hover:shadow-xl transition"
+                  key={item.id}
+                  className="grid grid-cols-[3fr_1fr_1fr_1.4fr] items-center py-3"
                 >
-                  <h3 className="text-lg font-semibold mb-1">{r.title}</h3>
-                  <p className="text-gray-400 text-sm mb-2">{r.ticker}</p>
-                  <p className="text-gray-500 text-sm mb-4">
-                    {r.date
-                      ? new Date(r.date + "T00:00:00").toLocaleDateString(
+                  <div className="flex flex-col">
+                    <span className="font-medium">{item.title}</span>
+                    {item.external && (
+                      <span className="text-xs text-gray-500">
+                        published on Seeking Alpha
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-gray-300">{item.ticker}</div>
+                  <div className="text-gray-400">
+                    {item.date
+                      ? new Date(item.date + "T00:00:00").toLocaleDateString(
                           "en-US",
                           {
                             year: "numeric",
@@ -263,17 +326,22 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                           }
                         )
                       : "—"}
-                  </p>
-                  <a
-                    href={`/research/${r.slug}`}
-                    className="text-blue-400 hover:underline"
-                  >
-                    View Report →
-                  </a>
+                  </div>
+                  <div>
+                    <a
+                      href={item.url}
+                      {...(item.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                      className="text-blue-400 hover:underline"
+                    >
+                      {item.external ? "View on Seeking Alpha" : "View Online"}
+                    </a>
+                  </div>
                 </div>
               ))
             ) : (
-              <p className="text-gray-500">No research reports found.</p>
+              <p className="text-gray-500 py-4">No research reports found.</p>
             )}
           </div>
         </section>
@@ -599,7 +667,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
         />
 
-                {/* Mobile header (hamburger) only when nav is visible */}
+        {/* Mobile header (hamburger) only when nav is visible */}
         {page !== "home" && <MobileHeader setPage={setPage} />}
 
         {/* Navbar hidden on home; visible elsewhere (desktop only here) */}
