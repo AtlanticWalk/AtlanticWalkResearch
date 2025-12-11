@@ -11,8 +11,15 @@ export const reportsMeta = [
   ticker: "NASDAQ: AVDL",
   date: "2025-11-21" 
 },
+   {
+  slug: "BFLYREPORT",
+  title: "Butterfly Network (NYSE:BFLY): From Device Vendor to Semiconductor Imaging Platform",
+  ticker: "NYSE:BFLY",
+  date: "2025-12-11" 
+},
   // add more here as needed
 
 ];
+
 
 
