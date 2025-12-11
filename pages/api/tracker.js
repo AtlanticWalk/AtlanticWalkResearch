@@ -9,6 +9,7 @@ export default async function handler(req, res) {
       { symbol: "MP", name: "mp", date: "2025-05-26" },
       { symbol: "ACMR", name: "acmr", date: "2025-06-24" },
       { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
+      { symbol: "BFLY", name: "bfly", date: "2025-12-11" },
     ];
 
     // Find earliest valuation date
