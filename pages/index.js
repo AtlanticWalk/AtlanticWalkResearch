@@ -591,7 +591,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
                   <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
                   <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
-                </LineChart>
+                  <Line type="monotone" dataKey="bfly" stroke="#8b5cf6" name="BFLY" dot={false} /> 
+                    </LineChart>
               </ResponsiveContainer>
             </div>
           ) : (
