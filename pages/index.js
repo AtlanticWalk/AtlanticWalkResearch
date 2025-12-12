@@ -669,7 +669,11 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             }),
           }}
         />
-          <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "60fd7f8941a546c99ea8919be18e1387"}'></script><!-- End Cloudflare Web Analytics -->
+          <script
+  defer
+  src="https://static.cloudflareinsights.com/beacon.min.js"
+  data-cf-beacon='{"token":"60fd7f8941a546c99ea8919be18e1387"}'
+></script>
       </Head>
 
       {/* Background images (desktop via inline; mobile via extra layer) */}
