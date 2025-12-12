@@ -670,6 +670,28 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             }),
           }}
         />
+         <script
+  type="application/ld+json"
+  dangerouslySetInnerHTML={{
+    __html: JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Glenn Rentrop",
+      "url": "https://atlanticwalkresearch.com",
+      "jobTitle": "Founder & Managing Partner",
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Atlantic Walk Research",
+        "url": "https://atlanticwalkresearch.com"
+      },
+      "sameAs": [
+        "https://www.linkedin.com/in/grentrop/",
+        "https://x.com/AtlanticWalk",
+        "https://seekingalpha.com/author/glenn-rentrop"
+      ]
+    }),
+  }}
+/>
           <script
   defer
   src="https://static.cloudflareinsights.com/beacon.min.js"
