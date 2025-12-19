@@ -171,72 +171,64 @@ export default function ReportPage({ slug, pdfSrc }) {
         />
       </Head>
 
-      {/* ✅ Toolbar floats too: no background, no border */}
-      <div className="sticky top-0 z-50">
-        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <button
-              className="px-3 py-2 rounded-lg border border-white/15 hover:border-white/30 hover:bg-white/5 text-sm"
-              onClick={() => router.back()}
-            >
-              ← Back
-            </button>
+     {/* Toolbar */}
+<div className="sticky top-0 z-50 text-gray-200">
+  <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
+    <div className="flex items-center gap-3">
+      <button
+        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+        onClick={() => router.back()}
+      >
+        ← Back
+      </button>
+    </div>
 
-            <a
-              href="/"
-              onClick={handleReturnToLibrary}
-              className="text-sm text-white/80 hover:text-white hover:underline"
-            >
-              Back to Research Library
-            </a>
-          </div>
+    <div className="flex items-center gap-2 text-gray-200">
+      <button
+        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+        onClick={() => {
+          setScale((s) => Math.max(0.7, Math.round((s - 0.1) * 100) / 100));
+          setRenderKey((k) => k + 1);
+        }}
+        title="Zoom out"
+      >
+        −
+      </button>
 
-          <div className="flex items-center gap-2">
-            <button
-              className="px-3 py-2 rounded-lg border border-white/15 hover:border-white/30 hover:bg-white/5 text-sm"
-              onClick={() => {
-                setScale((s) => Math.max(0.7, Math.round((s - 0.1) * 100) / 100));
-                setRenderKey((k) => k + 1);
-              }}
-              title="Zoom out"
-            >
-              −
-            </button>
-
-            <div className="px-3 py-2 rounded-lg border border-white/10 text-sm text-white/80">
-              Zoom: {Math.round(scale * 100)}%
-            </div>
-
-            <button
-              className="px-3 py-2 rounded-lg border border-white/15 hover:border-white/30 hover:bg-white/5 text-sm"
-              onClick={() => {
-                setScale((s) => Math.min(2.2, Math.round((s + 0.1) * 100) / 100));
-                setRenderKey((k) => k + 1);
-              }}
-              title="Zoom in"
-            >
-              +
-            </button>
-
-            <a
-              className="px-3 py-2 rounded-lg border border-white/15 hover:border-white/30 hover:bg-white/5 text-sm"
-              href={pdfSrc}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open PDF ↗
-            </a>
-
-            <a
-              className="px-3 py-2 rounded-lg border border-white/15 hover:border-white/30 hover:bg-white/5 text-sm"
-              href={pdfSrc}
-              download
-            >
-              Download
-            </a>
-          </div>
-        </div>
+      <div className="px-3 py-2 rounded-lg border border-white/15 text-sm text-gray-200">
+        Zoom: {Math.round(scale * 100)}%
       </div>
+
+      <button
+        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+        onClick={() => {
+          setScale((s) => Math.min(2.2, Math.round((s + 0.1) * 100) / 100));
+          setRenderKey((k) => k + 1);
+        }}
+        title="Zoom in"
+      >
+        +
+      </button>
+
+      <a
+        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+        href={pdfSrc}
+        target="_blank"
+        rel="noreferrer"
+      >
+        Open PDF ↗
+      </a>
+
+      <a
+        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+        href={pdfSrc}
+        download
+      >
+        Download
+      </a>
+    </div>
+  </div>
+</div>
 
       {/* ✅ Content area: transparent */}
       <div className="mx-auto max-w-6xl px-4 py-10">
