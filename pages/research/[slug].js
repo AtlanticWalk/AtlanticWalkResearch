@@ -1,4 +1,3 @@
-// pages/research/[slug].js
 import fs from "fs";
 import path from "path";
 import Head from "next/head";
@@ -8,9 +7,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
 export async function getStaticPaths() {
-  const files = fs
-    .readdirSync(REPORTS_DIR)
-    .filter((file) => file.endsWith(".pdf"));
+  const files = fs.readdirSync(REPORTS_DIR).filter((file) => file.endsWith(".pdf"));
 
   const paths = files.map((filename) => ({
     params: { slug: filename.replace(/\.pdf$/, "") },
@@ -40,7 +37,6 @@ export default function ReportPage({ slug, pdfSrc }) {
     [slug]
   );
 
-  // If your route isn't /research/[slug], update this path to match.
   const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
   const articleSchema = useMemo(
@@ -71,7 +67,6 @@ export default function ReportPage({ slug, pdfSrc }) {
     }
   };
 
-  // ---- PDF.js canvas renderer ----
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -91,11 +86,13 @@ export default function ReportPage({ slug, pdfSrc }) {
       setNumPages(0);
 
       try {
-        // ✅ only loaded client-side
+        // Works with pdfjs-dist v4+ in the browser
         const pdfjsLib = await import("pdfjs-dist/build/pdf");
 
-        // ✅ served from /public/pdf.worker.min.js (copied by your postinstall script)
-        pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+        // ✅ Use ES module worker (copied to /public by postinstall)
+        // If you open https://atlanticwalkresearch.com/pdf.worker.min.mjs in a browser,
+        // you should see JS content (not a 404).
+        pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
         const loadingTask = pdfjsLib.getDocument({
           url: pdfSrc,
@@ -157,17 +154,13 @@ export default function ReportPage({ slug, pdfSrc }) {
         if (!cancelled) setLoading(false);
       } catch (e) {
         if (!cancelled) {
-          setErr(
-            e?.message ||
-              "Could not load the PDF. Check the file path and pdf.js worker."
-          );
+          setErr(e?.message || "Could not load the PDF.");
           setLoading(false);
         }
       }
     }
 
     renderPdf();
-
     return () => {
       cancelled = true;
     };
@@ -178,24 +171,16 @@ export default function ReportPage({ slug, pdfSrc }) {
       <Head>
         <title>{title} | Atlantic Walk Research</title>
         <meta name="description" content={`Full research report on ${title}.`} />
-        <meta
-          property="og:title"
-          content={`${title} | Atlantic Walk Research`}
-        />
-        <meta
-          property="og:description"
-          content={`Independent equity research report on ${title}.`}
-        />
+        <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
+        <meta property="og:description" content={`Independent equity research report on ${title}.`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
         />
       </Head>
 
-      {/* Sticky toolbar */}
       <div className="sticky top-0 z-50 backdrop-blur border-b border-white/10 bg-black/60">
         <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
@@ -262,13 +247,10 @@ export default function ReportPage({ slug, pdfSrc }) {
         </div>
       </div>
 
-      {/* Page */}
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-bold mb-2">{title}</h1>
 
-        {loading && (
-          <div className="text-white/70 text-sm mb-4">Loading PDF pages…</div>
-        )}
+        {loading && <div className="text-white/70 text-sm mb-4">Loading PDF pages…</div>}
 
         {err && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
@@ -277,16 +259,9 @@ export default function ReportPage({ slug, pdfSrc }) {
             <div className="mt-3 text-white/70">
               Quick checks:
               <ul className="list-disc pl-5 mt-1 space-y-1">
-                <li>
-                  Confirm the PDF exists at{" "}
-                  <code>/public/reports/{slug}.pdf</code>
-                </li>
-                <li>
-                  Confirm you added <code>/public/pdf.worker.min.js</code>
-                </li>
-                <li>
-                  Confirm <code>pdfjs-dist</code> is installed
-                </li>
+                <li>Confirm the PDF exists at <code>/public/reports/{slug}.pdf</code></li>
+                <li>Confirm <code>/public/pdf.worker.min.mjs</code> exists after install</li>
+                <li>Try opening <code>/pdf.worker.min.mjs</code> directly in your browser (should not be 404)</li>
               </ul>
             </div>
           </div>
@@ -299,40 +274,6 @@ export default function ReportPage({ slug, pdfSrc }) {
         )}
 
         <div ref={containerRef} />
-
-        {/* Footer share */}
-        <div className="mt-10 border-t border-white/10 pt-6 flex flex-wrap gap-4 items-center justify-between">
-          <a
-            href="/"
-            onClick={handleReturnToLibrary}
-            className="text-white/80 hover:text-white hover:underline"
-          >
-            ← Back to Research Library
-          </a>
-
-          <div className="flex gap-4 text-sm">
-            <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                title
-              )}&url=${encodeURIComponent(pageUrl)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-white/80 hover:text-white"
-            >
-              Share on X
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                pageUrl
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:underline text-white/80 hover:text-white"
-            >
-              Share on LinkedIn
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );
