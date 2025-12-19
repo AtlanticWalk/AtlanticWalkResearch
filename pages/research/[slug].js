@@ -1,4 +1,4 @@
-// pages/research/[slug].js  (or wherever your slug route lives)
+// pages/research/[slug].js
 import fs from "fs";
 import path from "path";
 import Head from "next/head";
@@ -8,7 +8,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
 export async function getStaticPaths() {
-  const files = fs.readdirSync(REPORTS_DIR).filter((file) => file.endsWith(".pdf"));
+  const files = fs
+    .readdirSync(REPORTS_DIR)
+    .filter((file) => file.endsWith(".pdf"));
 
   const paths = files.map((filename) => ({
     params: { slug: filename.replace(/\.pdf$/, "") },
@@ -38,20 +40,15 @@ export default function ReportPage({ slug, pdfSrc }) {
     [slug]
   );
 
-  // Keep your existing canonical/share URL pattern:
-  // If your route is actually /reports/[slug], change "/research/" to "/reports/"
+  // If your route isn't /research/[slug], update this path to match.
   const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
-  // ✅ JSON-LD article schema
   const articleSchema = useMemo(
     () => ({
       "@context": "https://schema.org",
       "@type": "Article",
       headline: title,
-      author: {
-        "@type": "Person",
-        name: "Glenn Rentrop",
-      },
+      author: { "@type": "Person", name: "Glenn Rentrop" },
       publisher: {
         "@type": "Organization",
         name: "Atlantic Walk Research",
@@ -94,10 +91,10 @@ export default function ReportPage({ slug, pdfSrc }) {
       setNumPages(0);
 
       try {
+        // ✅ only loaded client-side
         const pdfjsLib = await import("pdfjs-dist/build/pdf");
 
-        // You must have this file in /public:
-        // public/pdf.worker.min.js
+        // ✅ served from /public/pdf.worker.min.js (copied by your postinstall script)
         pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
         const loadingTask = pdfjsLib.getDocument({
@@ -160,7 +157,10 @@ export default function ReportPage({ slug, pdfSrc }) {
         if (!cancelled) setLoading(false);
       } catch (e) {
         if (!cancelled) {
-          setErr(e?.message || "Could not load the PDF. Check the file path and pdf.js worker.");
+          setErr(
+            e?.message ||
+              "Could not load the PDF. Check the file path and pdf.js worker."
+          );
           setLoading(false);
         }
       }
@@ -178,8 +178,14 @@ export default function ReportPage({ slug, pdfSrc }) {
       <Head>
         <title>{title} | Atlantic Walk Research</title>
         <meta name="description" content={`Full research report on ${title}.`} />
-        <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
-        <meta property="og:description" content={`Independent equity research report on ${title}.`} />
+        <meta
+          property="og:title"
+          content={`${title} | Atlantic Walk Research`}
+        />
+        <meta
+          property="og:description"
+          content={`Independent equity research report on ${title}.`}
+        />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
 
@@ -260,7 +266,9 @@ export default function ReportPage({ slug, pdfSrc }) {
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-bold mb-2">{title}</h1>
 
-        {loading && <div className="text-white/70 text-sm mb-4">Loading PDF pages…</div>}
+        {loading && (
+          <div className="text-white/70 text-sm mb-4">Loading PDF pages…</div>
+        )}
 
         {err && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
@@ -270,7 +278,8 @@ export default function ReportPage({ slug, pdfSrc }) {
               Quick checks:
               <ul className="list-disc pl-5 mt-1 space-y-1">
                 <li>
-                  Confirm the PDF exists at <code>/public/reports/{slug}.pdf</code>
+                  Confirm the PDF exists at{" "}
+                  <code>/public/reports/{slug}.pdf</code>
                 </li>
                 <li>
                   Confirm you added <code>/public/pdf.worker.min.js</code>
@@ -303,9 +312,9 @@ export default function ReportPage({ slug, pdfSrc }) {
 
           <div className="flex gap-4 text-sm">
             <a
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(
-                pageUrl
-              )}`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                title
+              )}&url=${encodeURIComponent(pageUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline text-white/80 hover:text-white"
@@ -313,7 +322,9 @@ export default function ReportPage({ slug, pdfSrc }) {
               Share on X
             </a>
             <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`}
+              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                pageUrl
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:underline text-white/80 hover:text-white"
