@@ -2,32 +2,32 @@
 const fs = require("fs");
 const path = require("path");
 
-function copyFileSyncSafe(src, dest) {
-  fs.mkdirSync(path.dirname(dest), { recursive: true });
-  fs.copyFileSync(src, dest);
-  console.log(`[pdfjs] Copied worker -> ${dest}`);
-}
+function resolveWorker() {
+  const candidates = [
+    "pdfjs-dist/build/pdf.worker.min.js",
+    "pdfjs-dist/build/pdf.worker.js",
+    "pdfjs-dist/legacy/build/pdf.worker.min.js",
+    "pdfjs-dist/legacy/build/pdf.worker.js"
+  ];
 
-function main() {
-  const projectRoot = process.cwd();
-
-  // pdfjs-dist v3 worker location:
-  const workerSrc = path.join(
-    projectRoot,
-    "node_modules",
-    "pdfjs-dist",
-    "build",
-    "pdf.worker.min.js"
-  );
-
-  const workerDest = path.join(projectRoot, "public", "pdf.worker.min.js");
-
-  if (!fs.existsSync(workerSrc)) {
-    console.warn("[pdfjs] Worker not found at:", workerSrc);
-    process.exit(0);
+  for (const rel of candidates) {
+    try {
+      return require.resolve(rel);
+    } catch (_) {}
   }
 
-  copyFileSyncSafe(workerSrc, workerDest);
+  throw new Error(
+    "[pdfjs] Could not resolve a pdf.worker file from pdfjs-dist. Check installed version."
+  );
 }
 
-main();
+(function main() {
+  const workerSrc = resolveWorker();
+  const publicDir = path.join(process.cwd(), "public");
+  const outPath = path.join(publicDir, "pdf.worker.min.js");
+
+  if (!fs.existsSync(publicDir)) fs.mkdirSync(publicDir, { recursive: true });
+
+  fs.copyFileSync(workerSrc, outPath);
+  console.log(`[pdfjs] Copied worker -> ${outPath}`);
+})();
