@@ -692,7 +692,17 @@ export default function AtlanticWalkResearch({ reports = [] }) {
     }),
   }}
 />
-          <script
+ {/*add google analytics tag*/}
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7EYNZ1NEKX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-7EYNZ1NEKX');
+</script>       
+  <script
   defer
   src="https://static.cloudflareinsights.com/beacon.min.js"
   data-cf-beacon='{"token":"60fd7f8941a546c99ea8919be18e1387"}'
