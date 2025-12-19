@@ -691,8 +691,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       ]
     }),
   }}
-/>
-</script>       
+/>  
   <script
   defer
   src="https://static.cloudflareinsights.com/beacon.min.js"
