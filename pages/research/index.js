@@ -1,151 +1,154 @@
 // pages/api/tracker.js
-export default async function handler(req, res) {
-  try {
-    const picks = [
-      { symbol: "^GSPC", name: "sp500", date: "2024-11-21" },
-      { symbol: "AMAT", name: "amat", date: "2024-11-21" },
-      { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
-      { symbol: "NBIS", name: "nbis", date: "2024-12-29" },
-      { symbol: "MP", name: "mp", date: "2025-05-26" },
-      { symbol: "ACMR", name: "acmr", date: "2025-06-24" },
-      { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
-      { symbol: "BFLY", name: "bfly", date: "2025-12-10" },
-    ];
 
-    // Find earliest valuation date
-    const earliestDate = picks.reduce(
-      (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
-      picks[0].date
-    );
+const PICKS = [
+  { symbol: "^GSPC", name: "sp500", date: "2024-11-21" },
+  { symbol: "AMAT", name: "amat", date: "2024-11-21" },
+  { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
+  { symbol: "NBIS", name: "nbis", date: "2024-12-29" },
+  { symbol: "MP", name: "mp", date: "2025-05-26" },
+  { symbol: "ACMR", name: "acmr", date: "2025-06-24" },
+  { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
+  { symbol: "BFLY", name: "bfly", date: "2025-12-10" },
+];
 
-    const endDate = new Date().toISOString().slice(0, 10);
+// Helper: last close ON or BEFORE target date (fixes weekly timestamp mismatches)
+function getCloseOnOrBefore(series, targetDate) {
+  const t = new Date(targetDate);
+  for (let i = series.length - 1; i >= 0; i--) {
+    if (new Date(series[i].date) <= t) return series[i].close;
+  }
+  return null;
+}
 
-    // Helper: find the last close ON or BEFORE a target date (fixes weekly timestamp mismatches)
-    const getCloseOnOrBefore = (series, targetDate) => {
-      const t = new Date(targetDate);
+// Pure function you can reuse anywhere (API route, getStaticProps, etc.)
+export async function buildTrackerData({ months = 12 } = {}) {
+  // Find earliest valuation date
+  const earliestDate = PICKS.reduce(
+    (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
+    PICKS[0].date
+  );
 
-      // series is already in chronological order from Yahoo
-      for (let i = series.length - 1; i >= 0; i--) {
-        if (new Date(series[i].date) <= t) return series[i].close;
-      }
-      return null;
-    };
+  const endDate = new Date().toISOString().slice(0, 10);
 
-    // Helper: fetch Yahoo Finance weekly data safely
-    const fetchYahooData = async (symbol, startDate) => {
-      // NOTE: Using weekly data. If you want more “movement” for very recent picks, switch to interval=1d.
-      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
-        symbol
-      )}?period1=${Math.floor(new Date(startDate).getTime() / 1000)}&period2=${Math.floor(
-        new Date(endDate).getTime() / 1000
-      )}&interval=1wk`;
+  // Fetch Yahoo Finance weekly data
+  const fetchYahooData = async (symbol, startDate) => {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+      symbol
+    )}?period1=${Math.floor(new Date(startDate).getTime() / 1000)}&period2=${Math.floor(
+      new Date(endDate).getTime() / 1000
+    )}&interval=1wk`;
 
-      try {
-        const resData = await fetch(url, {
-          // Avoid weird caching behavior on some platforms
-          cache: "no-store",
-          headers: {
-            "User-Agent": "Mozilla/5.0",
-            Accept: "application/json",
-          },
-        });
+    try {
+      const resData = await fetch(url, {
+        cache: "no-store",
+        headers: {
+          "User-Agent": "Mozilla/5.0",
+          Accept: "application/json",
+        },
+      });
 
-        const json = await resData.json();
-        const result = json?.chart?.result?.[0];
+      const json = await resData.json();
+      const result = json?.chart?.result?.[0];
 
-        if (!result || !result.indicators?.quote?.[0]?.close) {
-          console.warn(`⚠️ Missing or invalid data for ${symbol}`);
-          return [];
-        }
-
-        const quotes = result.indicators.quote[0].close;
-        const timestamps = result.timestamp || [];
-
-        // Return valid (non-null) weekly data points
-        return timestamps
-          .map((t, i) => ({
-            date: new Date(t * 1000).toISOString().slice(0, 10),
-            close: quotes[i],
-          }))
-          .filter((d) => d.close !== null && d.close !== undefined);
-      } catch (err) {
-        console.error(`❌ Failed to fetch ${symbol}:`, err);
+      if (!result || !result.indicators?.quote?.[0]?.close) {
+        console.warn(`⚠️ Missing or invalid data for ${symbol}`);
         return [];
       }
-    };
 
-    // Fetch all datasets concurrently
-    const datasets = await Promise.all(
-      picks.map((p) => fetchYahooData(p.symbol, earliestDate))
-    );
+      const quotes = result.indicators.quote[0].close;
+      const timestamps = result.timestamp || [];
 
-    const sp500 = datasets[0] || [];
-    const stocks = picks.slice(1).map((p, i) => ({
-      ...p,
-      data: datasets[i + 1] || [],
-    }));
-
-    if (!sp500.length) {
-      console.warn("⚠️ No S&P 500 data fetched; returning fallback sample.");
-      return res.status(200).json([
-        { date: earliestDate, sp500: 0, portfolio: 0 },
-        { date: "2025-01-01", sp500: 2, portfolio: 5 },
-        { date: "2025-03-01", sp500: 4, portfolio: 9 },
-      ]);
+      return timestamps
+        .map((t, i) => ({
+          date: new Date(t * 1000).toISOString().slice(0, 10),
+          close: quotes[i],
+        }))
+        .filter((d) => d.close !== null && d.close !== undefined);
+    } catch (err) {
+      console.error(`❌ Failed to fetch ${symbol}:`, err);
+      return [];
     }
+  };
 
-    // Build time-aligned dataset
-    // IMPORTANT: Instead of requiring exact YYYY-MM-DD matches between series,
-    // we pull each stock’s last close ON/BEFORE the SP500’s date.
-    const aligned = sp500.map((sp) => {
-      const entry = { date: sp.date };
+  const datasets = await Promise.all(PICKS.map((p) => fetchYahooData(p.symbol, earliestDate)));
 
-      // S&P 500 % change vs first point in the fetched range
-      entry.sp500 = ((sp.close / sp500[0].close) - 1) * 100;
+  const sp500 = datasets[0] || [];
+  const stocks = PICKS.slice(1).map((p, i) => ({
+    ...p,
+    data: datasets[i + 1] || [],
+  }));
 
-      let blendSum = 0;
-      let count = 0;
+  if (!sp500.length) {
+    console.warn("⚠️ No S&P 500 data fetched; returning fallback sample.");
+    return [
+      { date: earliestDate, sp500: 0, portfolio: 0 },
+      { date: "2025-01-01", sp500: 2, portfolio: 5 },
+      { date: "2025-03-01", sp500: 4, portfolio: 9 },
+    ];
+  }
 
-      for (const stock of stocks) {
-        const { name, date: pickDate, data: series } = stock;
+  // Align everything to S&P weekly dates
+  const aligned = sp500.map((sp) => {
+    const entry = { date: sp.date };
+    entry.sp500 = ((sp.close / sp500[0].close) - 1) * 100;
 
-        // Do not chart before the pick date
-        if (new Date(sp.date) < new Date(pickDate)) {
-          entry[name] = null;
-          continue;
-        }
+    let blendSum = 0;
+    let count = 0;
 
-        // Base = first available close ON/AFTER the pick date
-        const base = series.find((d) => new Date(d.date) >= new Date(pickDate))?.close;
+    for (const stock of stocks) {
+      const { name, date: pickDate, data: series } = stock;
 
-        // Now = last available close ON/BEFORE the SP500 date (fixes misaligned weeks)
-        const now = getCloseOnOrBefore(series, sp.date);
-
-        if (base != null && now != null) {
-          entry[name] = ((now / base) - 1) * 100;
-          blendSum += entry[name];
-          count++;
-        } else {
-          entry[name] = null;
-        }
+      if (new Date(sp.date) < new Date(pickDate)) {
+        entry[name] = null;
+        continue;
       }
 
-      entry.portfolio = count > 0 ? blendSum / count : null;
-      return entry;
-    });
+      // Base close = first close ON/AFTER pick date
+      const base = series.find((d) => new Date(d.date) >= new Date(pickDate))?.close;
 
-    // Keep only last 12 months of data
-    const cutoff = new Date();
-    cutoff.setMonth(cutoff.getMonth() - 12);
+      // Now close = last close ON/BEFORE the S&P date (handles week alignment)
+      const now = getCloseOnOrBefore(series, sp.date);
 
-    const filtered = aligned.filter((d) => new Date(d.date) >= cutoff);
+      if (base != null && now != null) {
+        entry[name] = ((now / base) - 1) * 100;
+        blendSum += entry[name];
+        count++;
+      } else {
+        entry[name] = null;
+      }
+    }
 
-    // Helpful headers for API responses (optional)
-    res.setHeader("Cache-Control", "no-store");
+    entry.portfolio = count > 0 ? blendSum / count : null;
+    return entry;
+  });
 
-    return res.status(200).json(filtered);
+  // Keep only last N months
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - months);
+
+  return aligned.filter((d) => new Date(d.date) >= cutoff);
+}
+
+export default async function handler(req, res) {
+  try {
+    const monthsParam = parseInt(req?.query?.months ?? "12", 10);
+    const months = Number.isFinite(monthsParam) ? monthsParam : 12;
+
+    const data = await buildTrackerData({ months });
+
+    // Guarded (so it won’t crash if imported somewhere incorrectly)
+    if (res?.setHeader) res.setHeader("Cache-Control", "no-store");
+    if (res?.status && res?.json) return res.status(200).json(data);
+
+    // Fallback if someone called this without a Next API res object
+    return data;
   } catch (err) {
     console.error("Tracker API fatal error:", err);
-    return res.status(500).json({ error: "Failed to fetch tracker data" });
+
+    if (res?.status && res?.json) {
+      return res.status(500).json({ error: "Failed to fetch tracker data" });
+    }
+
+    throw err;
   }
 }
