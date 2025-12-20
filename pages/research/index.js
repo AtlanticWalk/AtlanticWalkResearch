@@ -1,103 +1,151 @@
-import fs from "fs";
-import path from "path";
-import Link from "next/link";
-import { reportsMeta } from "../../data/reportsMeta";
+// pages/api/tracker.js
+export default async function handler(req, res) {
+  try {
+    const picks = [
+      { symbol: "^GSPC", name: "sp500", date: "2024-11-21" },
+      { symbol: "AMAT", name: "amat", date: "2024-11-21" },
+      { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
+      { symbol: "NBIS", name: "nbis", date: "2024-12-29" },
+      { symbol: "MP", name: "mp", date: "2025-05-26" },
+      { symbol: "ACMR", name: "acmr", date: "2025-06-24" },
+      { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
+      { symbol: "BFLY", name: "bfly", date: "2025-12-10" },
+    ];
 
-export async function getStaticProps() {
-  // ✅ Look for PDFs in /public/reports
-  const reportsDir = path.join(process.cwd(), "public", "reports");
-  const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
+    // Find earliest valuation date
+    const earliestDate = picks.reduce(
+      (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
+      picks[0].date
+    );
 
-  // ✅ Build report list with metadata
-  const reports = files
-    .filter((f) => f.endsWith(".pdf"))
-    .map((filename) => {
-      const slug = filename.replace(/\.pdf$/, "");
-      const meta = reportsMeta.find((m) => m.slug === slug); // 👈 match here
-      return {
-        slug,
-        title:
-          meta?.title ||
-          slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-        ticker: meta?.ticker || "",
-        date: meta?.date || null,
-      };
+    const endDate = new Date().toISOString().slice(0, 10);
+
+    // Helper: find the last close ON or BEFORE a target date (fixes weekly timestamp mismatches)
+    const getCloseOnOrBefore = (series, targetDate) => {
+      const t = new Date(targetDate);
+
+      // series is already in chronological order from Yahoo
+      for (let i = series.length - 1; i >= 0; i--) {
+        if (new Date(series[i].date) <= t) return series[i].close;
+      }
+      return null;
+    };
+
+    // Helper: fetch Yahoo Finance weekly data safely
+    const fetchYahooData = async (symbol, startDate) => {
+      // NOTE: Using weekly data. If you want more “movement” for very recent picks, switch to interval=1d.
+      const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
+        symbol
+      )}?period1=${Math.floor(new Date(startDate).getTime() / 1000)}&period2=${Math.floor(
+        new Date(endDate).getTime() / 1000
+      )}&interval=1wk`;
+
+      try {
+        const resData = await fetch(url, {
+          // Avoid weird caching behavior on some platforms
+          cache: "no-store",
+          headers: {
+            "User-Agent": "Mozilla/5.0",
+            Accept: "application/json",
+          },
+        });
+
+        const json = await resData.json();
+        const result = json?.chart?.result?.[0];
+
+        if (!result || !result.indicators?.quote?.[0]?.close) {
+          console.warn(`⚠️ Missing or invalid data for ${symbol}`);
+          return [];
+        }
+
+        const quotes = result.indicators.quote[0].close;
+        const timestamps = result.timestamp || [];
+
+        // Return valid (non-null) weekly data points
+        return timestamps
+          .map((t, i) => ({
+            date: new Date(t * 1000).toISOString().slice(0, 10),
+            close: quotes[i],
+          }))
+          .filter((d) => d.close !== null && d.close !== undefined);
+      } catch (err) {
+        console.error(`❌ Failed to fetch ${symbol}:`, err);
+        return [];
+      }
+    };
+
+    // Fetch all datasets concurrently
+    const datasets = await Promise.all(
+      picks.map((p) => fetchYahooData(p.symbol, earliestDate))
+    );
+
+    const sp500 = datasets[0] || [];
+    const stocks = picks.slice(1).map((p, i) => ({
+      ...p,
+      data: datasets[i + 1] || [],
+    }));
+
+    if (!sp500.length) {
+      console.warn("⚠️ No S&P 500 data fetched; returning fallback sample.");
+      return res.status(200).json([
+        { date: earliestDate, sp500: 0, portfolio: 0 },
+        { date: "2025-01-01", sp500: 2, portfolio: 5 },
+        { date: "2025-03-01", sp500: 4, portfolio: 9 },
+      ]);
+    }
+
+    // Build time-aligned dataset
+    // IMPORTANT: Instead of requiring exact YYYY-MM-DD matches between series,
+    // we pull each stock’s last close ON/BEFORE the SP500’s date.
+    const aligned = sp500.map((sp) => {
+      const entry = { date: sp.date };
+
+      // S&P 500 % change vs first point in the fetched range
+      entry.sp500 = ((sp.close / sp500[0].close) - 1) * 100;
+
+      let blendSum = 0;
+      let count = 0;
+
+      for (const stock of stocks) {
+        const { name, date: pickDate, data: series } = stock;
+
+        // Do not chart before the pick date
+        if (new Date(sp.date) < new Date(pickDate)) {
+          entry[name] = null;
+          continue;
+        }
+
+        // Base = first available close ON/AFTER the pick date
+        const base = series.find((d) => new Date(d.date) >= new Date(pickDate))?.close;
+
+        // Now = last available close ON/BEFORE the SP500 date (fixes misaligned weeks)
+        const now = getCloseOnOrBefore(series, sp.date);
+
+        if (base != null && now != null) {
+          entry[name] = ((now / base) - 1) * 100;
+          blendSum += entry[name];
+          count++;
+        } else {
+          entry[name] = null;
+        }
+      }
+
+      entry.portfolio = count > 0 ? blendSum / count : null;
+      return entry;
     });
 
-  reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
-  return { props: { reports } };
-}
+    // Keep only last 12 months of data
+    const cutoff = new Date();
+    cutoff.setMonth(cutoff.getMonth() - 12);
 
-export default function ResearchLibrary({ reports }) {
-  return (
-    <div
-      className="min-h-screen bg-cover bg-center bg-fixed p-12"
-      style={{
-        backgroundImage: "url('/atlanticwalk_background.jpg')",
-        backgroundPosition: "center 40%",
-        backgroundSize: "cover",
-      }}
-    >
-      <div className="bg-white/40 backdrop-blur-md rounded-2xl max-w-5xl mx-auto p-10 shadow-xl text-black">
-        <h1 className="text-3xl font-bold mb-8 text-center">Research Library</h1>
+    const filtered = aligned.filter((d) => new Date(d.date) >= cutoff);
 
-        <div className="grid grid-cols-[3fr_0.8fr_1fr_1fr] font-semibold border-b border-gray-300 pb-2 mb-4">
-          <div>Title</div>
-          <div>Ticker</div>
-          <div>Date</div>
-          <div>Link</div>
-        </div>
+    // Helpful headers for API responses (optional)
+    res.setHeader("Cache-Control", "no-store");
 
-        <div className="space-y-2 text-sm">
-          {reports.length > 0 ? (
-            reports.map((r) => (
-              <div
-                key={r.slug}
-                className="grid grid-cols-[3fr_0.8fr_1fr_1fr] items-center border-b border-gray-200 py-2"
-              >
-                {/* ✅ Title with ticker inline */}
-                <div className="font-medium">
-                  {r.title}
-                  {r.ticker && (
-                    <span className="ml-2 text-gray-600 text-sm">
-                      ({r.ticker})
-                    </span>
-                  )}
-                </div>
-
-                {/* ✅ Ticker column (for alignment) */}
-                <div>{r.ticker}</div>
-
-                {/* ✅ Safely formatted date */}
-                <div>
-                  {r.date
-                    ? new Date(r.date + "T00:00:00").toLocaleDateString(
-                        "en-US",
-                        {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        }
-                      )
-                    : "—"}
-                </div>
-
-                {/* ✅ Link column */}
-                <div>
-                  <Link
-                    href={`/research/${r.slug}`}
-                    className="text-blue-700 hover:underline"
-                  >
-                    View Online
-                  </Link>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p>No research reports found.</p>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+    return res.status(200).json(filtered);
+  } catch (err) {
+    console.error("Tracker API fatal error:", err);
+    return res.status(500).json({ error: "Failed to fetch tracker data" });
+  }
 }
