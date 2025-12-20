@@ -1,9 +1,4 @@
 // pages/api/tracker.js
-// Notes:
-// - Aligns all series to S&P 500 weekly dates
-// - For each pick, "base" is the first close ON/AFTER the pick date
-// - We only compute returns once the S&P date is ON/AFTER that base candle date
-//   (fixes "no growth" due to weekly timestamp misalignment)
 
 const PICKS = [
   { symbol: "^GSPC", name: "sp500", date: "2024-11-21" },
@@ -16,9 +11,8 @@ const PICKS = [
   { symbol: "BFLY", name: "bfly", date: "2025-12-10" },
 ];
 
-// Helper: last close ON or BEFORE target date
+// Helper: last close ON or BEFORE target date (robust for mismatched calendars)
 function getCloseOnOrBefore(series, targetDate) {
-  if (!Array.isArray(series) || series.length === 0) return null;
   const t = new Date(targetDate);
   for (let i = series.length - 1; i >= 0; i--) {
     if (new Date(series[i].date) <= t) return series[i].close;
@@ -26,8 +20,34 @@ function getCloseOnOrBefore(series, targetDate) {
   return null;
 }
 
-// Pure function you can reuse server-side if you want
+// Helper: convert daily series -> weekly series using the LAST trading day in each week
+// Week is keyed by Monday (UTC) to stay stable across environments.
+function dailyToWeeklyLastClose(dailySeries) {
+  if (!Array.isArray(dailySeries) || dailySeries.length === 0) return [];
+
+  // Ensure ascending by date
+  const sorted = [...dailySeries].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  const byWeek = new Map();
+
+  for (const pt of sorted) {
+    const d = new Date(pt.date);
+    // Compute Monday of that week (UTC)
+    const dow = (d.getUTCDay() + 6) % 7; // Mon=0 ... Sun=6
+    const monday = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() - dow));
+    const key = monday.toISOString().slice(0, 10);
+
+    // Keep the last point seen in that week (sorted ascending => overwrite gives last)
+    byWeek.set(key, pt);
+  }
+
+  // Return weekly points sorted by date
+  return Array.from(byWeek.values()).sort((a, b) => new Date(a.date) - new Date(b.date));
+}
+
+// Pure function you can reuse anywhere (API route, getStaticProps, etc.)
 export async function buildTrackerData({ months = 12 } = {}) {
+  // Find earliest valuation date
   const earliestDate = PICKS.reduce(
     (min, p) => (new Date(p.date) < new Date(min) ? p.date : min),
     PICKS[0].date
@@ -35,24 +55,24 @@ export async function buildTrackerData({ months = 12 } = {}) {
 
   const endDate = new Date().toISOString().slice(0, 10);
 
-  const fetchYahooData = async (symbol, startDate) => {
+  // Fetch Yahoo Finance DAILY data (we’ll downsample to weekly ourselves)
+  const fetchYahooDaily = async (symbol, startDate) => {
     const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(
       symbol
     )}?period1=${Math.floor(new Date(startDate).getTime() / 1000)}&period2=${Math.floor(
       new Date(endDate).getTime() / 1000
-    )}&interval=1wk`;
+    )}&interval=1d`;
 
     try {
-      const r = await fetch(url, {
+      const resData = await fetch(url, {
         cache: "no-store",
         headers: {
-          // Helps reduce occasional Yahoo blocks
           "User-Agent": "Mozilla/5.0",
           Accept: "application/json",
         },
       });
 
-      const json = await r.json();
+      const json = await resData.json();
       const result = json?.chart?.result?.[0];
 
       if (!result || !result.indicators?.quote?.[0]?.close) {
@@ -75,15 +95,16 @@ export async function buildTrackerData({ months = 12 } = {}) {
     }
   };
 
-  const datasets = await Promise.all(PICKS.map((p) => fetchYahooData(p.symbol, earliestDate)));
+  // Fetch all DAILY datasets concurrently
+  const dailyDatasets = await Promise.all(PICKS.map((p) => fetchYahooDaily(p.symbol, earliestDate)));
 
-  const sp500 = datasets[0] || [];
-  const stocks = PICKS.slice(1).map((p, i) => ({
+  const sp500Daily = dailyDatasets[0] || [];
+  const stocksDaily = PICKS.slice(1).map((p, i) => ({
     ...p,
-    data: datasets[i + 1] || [],
+    dataDaily: dailyDatasets[i + 1] || [],
   }));
 
-  if (!sp500.length) {
+  if (!sp500Daily.length) {
     console.warn("⚠️ No S&P 500 data fetched; returning fallback sample.");
     return [
       { date: earliestDate, sp500: 0, portfolio: 0 },
@@ -92,52 +113,39 @@ export async function buildTrackerData({ months = 12 } = {}) {
     ];
   }
 
-  const aligned = sp500.map((sp) => {
-    const entry = { date: sp.date };
-    entry.sp500 = ((sp.close / sp500[0].close) - 1) * 100;
+  // Build WEEKLY anchor dates from S&P DAILY (last trading day each week)
+  const sp500Weekly = dailyToWeeklyLastClose(sp500Daily);
+
+  // Base for S&P = first weekly close in our window
+  const spBase = sp500Weekly[0]?.close;
+
+  // Align everything to S&P weekly dates, but compute using DAILY closes
+  const aligned = sp500Weekly.map((spW) => {
+    const entry = { date: spW.date };
+
+    entry.sp500 = spBase ? ((spW.close / spBase) - 1) * 100 : 0;
 
     let blendSum = 0;
     let count = 0;
 
-    for (const stock of stocks) {
-      const { name, date: pickDate, data: series } = stock;
+    for (const stock of stocksDaily) {
+      const { name, date: pickDate, dataDaily: seriesDaily } = stock;
 
-      // If the S&P date is before your pick date, hide this series
-      if (new Date(sp.date) < new Date(pickDate)) {
+      if (new Date(spW.date) < new Date(pickDate)) {
         entry[name] = null;
         continue;
       }
 
-      // Base candle = first data point ON/AFTER pick date
-      const basePoint = series.find((d) => new Date(d.date) >= new Date(pickDate));
-      const baseClose = basePoint?.close ?? null;
-      const baseDate = basePoint?.date ?? null;
+      // Base = DAILY close ON or BEFORE pickDate (fixes mid-week pick dates)
+      const base = getCloseOnOrBefore(seriesDaily, pickDate);
 
-      // If we don't even have a base candle yet, can't compute returns
-      if (baseClose == null || !baseDate) {
-        entry[name] = null;
-        continue;
-      }
+      // Now = DAILY close ON or BEFORE the weekly anchor date (usually that Friday)
+      const now = getCloseOnOrBefore(seriesDaily, spW.date);
 
-      // IMPORTANT FIX:
-      // Only compute returns once the S&P date is ON/AFTER the base candle date.
-      // (Otherwise "now" will often be null due to weekly stamp mismatches.)
-      if (new Date(sp.date) < new Date(baseDate)) {
-        entry[name] = null;
-        continue;
-      }
-
-      // Now close = last close ON/BEFORE the S&P date
-      const nowClose = getCloseOnOrBefore(series, sp.date);
-
-      if (nowClose != null) {
-        const ret = ((nowClose / baseClose) - 1) * 100;
-        entry[name] = ret;
-
-        if (Number.isFinite(ret)) {
-          blendSum += ret;
-          count++;
-        }
+      if (base != null && now != null) {
+        entry[name] = ((now / base) - 1) * 100;
+        blendSum += entry[name];
+        count++;
       } else {
         entry[name] = null;
       }
@@ -147,11 +155,9 @@ export async function buildTrackerData({ months = 12 } = {}) {
     return entry;
   });
 
-  const m = Number.isFinite(months) ? months : 12;
-  const monthsClamped = Math.min(Math.max(m, 1), 60);
-
+  // Keep only last N months (based on weekly dates)
   const cutoff = new Date();
-  cutoff.setMonth(cutoff.getMonth() - monthsClamped);
+  cutoff.setMonth(cutoff.getMonth() - months);
 
   return aligned.filter((d) => new Date(d.date) >= cutoff);
 }
@@ -163,8 +169,7 @@ export default async function handler(req, res) {
 
     const data = await buildTrackerData({ months });
 
-    // Standard Next API response (do not import this handler into pages)
-    res.setHeader("Cache-Control", "no-store");
+    if (res?.setHeader) res.setHeader("Cache-Control", "no-store");
     return res.status(200).json(data);
   } catch (err) {
     console.error("Tracker API fatal error:", err);
