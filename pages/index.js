@@ -358,8 +358,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
       <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md space-y-6">
 
-        <p className="text-gray-300 leading-relaxed">
-          <strong className="text-white">Mission:</strong>{" "}
+        <div className="pt-4 border-t border-gray-700 space-y-2">
+          <h3 className="text-lg font-semibold text-gray-100">
+            Mission
+          </h3>
           Turn complex policy, capital allocation, and structural change into
           clear, asymmetric investment ideas through driver-based models,
           rigorous research, and long-horizon thinking.
