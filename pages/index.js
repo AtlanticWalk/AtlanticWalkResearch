@@ -348,8 +348,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // ---------------- ABOUT ----------------
-   if (page === "about") {
+   // ---------------- ABOUT ----------------
+if (page === "about") {
   return (
     <section className="max-w-4xl mx-auto text-gray-100 space-y-8">
       <h2 className="text-2xl font-semibold border-b border-gray-700 pb-3">
@@ -357,15 +357,14 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       </h2>
 
       <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md space-y-6">
-
         <div className="pt-4 border-t border-gray-700 space-y-2">
-          <h3 className="text-lg font-semibold text-gray-100">
-            Mission
-          </h3>
-          Turn complex policy, capital allocation, and structural change into
-          clear, asymmetric investment ideas through driver-based models,
-          rigorous research, and long-horizon thinking.
-        </p>
+          <h3 className="text-lg font-semibold text-gray-100">Mission</h3>
+          <p className="text-gray-300 leading-relaxed">
+            Turn complex policy, capital allocation, and structural change into
+            clear, asymmetric investment ideas through driver-based models,
+            rigorous research, and long-horizon thinking.
+          </p>
+        </div>
 
         <p className="text-gray-300 leading-relaxed">
           Atlantic Walk Research is an independent equity research platform
@@ -385,11 +384,11 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             diligence, and asymmetric payoff profiles.
           </p>
         </div>
-
       </div>
     </section>
   );
 }
+
 
     // ---------------- CONTACT ----------------
     if (page === "contact") {
