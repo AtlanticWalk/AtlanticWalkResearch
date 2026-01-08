@@ -391,7 +391,7 @@ if (page === "about") {
             <img
               src="/glenn.jpg"
               alt="Glenn Rentrop"
-              className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
+              className="w-28 h-28 sm:w-24 sm:h-24 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
             />
           </div>
         </div>
