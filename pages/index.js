@@ -374,27 +374,28 @@ if (page === "about") {
         </p>
 
         <div className="pt-4 border-t border-gray-700 space-y-2">
-  <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-start">
-    <div className="space-y-2">
-      <h3 className="text-lg font-semibold text-gray-100">
-        Glenn Rentrop — Founder & Managing Partner
-      </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-start">
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold text-gray-100">
+                Glenn Rentrop — Founder & Managing Partner
+              </h3>
 
-      <p className="text-gray-300 leading-relaxed">
-        Glenn focuses on driver-based financial modeling, special
-        situations, and long-horizon opportunities across semicap,
-        materials, biotech, and AI. His work emphasizes clarity, primary
-        diligence, and asymmetric payoff profiles.
-      </p>
-    </div>
+              <p className="text-gray-300 leading-relaxed">
+                Glenn focuses on driver-based financial modeling, special
+                situations, and long-horizon opportunities across semicap,
+                materials, biotech, and AI. His work emphasizes clarity, primary
+                diligence, and asymmetric payoff profiles.
+              </p>
+            </div>
 
-    <img
-      src="/glenn.jpg"
-      alt="Glenn Rentrop"
-      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
-    />
-  </div>
-</div>
+            <img
+              src="/glenn.jpg"
+              alt="Glenn Rentrop"
+              className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
+            />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }
