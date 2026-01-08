@@ -369,26 +369,34 @@ if (page === "about") {
         <p className="text-gray-300 leading-relaxed">
           Atlantic Walk Research is an independent equity research platform
           delivering deep fundamental analysis and conviction-driven ideas.
-          Coverage emphasizes catalysts such as regulation, capital structure,
-          corporate actions, and litigation that unlock mispriced value.
+          Coverage emphasizes catalysts such as deep value, margin inflection,
+          and special situations, unlocking mispriced value.
         </p>
 
         <div className="pt-4 border-t border-gray-700 space-y-2">
           <h3 className="text-lg font-semibold text-gray-100">
             Glenn Rentrop — Founder & Managing Partner
           </h3>
-          <p className="text-gray-300 leading-relaxed">
-            Glenn focuses on driver-based financial modeling, special
-            situations, and long-horizon opportunities across semicap,
-            materials, biotech, and AI. His work emphasizes clarity, primary
-            diligence, and asymmetric payoff profiles.
-          </p>
+
+          <div className="flex flex-col sm:flex-row gap-5 sm:items-start">
+            <img
+              src="/glenn.jpg"
+              alt="Glenn Rentrop"
+              className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-gray-800 object-cover shrink-0"
+            />
+
+            <p className="text-gray-300 leading-relaxed">
+              Glenn focuses on driver-based financial modeling, special
+              situations, and long-horizon opportunities across semicap,
+              materials, biotech, healthcare and AI. His work emphasizes 
+              clarity, primary diligence, and asymmetric payoff profiles.
+            </p>
+          </div>
         </div>
       </div>
     </section>
   );
 }
-
 
     // ---------------- CONTACT ----------------
     if (page === "contact") {
