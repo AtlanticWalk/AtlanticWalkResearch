@@ -374,24 +374,26 @@ if (page === "about") {
         </p>
 
         <div className="pt-4 border-t border-gray-700 space-y-2">
-          <h3 className="text-lg font-semibold text-gray-100">
-            Glenn Rentrop — Founder & Managing Partner
-          </h3>
+  <div className="flex items-start justify-between gap-4">
+    <h3 className="text-lg font-semibold text-gray-100">
+      Glenn Rentrop — Founder & Managing Partner
+    </h3>
 
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-5">
-  <p className="text-gray-300 leading-relaxed sm:flex-1">
+    <img
+      src="/glenn.jpg"
+      alt="Glenn Rentrop"
+      className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl border border-gray-800 object-cover shrink-0"
+    />
+  </div>
+
+  <p className="text-gray-300 leading-relaxed">
     Glenn focuses on driver-based financial modeling, special
     situations, and long-horizon opportunities across semicap,
     materials, biotech, and AI. His work emphasizes clarity, primary
     diligence, and asymmetric payoff profiles.
   </p>
-
-  <img
-    src="/glenn.jpg"
-    alt="Glenn Rentrop"
-    className="w-28 h-28 sm:w-32 sm:h-32 rounded-xl border border-gray-800 object-cover shrink-0 sm:ml-auto"
-  />
 </div>
+
         </div>
       </div>
     </section>
