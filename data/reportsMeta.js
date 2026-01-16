@@ -17,9 +17,16 @@ export const reportsMeta = [
   ticker: "NYSE: BFLY",
   date: "2025-12-11" 
 },
+  {
+  slug: "BFLYJPMHEALTHCARE",
+  title: "Butterfly Network (NYSE:BFLY): Update Following J.P. Morgan Healthcare Presentation",
+  ticker: "NYSE: BFLY",
+  date: "2026-1-15" 
+},
   // add more here as needed
 
 ];
+
 
 
 
