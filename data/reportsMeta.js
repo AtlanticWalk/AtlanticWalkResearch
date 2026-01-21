@@ -23,9 +23,16 @@ export const reportsMeta = [
   ticker: "NYSE: BFLY",
   date: "2026-01-15" 
 },
+  {
+  slug: "RAREREPORT",
+  title: "Ultragenyx Pharmaceuticals, Inc. (NASDAQ:RARE): From Peak Burn To Profitability",
+  ticker: "NASDAQ: RARE",
+  date: "2026-01-21" 
+},
   // add more here as needed
 
 ];
+
 
 
 
