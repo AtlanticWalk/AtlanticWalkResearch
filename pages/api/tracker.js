@@ -1,14 +1,15 @@
 // pages/api/tracker.js
 
 const PICKS = [
-  { symbol: "^GSPC", name: "sp500", date: "2024-11-21" },
-  { symbol: "AMAT", name: "amat", date: "2024-11-21" },
-  { symbol: "LRCX", name: "lrcx", date: "2024-11-30" },
-  { symbol: "NBIS", name: "nbis", date: "2024-12-29" },
-  { symbol: "MP", name: "mp", date: "2025-05-26" },
-  { symbol: "ACMR", name: "acmr", date: "2025-06-24" },
-  { symbol: "AVDL", name: "avdl", date: "2025-09-21" },
-  { symbol: "BFLY", name: "bfly", date: "2025-12-10" },
+  { symbol: "^GSPC", name: "S&P500", date: "2024-11-21" },
+  { symbol: "AMAT", name: "AMAT", date: "2024-11-21" },
+  { symbol: "LRCX", name: "LRCX", date: "2024-11-30" },
+  { symbol: "NBIS", name: "NBIS", date: "2024-12-29" },
+  { symbol: "MP", name: "MP", date: "2025-05-26" },
+  { symbol: "ACMR", name: "ACMR", date: "2025-06-24" },
+  { symbol: "AVDL", name: "AVDL", date: "2025-09-21" },
+  { symbol: "BFLY", name: "BFLY", date: "2025-12-10" },
+  { symbol: "RARE", name: "RARE", date: "2026-01-21" },
 ];
 
 // Helper: last close ON or BEFORE target date (robust for mismatched calendars)
