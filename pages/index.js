@@ -596,13 +596,14 @@ if (page === "about") {
                   {/* Lines — restored full set */}
                   <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="portfolio" stroke="#ffffff" name="Atlantic Walk Portfolio" dot={false} />
-                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
-                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
-                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
-                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
-                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
-                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
-                  <Line type="monotone" dataKey="bfly" stroke="#8b5cf6" name="BFLY" dot={false} /> 
+                  <Line type="monotone" dataKey="AVDL" stroke="#ff4d4f" name="AVDL" dot={false} />
+                  <Line type="monotone" dataKey="MP" stroke="#82ca9d" name="MP Materials" dot={false} />
+                  <Line type="monotone" dataKey="ACMR" stroke="#ff7300" name="ACM Research" dot={false} />
+                  <Line type="monotone" dataKey="NBIS" stroke="#13c2c2" name="NBIS" dot={false} />
+                  <Line type="monotone" dataKey="AMAT" stroke="#2f54eb" name="AMAT" dot={false} />
+                  <Line type="monotone" dataKey="LRCX" stroke="#a0d911" name="LRCX" dot={false} />
+                  <Line type="monotone" dataKey="BFLY" stroke="#8b5cf6" name="BFLY" dot={false} />
+                  <Line type="monotone" dataKey="RARE" stroke="#0F766E" name="RARE" dot={false} />
                     </LineChart>
               </ResponsiveContainer>
             </div>
