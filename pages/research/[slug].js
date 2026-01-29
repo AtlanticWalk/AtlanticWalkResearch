@@ -126,6 +126,8 @@ export default function ReportPage({ slug, pdfSrc }) {
           canvas.style.width = `${Math.floor(viewport.width)}px`;
           canvas.style.height = `${Math.floor(viewport.height)}px`;
           canvas.style.display = "block";
+          canvas.style.maxWidth = "100%";
+          canvas.style.height = "auto";
 
           // IMPORTANT: remove any rounding/border/shadow (true “float”)
           canvas.style.borderRadius = "0";
@@ -172,7 +174,7 @@ export default function ReportPage({ slug, pdfSrc }) {
       </Head>
 
      {/* Toolbar */}
-<div className="sticky top-0 z-50 text-gray-200">
+<div className="sticky top-0 z-50 text-gray-200 bg-black/70 backdrop-blur-sm">
   <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
     <div className="flex items-center gap-3">
       <button
