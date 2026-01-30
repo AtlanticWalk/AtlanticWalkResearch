@@ -25,11 +25,16 @@ export async function getServerSideProps({ res }) {
   // Core site URLs you want indexed
   const staticUrls = [
     { loc: `${SITE_URL}/`, changefreq: "weekly", priority: "1.0" },
+
+    { loc: `${SITE_URL}/highlights`, changefreq: "weekly", priority: "0.8" },
+    { loc: `${SITE_URL}/models`, changefreq: "monthly", priority: "0.7" },
     { loc: `${SITE_URL}/research`, changefreq: "weekly", priority: "0.9" },
     { loc: `${SITE_URL}/performance`, changefreq: "weekly", priority: "0.8" },
+
     { loc: `${SITE_URL}/about`, changefreq: "monthly", priority: "0.6" },
     { loc: `${SITE_URL}/contact`, changefreq: "monthly", priority: "0.5" },
   ];
+
 
   // Read PDFs from /public/reports and map to /research/<slug>
   const reportsDir = path.join(process.cwd(), "public", "reports");
