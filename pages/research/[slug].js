@@ -7,7 +7,9 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
 export async function getStaticPaths() {
-  const files = fs.readdirSync(REPORTS_DIR).filter((file) => file.endsWith(".pdf"));
+  const files = fs
+    .readdirSync(REPORTS_DIR)
+    .filter((file) => file.endsWith(".pdf"));
 
   const paths = files.map((filename) => ({
     params: { slug: filename.replace(/\.pdf$/, "") },
@@ -59,12 +61,10 @@ export default function ReportPage({ slug, pdfSrc }) {
     [title, pageUrl]
   );
 
+  // ✅ Always return to the real Research Library route
   const handleReturnToLibrary = (e) => {
     e.preventDefault();
-    if (typeof window !== "undefined") {
-      localStorage.setItem("atlanticwalk_page", "research");
-      window.location.href = "/";
-    }
+    router.push("/research");
   };
 
   // ---- PDF.js canvas renderer ----
@@ -90,7 +90,10 @@ export default function ReportPage({ slug, pdfSrc }) {
         const pdfjsLib = await import("pdfjs-dist/build/pdf");
         pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs";
 
-        const loadingTask = pdfjsLib.getDocument({ url: pdfSrc, withCredentials: false });
+        const loadingTask = pdfjsLib.getDocument({
+          url: pdfSrc,
+          withCredentials: false,
+        });
         const pdf = await loadingTask.promise;
         if (cancelled) return;
 
@@ -164,7 +167,10 @@ export default function ReportPage({ slug, pdfSrc }) {
         <title>{title} | Atlantic Walk Research</title>
         <meta name="description" content={`Full research report on ${title}.`} />
         <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
-        <meta property="og:description" content={`Independent equity research report on ${title}.`} />
+        <meta
+          property="og:description"
+          content={`Independent equity research report on ${title}.`}
+        />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
         <script
@@ -173,70 +179,72 @@ export default function ReportPage({ slug, pdfSrc }) {
         />
       </Head>
 
-     {/* Toolbar */}
-<div className="sticky top-0 z-50 text-gray-200 bg-black/70 backdrop-blur-sm">
-  <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
-    <div className="flex items-center gap-3">
-      <button
-        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
-        onClick={() => router.back()}
-      >
-        ← Back
-      </button>
-    </div>
+      {/* Toolbar */}
+      <div className="sticky top-0 z-50 text-gray-200 bg-black/70 backdrop-blur-sm">
+        <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <button
+              className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+              onClick={handleReturnToLibrary}
+            >
+              ← Back
+            </button>
+          </div>
 
-    <div className="flex items-center gap-2 text-gray-200">
-      <button
-        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
-        onClick={() => {
-          setScale((s) => Math.max(0.7, Math.round((s - 0.1) * 100) / 100));
-          setRenderKey((k) => k + 1);
-        }}
-        title="Zoom out"
-      >
-        −
-      </button>
+          <div className="flex items-center gap-2 text-gray-200">
+            <button
+              className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+              onClick={() => {
+                setScale((s) => Math.max(0.7, Math.round((s - 0.1) * 100) / 100));
+                setRenderKey((k) => k + 1);
+              }}
+              title="Zoom out"
+            >
+              −
+            </button>
 
-      <div className="px-3 py-2 rounded-lg border border-white/15 text-sm text-gray-200">
-        Zoom: {Math.round(scale * 100)}%
+            <div className="px-3 py-2 rounded-lg border border-white/15 text-sm text-gray-200">
+              Zoom: {Math.round(scale * 100)}%
+            </div>
+
+            <button
+              className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+              onClick={() => {
+                setScale((s) => Math.min(2.2, Math.round((s + 0.1) * 100) / 100));
+                setRenderKey((k) => k + 1);
+              }}
+              title="Zoom in"
+            >
+              +
+            </button>
+
+            <a
+              className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+              href={pdfSrc}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open PDF ↗
+            </a>
+
+            <a
+              className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
+              href={pdfSrc}
+              download
+            >
+              Download
+            </a>
+          </div>
+        </div>
       </div>
-
-      <button
-        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
-        onClick={() => {
-          setScale((s) => Math.min(2.2, Math.round((s + 0.1) * 100) / 100));
-          setRenderKey((k) => k + 1);
-        }}
-        title="Zoom in"
-      >
-        +
-      </button>
-
-      <a
-        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
-        href={pdfSrc}
-        target="_blank"
-        rel="noreferrer"
-      >
-        Open PDF ↗
-      </a>
-
-      <a
-        className="px-3 py-2 rounded-lg border border-white/20 hover:border-white/35 hover:bg-white/5 text-sm text-gray-200"
-        href={pdfSrc}
-        download
-      >
-        Download
-      </a>
-    </div>
-  </div>
-</div>
 
       {/* ✅ Content area: transparent */}
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-bold mb-2 text-white">{title}</h1>
 
-        {loading && <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>}
+        {loading && (
+          <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>
+        )}
 
         {err && (
           <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
