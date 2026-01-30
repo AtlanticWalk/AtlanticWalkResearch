@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Head from "next/head";
 import fs from "fs";
 import path from "path";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { reportsMeta } from "../data/reportsMeta";
 import {
   LineChart,
@@ -15,7 +17,7 @@ import {
 } from "recharts";
 
 /* --- Mobile header + drawer (mobile only) --- */
-function MobileHeader({ setPage }) {
+function MobileHeader() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -26,26 +28,31 @@ function MobileHeader({ setPage }) {
   }, [open]);
 
   const items = [
-    ["Home", "home"],
-    ["Highlights", "highlights"],
-    ["Models", "models"],
-    ["Research", "research"],
-    ["Performance", "performance"],
-    ["About", "about"],
-    ["Contact", "contact"],
+    ["Home", "/"],
+    ["Highlights", "/highlights"],
+    ["Models", "/models"],
+    ["Research", "/research"],
+    ["Performance", "/performance"],
+    ["About", "/about"],
+    ["Contact", "/contact"],
   ];
 
   return (
     <div className="md:hidden fixed top-0 left-0 right-0 z-50">
       <div className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
         <div className="px-4 h-14 flex items-center justify-between">
-          <button onClick={() => setPage("home")} className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="flex items-center gap-2"
+            onClick={() => setOpen(false)}
+          >
             <img
               src="/atlantic_walk_logo_transparent.png"
               alt="Atlantic Walk Research"
               className="h-8 w-auto"
             />
-          </button>
+          </Link>
+
           <button
             aria-label="Toggle menu"
             onClick={() => setOpen((s) => !s)}
@@ -65,17 +72,15 @@ function MobileHeader({ setPage }) {
       >
         <div className="bg-black/80 backdrop-blur-sm border-b border-gray-800">
           <nav className="px-4 py-3 flex flex-col gap-3 text-gray-200">
-            {items.map(([label, key]) => (
-              <button
-                key={key}
-                onClick={() => {
-                  setOpen(false);
-                  setPage(key);
-                }}
+            {items.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
                 className="py-2 px-2 text-left rounded-lg hover:bg-white/5"
               >
                 {label}
-              </button>
+              </Link>
             ))}
           </nav>
         </div>
@@ -85,35 +90,39 @@ function MobileHeader({ setPage }) {
 }
 
 export default function AtlanticWalkResearch({ reports = [] }) {
-  const [page, setPage] = useState("home");
+  const router = useRouter();
+
+  // Determine which “page” we’re on from the URL path
+  const page = useMemo(() => {
+    const p = router.asPath.split("?")[0].replace(/^\/+|\/+$/g, "");
+    return p === "" ? "home" : p; // home, about, models, research, etc.
+  }, [router.asPath]);
+
   const [trackerData, setTrackerData] = useState([]);
-
-  useEffect(() => {
-    const savedPage = localStorage.getItem("atlanticwalk_page");
-    if (savedPage) setPage(savedPage);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("atlanticwalk_page", page);
-  }, [page]);
 
   useEffect(() => {
     if (page === "performance") {
       const fetchData = async () => {
         try {
-          const res = await fetch("/api/tracker");
+          const res = await fetch("/api/tracker", { cache: "no-store" });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const json = await res.json();
-          setTrackerData(json);
+          setTrackerData(Array.isArray(json) ? json : []);
         } catch (err) {
           console.error("Error fetching tracker data:", err);
+          setTrackerData([]);
         }
       };
       fetchData();
     }
   }, [page]);
 
+  const canonical = `https://atlanticwalkresearch.com${
+    router.asPath.split("?")[0] === "/" ? "" : router.asPath.split("?")[0]
+  }`;
+
   const renderPage = () => {
-    // ---------------- HIGHLIGHTS (new) ----------------
+    // ---------------- HIGHLIGHTS ----------------
     if (page === "highlights") {
       return (
         <section className="max-w-4xl mx-auto text-gray-100 space-y-8">
@@ -235,9 +244,8 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-    // ---------------- RESEARCH (UPDATED TO LIST + SA LINKS) ----------------
+    // ---------------- RESEARCH ----------------
     if (page === "research") {
-      // External Seeking Alpha reports
       const externalReports = [
         {
           id: "avdl-sa",
@@ -269,7 +277,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
         },
       ];
 
-      // Internal PDF-based reports
       const internalReports = (reports || []).map((r) => ({
         id: r.slug,
         title: r.title,
@@ -290,7 +297,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             Research Library
           </h2>
 
-          {/* Header row */}
           <div className="grid grid-cols-[3fr_1fr_1fr_1.4fr] text-sm font-semibold border-b border-gray-700 pb-2">
             <div>Title</div>
             <div>Ticker</div>
@@ -298,7 +304,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <div>Source / Link</div>
           </div>
 
-          {/* Rows */}
           <div className="divide-y divide-gray-800 text-sm">
             {allReports.length > 0 ? (
               allReports.map((item) => (
@@ -319,11 +324,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                     {item.date
                       ? new Date(item.date + "T00:00:00").toLocaleDateString(
                           "en-US",
-                          {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                          }
+                          { year: "numeric", month: "short", day: "numeric" }
                         )
                       : "—"}
                   </div>
@@ -348,183 +349,176 @@ export default function AtlanticWalkResearch({ reports = [] }) {
       );
     }
 
-   // ---------------- ABOUT ----------------
-if (page === "about") {
-  return (
-    <section className="max-w-4xl mx-auto text-gray-100 space-y-8">
-      <h2 className="text-2xl font-semibold border-b border-gray-700 pb-3">
-        About
-      </h2>
+    // ---------------- ABOUT ----------------
+    if (page === "about") {
+      return (
+        <section className="max-w-4xl mx-auto text-gray-100 space-y-8">
+          <h2 className="text-2xl font-semibold border-b border-gray-700 pb-3">
+            About
+          </h2>
 
-      <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md space-y-6">
-        <div className="pt-4 border-t border-gray-700 space-y-2">
-          <h3 className="text-lg font-semibold text-gray-100">Mission</h3>
-          <p className="text-gray-300 leading-relaxed">
-            Turn complex policy, capital allocation, and structural change into
-            clear, asymmetric investment ideas through driver-based models,
-            rigorous research, and long-horizon thinking.
-          </p>
-        </div>
-
-        <p className="text-gray-300 leading-relaxed">
-          Atlantic Walk Research is an independent equity research platform
-          delivering deep fundamental analysis and conviction-driven ideas.
-          Coverage emphasizes catalysts such as deep value, margin inflection,
-          and special situations, unlocking mispriced value.
-        </p>
-
-        <div className="pt-4 border-t border-gray-700 space-y-2">
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-start">
-            <div className="space-y-2">
-              <h3 className="text-lg font-semibold text-gray-100">
-                Glenn Rentrop — Founder & Managing Partner
-              </h3>
-
+          <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md space-y-6">
+            <div className="pt-4 border-t border-gray-700 space-y-2">
+              <h3 className="text-lg font-semibold text-gray-100">Mission</h3>
               <p className="text-gray-300 leading-relaxed">
-                Glenn focuses on driver-based financial modeling, special
-                situations, and long-horizon opportunities across semicap,
-                materials, biotech, and AI. His work emphasizes clarity, primary
-                diligence, and asymmetric payoff profiles.
+                Turn complex policy, capital allocation, and structural change
+                into clear, asymmetric investment ideas through driver-based
+                models, rigorous research, and long-horizon thinking.
               </p>
             </div>
 
-            <img
-              src="/glenn.jpg"
-              alt="Glenn Rentrop"
-              className="w-28 h-28 sm:w-36 sm:h-36 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
-            />
+            <p className="text-gray-300 leading-relaxed">
+              Atlantic Walk Research is an independent equity research platform
+              delivering deep fundamental analysis and conviction-driven ideas.
+              Coverage emphasizes catalysts such as deep value, margin
+              inflection, and special situations, unlocking mispriced value.
+            </p>
+
+            <div className="pt-4 border-t border-gray-700 space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-4 items-start">
+                <div className="space-y-2">
+                  <h3 className="text-lg font-semibold text-gray-100">
+                    Glenn Rentrop — Founder & Managing Partner
+                  </h3>
+
+                  <p className="text-gray-300 leading-relaxed">
+                    Glenn focuses on driver-based financial modeling, special
+                    situations, and long-horizon opportunities across semicap,
+                    materials, biotech, and AI. His work emphasizes clarity,
+                    primary diligence, and asymmetric payoff profiles.
+                  </p>
+                </div>
+
+                <img
+                  src="/glenn.jpg"
+                  alt="Glenn Rentrop"
+                  className="w-28 h-28 sm:w-36 sm:h-36 rounded-xl border border-gray-800 object-cover shrink-0 sm:justify-self-end"
+                />
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+        </section>
+      );
+    }
 
     // ---------------- CONTACT ----------------
     if (page === "contact") {
-  return (
-    <section
-      className="
-        max-w-md 
-        w-full 
-        mx-auto 
-        md:ml-auto 
-        md:mr-[8rem] 
-        md:text-right 
-        text-center 
-        px-4 
-        pt-24      /* pushes content ~1 inch down */
-        pb-6
-        min-h-[20vh]   /* reduces page height so footer is visible */
-        flex 
-        flex-col 
-        justify-start 
-        space-y-4
-      "
-    >
-      <p className="text-lg text-black font-semibold flex items-center md:justify-end justify-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-black"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
+      return (
+        <section
+          className="
+            max-w-md 
+            w-full 
+            mx-auto 
+            md:ml-auto 
+            md:mr-[8rem] 
+            md:text-right 
+            text-center 
+            px-4 
+            pt-24      /* pushes content ~1 inch down */
+            pb-6
+            min-h-[20vh]   /* reduces page height so footer is visible */
+            flex 
+            flex-col 
+            justify-start 
+            space-y-4
+          "
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16 12H8m0 0l4 4m-4-4l4-4M4 6h16v12H4V6z"
-          />
-        </svg>
-        <a
-          href="mailto:grentrop@atlanticwalkresearch.com"
-          className="hover:underline"
-        >
-          grentrop@atlanticwalkresearch.com
-        </a>
-      </p>
+          <p className="text-lg text-black font-semibold flex items-center md:justify-end justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-black"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 12H8m0 0l4 4m-4-4l4-4M4 6h16v12H4V6z"
+              />
+            </svg>
+            <a href="mailto:grentrop@atlanticwalkresearch.com" className="hover:underline">
+              grentrop@atlanticwalkresearch.com
+            </a>
+          </p>
 
-      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-black"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth={2}
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        <a
-          href="https://seekingalpha.com/author/glenn-rentrop"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          Seeking Alpha
-        </a>
-      </p>
+          <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-black"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            <a
+              href="https://seekingalpha.com/author/glenn-rentrop"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              Seeking Alpha
+            </a>
+          </p>
 
-      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-black"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-.9 1.7-2.2 3.6-2.2 3.9 0 4.6 2.5 4.6 5.8V24h-4v-7.7c0-1.8 0-4.2-2.6-4.2-2.6 0-3 2-3 4V24h-4V8z" />
-        </svg>
-        <a
-          href="https://www.linkedin.com/in/grentrop/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          LinkedIn
-        </a>
-      </p>
+          <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-black"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M4.98 3.5C4.98 4.88 3.9 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.5 8h4V24h-4V8zm7.5 0h3.8v2.2h.1c.5-.9 1.7-2.2 3.6-2.2 3.9 0 4.6 2.5 4.6 5.8V24h-4v-7.7c0-1.8 0-4.2-2.6-4.2-2.6 0-3 2-3 4V24h-4V8z" />
+            </svg>
+            <a
+              href="https://www.linkedin.com/in/grentrop/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              LinkedIn
+            </a>
+          </p>
 
-      <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 text-black"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 1.838 24h20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
-        </svg>
-        <a
-          href="https://x.com/AtlanticWalk"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:underline"
-        >
-          X
-        </a>
-      </p>
-    </section>
-  );
-}
+          <p className="text-lg text-black flex items-center md:justify-end justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-5 h-5 text-black"
+              fill="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path d="M22.162 0H1.838A1.84 1.84 0 0 0 0 1.838v20.324A1.84 1.84 0 0 0 1.838 24h20.324A1.84 1.84 0 0 0 24 22.162V1.838A1.84 1.84 0 0 0 22.162 0zM17.65 7.365l-4.248 5.112 4.504 5.985h-3.035l-2.818-3.749-3.223 3.749H5.6l4.544-5.284-4.327-5.814h3.082l2.643 3.576 3.056-3.576h3.052z" />
+            </svg>
+            <a
+              href="https://x.com/AtlanticWalk"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline"
+            >
+              X
+            </a>
+          </p>
+        </section>
+      );
+    }
 
     // ---------------- PERFORMANCE ----------------
     if (page === "performance") {
       return (
         <section className="max-w-5xl mx-auto text-gray-100">
           <p className="mb-6 text-gray-300">
-            Tracking cumulative percentage returns of Atlantic Walk Research
-            picks versus the S&amp;P 500. Returns are normalized to 0% at time of valuation.
+            Tracking cumulative percentage returns of Atlantic Walk Research picks
+            versus the S&amp;P 500. Returns are normalized to 0% at time of valuation.
           </p>
 
           {trackerData.length > 0 ? (
             <div className="bg-neutral-600 bg-opacity-20 rounded-xl p-3 mt-0">
               <ResponsiveContainer width="100%" height={420}>
                 <LineChart data={trackerData}>
-                  <XAxis
-                    dataKey="date"
-                    stroke="#aaaaaa"
-                    tick={{ fill: "#aaaaaa", fontWeight: 500 }}
-                  />
+                  <XAxis dataKey="date" stroke="#aaaaaa" tick={{ fill: "#aaaaaa", fontWeight: 500 }} />
                   <YAxis
                     tickFormatter={(v) => `${v.toFixed(0)}%`}
                     domain={["auto", "auto"]}
@@ -566,13 +560,7 @@ if (page === "about") {
                                 gap: "8px",
                               }}
                             >
-                              <span
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  gap: "6px",
-                                }}
-                              >
+                              <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                                 <span
                                   style={{
                                     width: "10px",
@@ -593,18 +581,17 @@ if (page === "about") {
                   <Legend wrapperStyle={{ color: "#ffffff", fontWeight: "bold" }} />
                   <ReferenceLine y={0} stroke="#9ca3af" strokeDasharray="3 3" />
 
-                  {/* Lines — restored full set */}
                   <Line type="monotone" dataKey="sp500" stroke="#10b981" name="S&P 500" strokeWidth={2} dot={false} />
                   <Line type="monotone" dataKey="portfolio" stroke="#ffffff" name="Atlantic Walk Portfolio" dot={false} />
-                  <Line type="monotone" dataKey="AVDL" stroke="#ff4d4f" name="AVDL" dot={false} />
-                  <Line type="monotone" dataKey="MP" stroke="#82ca9d" name="MP Materials" dot={false} />
-                  <Line type="monotone" dataKey="ACMR" stroke="#ff7300" name="ACM Research" dot={false} />
-                  <Line type="monotone" dataKey="NBIS" stroke="#13c2c2" name="NBIS" dot={false} />
-                  <Line type="monotone" dataKey="AMAT" stroke="#2f54eb" name="AMAT" dot={false} />
-                  <Line type="monotone" dataKey="LRCX" stroke="#a0d911" name="LRCX" dot={false} />
-                  <Line type="monotone" dataKey="BFLY" stroke="#8b5cf6" name="BFLY" dot={false} />
-                  <Line type="monotone" dataKey="RARE" stroke="#0F766E" name="RARE" dot={false} />
-                    </LineChart>
+                  <Line type="monotone" dataKey="avdl" stroke="#ff4d4f" name="AVDL" dot={false} />
+                  <Line type="monotone" dataKey="mp" stroke="#82ca9d" name="MP Materials" dot={false} />
+                  <Line type="monotone" dataKey="acmr" stroke="#ff7300" name="ACM Research" dot={false} />
+                  <Line type="monotone" dataKey="nbis" stroke="#13c2c2" name="NBIS" dot={false} />
+                  <Line type="monotone" dataKey="amat" stroke="#2f54eb" name="AMAT" dot={false} />
+                  <Line type="monotone" dataKey="lrcx" stroke="#a0d911" name="LRCX" dot={false} />
+                  <Line type="monotone" dataKey="bfly" stroke="#8b5cf6" name="BFLY" dot={false} />
+                  <Line type="monotone" dataKey="rare" stroke="#0F766E" name="RARE" dot={false} />
+                </LineChart>
               </ResponsiveContainer>
             </div>
           ) : (
@@ -621,18 +608,18 @@ if (page === "about") {
           src="/atlantic_walk_logo_transparent.png"
           alt="Atlantic Walk Research Logo"
           className="w-80 mb-0 cursor-pointer"
-          onClick={() => setPage("models")}
+          onClick={() => router.push("/models")}
         />
       </section>
     );
   };
 
+  const isHome = page === "home";
+
   return (
     <>
       <Head>
         <title>Atlantic Walk Research | Independent Equity Research</title>
-
-        {/* Viewport ensures Tailwind breakpoints work on phones */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <meta
@@ -642,121 +629,100 @@ if (page === "about") {
         <meta name="author" content="Glenn Rentrop" />
         <meta name="robots" content="index, follow" />
 
-        {/* Open Graph / Social */}
         <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
         <meta
           property="og:description"
           content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://atlanticwalkresearch.com" />
-        <meta
-          property="og:image"
-          content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png"
-        />
+        <meta property="og:url" content={canonical} />
+        <meta property="og:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
 
-        {/* Canonical URL */}
-        <link rel="canonical" href="https://atlanticwalkresearch.com/" />
+        <link rel="canonical" href={canonical} />
 
-        {/* ✅ Structured data for Google (Schema.org JSON-LD) */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              "name": "Atlantic Walk Research",
-              "url": "https://atlanticwalkresearch.com",
-              "logo": "https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png",
-              "description":
+              name: "Atlantic Walk Research",
+              url: "https://atlanticwalkresearch.com",
+              logo: "https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png",
+              description:
                 "Independent equity research platform providing deep fundamental analysis, driver-based models, and special-situations coverage.",
-              "founder": {
-                "@type": "Person",
-                "name": "Glenn Rentrop",
-              },
-              "sameAs": [
+              founder: { "@type": "Person", name: "Glenn Rentrop" },
+              sameAs: [
                 "https://www.linkedin.com/in/grentrop/",
                 "https://x.com/AtlanticWalk",
-                "https://seekingalpha.com/author/glenn-rentrop"
+                "https://seekingalpha.com/author/glenn-rentrop",
               ],
             }),
           }}
         />
-         <script
-  type="application/ld+json"
-  dangerouslySetInnerHTML={{
-    __html: JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Glenn Rentrop",
-      "url": "https://atlanticwalkresearch.com",
-      "jobTitle": "Founder & Managing Partner",
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Atlantic Walk Research",
-        "url": "https://atlanticwalkresearch.com"
-      },
-      "sameAs": [
-        "https://www.linkedin.com/in/grentrop/",
-        "https://x.com/AtlanticWalk",
-        "https://seekingalpha.com/author/glenn-rentrop"
-      ]
-    }),
-  }}
-/>  
-  <script
-  defer
-  src="https://static.cloudflareinsights.com/beacon.min.js"
-  data-cf-beacon='{"token":"60fd7f8941a546c99ea8919be18e1387"}'
-></script>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Glenn Rentrop",
+              url: "https://atlanticwalkresearch.com",
+              jobTitle: "Founder & Managing Partner",
+              worksFor: {
+                "@type": "Organization",
+                name: "Atlantic Walk Research",
+                url: "https://atlanticwalkresearch.com",
+              },
+              sameAs: [
+                "https://www.linkedin.com/in/grentrop/",
+                "https://x.com/AtlanticWalk",
+                "https://seekingalpha.com/author/glenn-rentrop",
+              ],
+            }),
+          }}
+        />
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token":"60fd7f8941a546c99ea8919be18e1387"}'
+        ></script>
       </Head>
 
-      {/* Background images (desktop via inline; mobile via extra layer) */}
       <main
         className="relative min-h-screen bg-cover bg-center transition-all duration-700"
         style={{
-          backgroundImage:
-            page === "home"
-              ? "url('/backgrounds/home-bg.jpg')"
-              : "url('/backgrounds/other-bg.jpg')",
+          backgroundImage: isHome
+            ? "url('/backgrounds/home-bg.jpg')"
+            : "url('/backgrounds/other-bg.jpg')",
         }}
       >
-        {/* Mobile-only background layer (shows your /backgrounds/home-bg-mobile.JPG) */}
         <div
           className="md:hidden pointer-events-none fixed inset-0 -z-10 bg-cover bg-center"
           style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
         />
 
-        {/* Mobile header (hamburger) only when nav is visible */}
-        {page !== "home" && <MobileHeader setPage={setPage} />}
+        {!isHome && <MobileHeader />}
 
-        {/* Navbar hidden on home; visible elsewhere (desktop only here) */}
-        {page !== "home" && (
+        {!isHome && (
           <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 justify-center gap-6 py-4 text-base font-semibold text-gray-300">
             {[
-              ["Home", "home"],
-              ["Highlights", "highlights"],
-              ["Models", "models"],
-              ["Research", "research"],
-              ["Performance", "performance"],
-              ["About", "about"],
-              ["Contact", "contact"],
-            ].map(([label, key]) => (
-              <button
-                key={key}
-                onClick={() => setPage(key)}
-                className="hover:text-white transition"
-              >
+              ["Home", "/"],
+              ["Highlights", "/highlights"],
+              ["Models", "/models"],
+              ["Research", "/research"],
+              ["Performance", "/performance"],
+              ["About", "/about"],
+              ["Contact", "/contact"],
+            ].map(([label, href]) => (
+              <Link key={href} href={href} className="hover:text-white transition">
                 {label}
-              </button>
+              </Link>
             ))}
           </nav>
         )}
 
-        {/* Page container (adds top padding only when nav is visible) */}
-        <div className={page !== "home" ? "pt-20 px-6" : ""}>
-          {renderPage()}
-        </div>
+        <div className={!isHome ? "pt-20 px-6" : ""}>{renderPage()}</div>
       </main>
     </>
   );
@@ -768,7 +734,7 @@ export async function getStaticProps() {
   const files = fs.existsSync(reportsDir) ? fs.readdirSync(reportsDir) : [];
 
   const reports = files
-    .filter((f) => f.endsWith(".pdf")) // only PDFs
+    .filter((f) => f.endsWith(".pdf"))
     .map((filename) => {
       const slug = filename.replace(/\.pdf$/, "");
       const meta = reportsMeta.find((m) => m.slug === slug);
@@ -782,7 +748,6 @@ export async function getStaticProps() {
       };
     });
 
-  // sort newest first, tolerate nulls
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
 }
