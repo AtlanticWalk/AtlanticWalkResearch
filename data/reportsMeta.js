@@ -44,4 +44,14 @@ export const reportsMeta = [
       "Initiation on Ultragenyx focused on the transition from peak burn to profitability—balancing commercial durability, pipeline optionality, and the timing of margin inflection.",
     keywords: ["Ultragenyx", "RARE", "rare disease", "biotech", "pipeline", "profitability"],
   },
+    {
+    slug: "OUSTERREPORT",
+    title: "Ouster, INc. - From LiDAR to Full-Stack Perception",
+    ticker: "NASDAQ: OUST",
+    date: "2026-02-23",
+    description:
+      "Initiation on Ouster, Inc. focused on the transition from LiDAR hardware vendor to full-stack AI and automation perception platform, opex and margin discipline, and the timing of margin inflection",
+    keywords: ["Ouster", "OUST", "AI Perception", "Automation", "LiDAR", "AI stocks", "Technology", "profitability"],
+  },
 ];
+
