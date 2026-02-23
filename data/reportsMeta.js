@@ -46,7 +46,7 @@ export const reportsMeta = [
   },
     {
     slug: "OUSTERREPORT",
-    title: "Ouster, INc. - From LiDAR to Full-Stack Perception",
+    title: "Ouster, Inc. - From LiDAR to Full-Stack Perception",
     ticker: "NASDAQ: OUST",
     date: "2026-02-23",
     description:
@@ -54,4 +54,5 @@ export const reportsMeta = [
     keywords: ["Ouster", "OUST", "AI Perception", "Automation", "LiDAR", "AI stocks", "Technology", "profitability"],
   },
 ];
+
 
