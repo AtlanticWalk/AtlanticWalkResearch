@@ -53,6 +53,16 @@ export const reportsMeta = [
       "Initiation on Ouster, Inc. focused on the transition from LiDAR hardware vendor to full-stack AI and automation perception platform, opex and margin discipline, and the timing of margin inflection",
     keywords: ["Ouster", "OUST", "AI Perception", "Automation", "LiDAR", "AI stocks", "Technology", "profitability"],
   },
+  {
+    slug: "BFLYEARNINGSFY25",
+    title: "Butterfly Network, Inc. - FY25 Earnings Update",
+    ticker: "NYSE: BFLY",
+    date: "2026-02-28",
+    description:
+      "FY25 earnings update for Butterfly Network, Inc. (NYSE:BFLY) detailing shift to higher margin software and licensing revenue profile, platform economics, and change in strategic positioning",
+    keywords: ["Butterfly Network", "BFLY", "POCUS", "Ultrasound", "handheld ultrasound", "Healthcare", "Med-tech", "AI stocks", "Technology", "profitability"],
+  },
 ];
+
 
 
