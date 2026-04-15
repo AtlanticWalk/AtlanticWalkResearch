@@ -111,15 +111,19 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
   // Auto-trigger newsletter popup after 5s on Research or Highlights pages
   useEffect(() => {
-    if ((page === "research" || page === "highlights") && !newsletterShown) {
+  if ((page === "research" || page === "highlights") && !newsletterShown) {
+    const hasSubscribed = typeof window !== "undefined" &&
+      localStorage.getItem("awr_newsletter_subscribed") === "true";
+
+    if (!hasSubscribed) {
       const timer = setTimeout(() => {
         setShowNewsletter(true);
         setNewsletterShown(true);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [page, newsletterShown]);
-
+  }
+}, [page, newsletterShown]);
   useEffect(() => {
     if (page === "performance") {
       const fetchData = async () => {
