@@ -4,26 +4,14 @@ export default function NewsletterModal({ isOpen, onClose }) {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle"); // idle | loading | success | error | duplicate
 
-  // Lock body scroll when open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-    };
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
-  // Auto-close after success
   useEffect(() => {
     if (status === "success") {
-      const t = setTimeout(() => {
-        onClose();
-        setStatus("idle");
-        setEmail("");
-      }, 3000);
+      const t = setTimeout(() => { onClose(); setStatus("idle"); setEmail(""); }, 3500);
       return () => clearTimeout(t);
     }
   }, [status, onClose]);
@@ -37,13 +25,9 @@ export default function NewsletterModal({ isOpen, onClose }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      if (res.status === 201) {
-        setStatus("success");
-      } else if (res.status === 409) {
-        setStatus("duplicate");
-      } else {
-        setStatus("error");
-      }
+      if (res.status === 201) setStatus("success");
+      else if (res.status === 409) setStatus("duplicate");
+      else setStatus("error");
     } catch {
       setStatus("error");
     }
@@ -55,73 +39,132 @@ export default function NewsletterModal({ isOpen, onClose }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
       {/* Backdrop */}
       <div
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className="absolute inset-0 bg-black/75 backdrop-blur-md"
         onClick={onClose}
       />
 
-      {/* Modal card */}
-      <div className="relative bg-neutral-900 border border-gray-700 rounded-2xl p-8 max-w-md w-full shadow-2xl">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-200 text-2xl leading-none transition"
-          aria-label="Close"
-        >
-          ×
-        </button>
+      {/* Modal */}
+      <div
+        className="relative w-full max-w-md rounded-2xl overflow-hidden shadow-2xl"
+        style={{ animation: "modalIn 0.3s cubic-bezier(0.16,1,0.3,1) both" }}
+      >
+        {/* Gradient border effect */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/30 via-transparent to-purple-500/20 pointer-events-none z-10" />
 
-        {status === "success" ? (
-          <div className="text-center space-y-3 py-4">
-            <div className="text-4xl text-green-400">✓</div>
-            <h3 className="text-xl font-semibold text-gray-100">You&apos;re in.</h3>
-            <p className="text-gray-400 text-sm">
-              You&apos;ll hear from us when new research is published.
-            </p>
-          </div>
-        ) : (
-          <>
-            <h3 className="text-xl font-semibold text-gray-100 mb-1">
-              Stay Informed
-            </h3>
-            <p className="text-gray-400 text-sm mb-6">
-              Get notified when new research reports and valuation models are
-              published — no spam, ever.
-            </p>
+        {/* Card background */}
+        <div className="relative bg-gradient-to-br from-neutral-950 via-neutral-900 to-blue-950/40 border border-white/10 rounded-2xl p-8">
 
-            <form onSubmit={handleSubmit} className="space-y-3">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
-                required
-                className="w-full bg-neutral-800 border border-gray-700 rounded-lg px-4 py-3 text-gray-100 placeholder-gray-500 text-sm focus:outline-none focus:border-blue-500 transition"
-              />
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 rounded-lg text-sm transition disabled:opacity-50"
-              >
-                {status === "loading" ? "Subscribing…" : "Subscribe"}
-              </button>
-            </form>
+          {/* Top glow line */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-blue-400/70 to-transparent" />
 
-            {status === "duplicate" && (
-              <p className="text-yellow-400 text-xs mt-3 text-center">
-                That email is already subscribed.
+          {/* Close button */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-gray-600 hover:text-gray-300 transition text-xl leading-none"
+            aria-label="Close"
+          >
+            ✕
+          </button>
+
+          {status === "success" ? (
+            <div className="text-center py-6 space-y-4" style={{ animation: "fadeIn 0.4s ease" }}>
+              {/* Animated checkmark */}
+              <div className="flex items-center justify-center mx-auto w-16 h-16 rounded-full bg-green-500/15 border border-green-500/30">
+                <svg className="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-bold text-white">You&apos;re in.</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                You&apos;ll be the first to know when new research and models are published.
               </p>
-            )}
-            {status === "error" && (
-              <p className="text-red-400 text-xs mt-3 text-center">
-                Something went wrong. Please try again.
-              </p>
-            )}
+            </div>
+          ) : (
+            <>
+              {/* Icon */}
+              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-blue-500/15 border border-blue-500/25 mb-5">
+                <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+              </div>
 
-            <p className="text-gray-600 text-xs mt-5 text-center">
-              Unsubscribe anytime.
-            </p>
-          </>
-        )}
+              {/* Headline */}
+              <h3 className="text-2xl font-bold text-white mb-1 tracking-tight">
+                Stay Ahead of the Market
+              </h3>
+              <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+                Deep fundamental research and original valuation models — delivered to your inbox before they&apos;re widely read.
+              </p>
+
+              {/* Value props */}
+              <ul className="space-y-2.5 mb-7">
+                {[
+                  "Original DCF models and scenario frameworks",
+                  "Deep-dives on mispriced small-caps & special situations",
+                  "Early access to new reports and catalyst updates",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-gray-300">
+                    <span className="mt-0.5 shrink-0 w-4 h-4 rounded-full bg-blue-500/20 border border-blue-500/40 flex items-center justify-center">
+                      <svg className="w-2.5 h-2.5 text-blue-400" fill="currentColor" viewBox="0 0 8 8">
+                        <path d="M6.5 1.5l-4 4-1.5-1.5" stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+                      </svg>
+                    </span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Form */}
+              <form onSubmit={handleSubmit} className="space-y-3">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  required
+                  className="w-full bg-white/5 border border-white/10 focus:border-blue-500/70 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-600 text-sm outline-none transition duration-200"
+                />
+                <button
+                  type="submit"
+                  disabled={status === "loading"}
+                  className="relative w-full overflow-hidden rounded-xl py-3 text-sm font-semibold text-white transition-all duration-200 disabled:opacity-60"
+                  style={{
+                    background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
+                    boxShadow: "0 0 20px rgba(37,99,235,0.35)",
+                  }}
+                >
+                  <span className="relative z-10">
+                    {status === "loading" ? "Subscribing…" : "Subscribe — it's free"}
+                  </span>
+                  {/* Shimmer on hover */}
+                  <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
+                </button>
+              </form>
+
+              {/* Error states */}
+              {status === "duplicate" && (
+                <p className="text-yellow-400/80 text-xs mt-3 text-center">Already subscribed — you&apos;re on the list.</p>
+              )}
+              {status === "error" && (
+                <p className="text-red-400/80 text-xs mt-3 text-center">Something went wrong. Please try again.</p>
+              )}
+
+              <p className="text-gray-700 text-xs mt-5 text-center">No spam. Unsubscribe anytime.</p>
+            </>
+          )}
+        </div>
       </div>
+
+      <style>{`
+        @keyframes modalIn {
+          from { opacity: 0; transform: scale(0.94) translateY(12px); }
+          to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
   );
 }

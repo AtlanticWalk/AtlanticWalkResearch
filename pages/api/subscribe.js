@@ -1,32 +1,46 @@
-import fs from 'fs';
-import path from 'path';
+import { Resend } from 'resend';
 
-export default function handler(req, res) {
-  if (req.method === 'POST') {
-    const { email } = req.body;
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: 'Invalid email format' });
-    }
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
 
-    // Read the existing subscribers list
-    const filePath = path.join(process.cwd(), 'data', 'subscribers.json');
-    const fileContent = fs.readFileSync(filePath);
-    const subscribers = JSON.parse(fileContent);
+  const { email } = req.body;
 
-    // Add the new email if it doesn't already exist
-    if (subscribers.includes(email)) {
-      return res.status(409).json({ error: 'Email already subscribed' });
-    }
-    subscribers.push(email);
+  if (!email || !emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Invalid email address' });
+  }
 
-    // Write the updated subscribers list back to the file
-    fs.writeFileSync(filePath, JSON.stringify(subscribers, null, 2));
+  if (!process.env.RESEND_API_KEY) {
+    // Local dev fallback — log and acknowledge
+    console.log(`[Subscribe] No RESEND_API_KEY configured. Would subscribe: ${email}`);
+    return res.status(201).json({ message: 'Successfully subscribed' });
+  }
+
+  try {
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    // Notify Glenn of new subscriber
+    await resend.emails.send({
+      from: 'Atlantic Walk Research <noreply@atlanticwalkresearch.com>',
+      to: 'grentrop@atlanticwalkresearch.com',
+      subject: `New subscriber: ${email}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;">
+          <h2 style="color:#1e40af;">New Newsletter Subscriber</h2>
+          <p style="font-size:16px;">Someone just subscribed to Atlantic Walk Research:</p>
+          <p style="font-size:20px;font-weight:bold;color:#111;">${email}</p>
+          <hr style="border:none;border-top:1px solid #e5e7eb;margin:24px 0;" />
+          <p style="font-size:12px;color:#6b7280;">Atlantic Walk Research · Independent Equity Research</p>
+        </div>
+      `,
+    });
 
     return res.status(201).json({ message: 'Successfully subscribed' });
-  } else {
-    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    console.error('[Subscribe] Resend error:', error);
+    return res.status(500).json({ error: 'Failed to subscribe. Please try again.' });
   }
 }
