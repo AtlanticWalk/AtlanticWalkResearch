@@ -18,7 +18,21 @@ export default function Layout({ children }) {
     >
       {/* Main page content */}
       <main>{children}</main>
+import Newsletter from '../components/Newsletter';
 
+// Other existing imports
+
+const Layout = () => {
+    return (
+        <div>
+            {/* Other components like header, main content, etc. */}
+            <Newsletter />
+            <footer>Footer content here</footer>
+        </div>
+    );
+};
+
+export default Layout;
       {/* Footer */}
       <footer className="mt-16 text-sm text-gray-200 border-t pt-4 text-center">
         <p>
