@@ -15,9 +15,10 @@ import {
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
+import NewsletterModal from "../components/Newsletter";
 
 /* --- Mobile header + drawer (mobile only) --- */
-function MobileHeader() {
+function MobileHeader({ onSubscribeClick }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -82,6 +83,12 @@ function MobileHeader() {
                 {label}
               </Link>
             ))}
+            <button
+              onClick={() => { setOpen(false); onSubscribeClick?.(); }}
+              className="py-2 px-2 text-left rounded-lg text-blue-400 font-semibold hover:bg-white/5"
+            >
+              Subscribe
+            </button>
           </nav>
         </div>
       </div>
@@ -99,6 +106,19 @@ export default function AtlanticWalkResearch({ reports = [] }) {
   }, [router.asPath]);
 
   const [trackerData, setTrackerData] = useState([]);
+  const [showNewsletter, setShowNewsletter] = useState(false);
+  const [newsletterShown, setNewsletterShown] = useState(false);
+
+  // Auto-trigger newsletter popup after 5s on Research or Highlights pages
+  useEffect(() => {
+    if ((page === "research" || page === "highlights") && !newsletterShown) {
+      const timer = setTimeout(() => {
+        setShowNewsletter(true);
+        setNewsletterShown(true);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [page, newsletterShown]);
 
   useEffect(() => {
     if (page === "performance") {
@@ -153,6 +173,20 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           ) : (
             <p className="text-gray-500">No research available.</p>
           )}
+
+          {/* Inline subscribe CTA */}
+          <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div>
+              <p className="text-gray-100 font-medium text-sm">Get notified when new research drops</p>
+              <p className="text-gray-500 text-xs mt-0.5">New reports, model updates, and special situations — straight to your inbox.</p>
+            </div>
+            <button
+              onClick={() => setShowNewsletter(true)}
+              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+            >
+              Subscribe
+            </button>
+          </div>
         </section>
       );
     }
@@ -344,6 +378,20 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ) : (
               <p className="text-gray-500 py-4">No research reports found.</p>
             )}
+          </div>
+
+          {/* Inline subscribe CTA */}
+          <div className="mt-6 border border-gray-700 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-900/30">
+            <div>
+              <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
+              <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+            </div>
+            <button
+              onClick={() => setShowNewsletter(true)}
+              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+            >
+              Subscribe
+            </button>
           </div>
         </section>
       );
@@ -702,10 +750,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
         />
 
-        {!isHome && <MobileHeader />}
+        {!isHome && <MobileHeader onSubscribeClick={() => setShowNewsletter(true)} />}
 
         {!isHome && (
-          <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 justify-center gap-6 py-4 text-base font-semibold text-gray-300">
+          <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 justify-center gap-6 py-4 text-base font-semibold text-gray-300 items-center">
             {[
               ["Home", "/"],
               ["Highlights", "/highlights"],
@@ -719,11 +767,22 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                 {label}
               </Link>
             ))}
+            <button
+              onClick={() => setShowNewsletter(true)}
+              className="ml-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
+            >
+              Subscribe
+            </button>
           </nav>
         )}
 
         <div className={!isHome ? "pt-20 px-6" : ""}>{renderPage()}</div>
       </main>
+
+      <NewsletterModal
+        isOpen={showNewsletter}
+        onClose={() => setShowNewsletter(false)}
+      />
     </>
   );
 }
