@@ -9,13 +9,17 @@ export default function NewsletterModal({ isOpen, onClose }) {
     return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
-  useEffect(() => {
-    if (status === "success") {
-      const t = setTimeout(() => { onClose(); setStatus("idle"); setEmail(""); }, 3500);
-      return () => clearTimeout(t);
+ useEffect(() => {
+  if (status === "success") {
+    // Remember that they've subscribed
+    if (typeof window !== "undefined") {
+      localStorage.setItem("awr_newsletter_subscribed", "true");
     }
-  }, [status, onClose]);
-
+    const t = setTimeout(() => { onClose(); setStatus("idle"); setEmail(""); }, 3500);
+    return () => clearTimeout(t);
+  }
+}, [status, onClose]);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
