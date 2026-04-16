@@ -182,7 +182,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+              className="shrink-0 text-gray-100 text-sm font-semibold px-6 py-3 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
             >
               Subscribe
             </button>
@@ -388,7 +388,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+              className="shrink-0 text-gray-100 text-sm font-semibold px-6 py-3 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
             >
               Subscribe
             </button>
@@ -785,7 +785,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ))}
             <button
               onClick={() => setShowNewsletter(true)}
-              className="ml-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
+              className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
             >
               Subscribe
             </button>
