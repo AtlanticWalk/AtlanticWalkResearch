@@ -43,6 +43,8 @@ export default function AdminPage() {
   const [newNote, setNewNote]           = useState("");
   const [createStatus, setCreateStatus] = useState("idle"); // idle | loading | success | error
   const [createMsg, setCreateMsg]       = useState("");
+  const [removingEmail, setRemovingEmail] = useState(null); // email currently being confirmed
+  const [removeStatus, setRemoveStatus]   = useState({});   // { [email]: 'loading'|'done'|'error' }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -91,6 +93,26 @@ export default function AdminPage() {
       setCreateStatus("error");
       setCreateMsg("Something went wrong. Please try again.");
     }
+  };
+
+  const handleRemoveMember = async (email) => {
+    setRemoveStatus((s) => ({ ...s, [email]: 'loading' }));
+    try {
+      const res = await fetch('/api/admin/remove-member', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password, email }),
+      });
+      if (res.ok) {
+        setMembers((prev) => prev.filter((m) => m.email !== email));
+        setRemoveStatus((s) => ({ ...s, [email]: 'done' }));
+      } else {
+        setRemoveStatus((s) => ({ ...s, [email]: 'error' }));
+      }
+    } catch {
+      setRemoveStatus((s) => ({ ...s, [email]: 'error' }));
+    }
+    setRemovingEmail(null);
   };
 
   const handleCopyAll = () => {
@@ -317,7 +339,7 @@ export default function AdminPage() {
                   />
 
                   <div className="bg-neutral-900 border border-gray-800 rounded-2xl overflow-hidden">
-                    <div className="grid grid-cols-[1fr_110px_120px] text-xs font-semibold text-gray-500 uppercase tracking-widest px-5 py-3 border-b border-gray-800">
+                    <div className="grid grid-cols-[1fr_110px_120px_60px] text-xs font-semibold text-gray-500 uppercase tracking-widest px-5 py-3 border-b border-gray-800">
                       <span>Email</span>
                       <span className="text-center">Type</span>
                       <span className="text-right">Joined</span>
@@ -329,7 +351,7 @@ export default function AdminPage() {
                     ) : (
                       <div className="divide-y divide-gray-800/60 max-h-[480px] overflow-y-auto">
                         {filteredMembers.map((m, i) => (
-                          <div key={i} className="grid grid-cols-[1fr_110px_120px] items-center px-5 py-3.5 hover:bg-white/[0.02] transition">
+                          <div key={i} className="grid grid-cols-[1fr_110px_120px_60px] items-center px-5 py-3.5 hover:bg-white/[0.02] transition">
                             <div>
                               <span className="text-sm text-gray-200 break-all">{m.email}</span>
                               {m.note && <p className="text-xs text-gray-600 mt-0.5">{m.note}</p>}
@@ -350,6 +372,34 @@ export default function AdminPage() {
                               )}
                             </div>
                             <span className="text-xs text-gray-500 text-right tabular-nums">{fmt(m.createdAt)}</span>
+                            <div className="flex justify-end">
+                              {removingEmail === m.email ? (
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    onClick={() => handleRemoveMember(m.email)}
+                                    disabled={removeStatus[m.email] === 'loading'}
+                                    className="text-xs text-red-400 hover:text-red-300 font-medium transition disabled:opacity-50"
+                                  >
+                                    {removeStatus[m.email] === 'loading' ? '…' : 'Yes'}
+                                  </button>
+                                  <span className="text-gray-700">·</span>
+                                  <button
+                                    onClick={() => setRemovingEmail(null)}
+                                    className="text-xs text-gray-500 hover:text-gray-300 transition"
+                                  >
+                                    No
+                                  </button>
+                                </div>
+                              ) : (
+                                <button
+                                  onClick={() => setRemovingEmail(m.email)}
+                                  className="text-xs text-gray-600 hover:text-red-400 transition"
+                                  title="Remove member"
+                                >
+                                  ✕
+                                </button>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
