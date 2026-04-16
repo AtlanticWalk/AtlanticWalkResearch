@@ -174,22 +174,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <p className="text-gray-500">No research available.</p>
           )}
 
-          {/* Inline subscribe CTA */}
-          <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <p className="text-gray-100 font-medium text-sm">Get notified when new research drops</p>
               <p className="text-gray-500 text-xs mt-0.5">New reports, model updates, and special situations — straight to your inbox.</p>
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition overflow-hidden relative"
-              style={{
-                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
-                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
-              }}
+              className="shrink-0 text-gray-100 text-sm font-semibold px-5 py-2.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
             >
-              <span className="relative z-10">Subscribe</span>
-              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
+              Subscribe
             </button>
           </div>
         </section>
@@ -385,22 +379,16 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             )}
           </div>
 
-          {/* Inline subscribe CTA */}
-          <div className="mt-6 border border-gray-700 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-900/30">
+          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
               <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition overflow-hidden relative"
-              style={{
-                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
-                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
-              }}
+              className="shrink-0 text-gray-100 text-sm font-semibold px-5 py-2.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
             >
-              <span className="relative z-10">Subscribe</span>
-              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
+              Subscribe
             </button>
           </div>
         </section>
@@ -779,14 +767,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ))}
             <button
               onClick={() => setShowNewsletter(true)}
-              className="ml-2 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition overflow-hidden relative"
-              style={{
-                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
-                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
-              }}
+              className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
             >
-              <span className="relative z-10">Subscribe</span>
-              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
+              Subscribe
             </button>
           </nav>
         )}
