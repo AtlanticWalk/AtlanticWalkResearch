@@ -4,10 +4,11 @@ import Layout from "../components/Layout";
 import Script from "next/script";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { SessionProvider } from "next-auth/react";
 
 const GA_ID = "G-7EYNZ1NEKX";
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
   const router = useRouter();
 
   useEffect(() => {
@@ -22,7 +23,7 @@ export default function App({ Component, pageProps }) {
   }, [router.events]);
 
   return (
-    <>
+    <SessionProvider session={session}>
       {/* Load GA4 */}
       <Script
         strategy="afterInteractive"
@@ -41,6 +42,6 @@ export default function App({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </>
+    </SessionProvider>
   );
 }
