@@ -338,7 +338,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-gray-100 text-xs font-semibold px-4 py-2 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
+              className="shrink-0 text-gray-100 text-sm font-semibold px-6 py-3 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
             >
               Subscribe
             </button>
