@@ -343,6 +343,7 @@ export default function AdminPage() {
                       <span>Email</span>
                       <span className="text-center">Type</span>
                       <span className="text-right">Joined</span>
+                      <span></span>
                     </div>
                     {filteredMembers.length === 0 ? (
                       <p className="text-gray-600 text-sm text-center py-12">
@@ -393,7 +394,7 @@ export default function AdminPage() {
                               ) : (
                                 <button
                                   onClick={() => setRemovingEmail(m.email)}
-                                  className="text-xs text-gray-600 hover:text-red-400 transition"
+                                  className="text-xs text-gray-400 hover:text-red-400 transition font-medium"
                                   title="Remove member"
                                 >
                                   ✕
