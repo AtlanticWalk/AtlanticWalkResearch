@@ -330,6 +330,20 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             Research Library
           </h2>
 
+          {/* Subscribe CTA at top */}
+          <div className="bg-neutral-800/40 border border-gray-700 rounded-lg p-5 space-y-3">
+            <div>
+              <p className="text-lg font-semibold text-white">Want to be first to see new research?</p>
+              <p className="text-gray-300 text-sm mt-2 leading-relaxed">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+            </div>
+            <button
+              onClick={() => setShowNewsletter(true)}
+              className="text-gray-100 text-sm font-semibold px-5 py-2 rounded-lg transition border border-gray-600 hover:bg-gray-900/50 hover:border-gray-500 w-full sm:w-auto"
+            >
+              Subscribe
+            </button>
+          </div>
+
           <div className="grid grid-cols-[3fr_1fr_1fr_1.4fr] text-sm font-semibold border-b border-gray-700 pb-2">
             <div>Title</div>
             <div>Ticker</div>
@@ -377,19 +391,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ) : (
               <p className="text-gray-500 py-4">No research reports found.</p>
             )}
-          </div>
-
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
-              <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
-            </div>
-            <button
-              onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-gray-100 text-sm font-semibold px-5 py-2.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
-            >
-              Subscribe
-            </button>
           </div>
         </section>
       );
