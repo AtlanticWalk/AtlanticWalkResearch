@@ -330,15 +330,15 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             Research Library
           </h2>
 
-          {/* Subscribe CTA at top */}
-          <div className="bg-neutral-800/40 border border-gray-700 rounded-lg p-5 space-y-3">
+          {/* Subscribe CTA at top - minimal style */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3">
             <div>
-              <p className="text-lg font-semibold text-white">Want to be first to see new research?</p>
-              <p className="text-gray-300 text-sm mt-2 leading-relaxed">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+              <p className="text-sm font-semibold text-white">Want to be first to see new research?</p>
+              <p className="text-xs text-gray-400 mt-1">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="text-gray-100 text-sm font-semibold px-5 py-2 rounded-lg transition border border-gray-600 hover:bg-gray-900/50 hover:border-gray-500 w-full sm:w-auto"
+              className="shrink-0 text-gray-100 text-xs font-semibold px-4 py-2 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
             >
               Subscribe
             </button>
