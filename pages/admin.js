@@ -81,8 +81,14 @@ export default function AdminPage() {
         setCreateStatus("error");
         setCreateMsg(data.error || "Something went wrong.");
       } else {
-        setCreateStatus("success");
-        setCreateMsg(`✓ Account created and invite sent to ${newEmail}`);
+        const emailOk = data.emailResult?.sent;
+        const emailErr = data.emailResult?.error;
+        setCreateStatus(emailOk ? "success" : "warning");
+        setCreateMsg(
+          emailOk
+            ? `✓ Account created and invite sent to ${newEmail}`
+            : `✓ Account created, but email failed: ${emailErr || 'unknown error'} — share the access code manually.`
+        );
         setNewEmail("");
         setNewNote("");
         // Refresh members list
@@ -323,7 +329,10 @@ export default function AdminPage() {
                       </button>
                     </form>
                     {createMsg && (
-                      <p className={`text-xs mt-3 ${createStatus === "success" ? "text-emerald-400" : "text-red-400"}`}>
+                      <p className={`text-xs mt-3 ${
+                        createStatus === "success" ? "text-emerald-400" :
+                        createStatus === "warning" ? "text-yellow-400" : "text-red-400"
+                      }`}>
                         {createMsg}
                       </p>
                     )}
