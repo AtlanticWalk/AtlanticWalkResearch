@@ -70,7 +70,7 @@ export default function SubscribePage() {
             {/* Price header */}
             <div className="border-b border-gray-800 px-8 py-6 text-center">
               <div className="flex items-end justify-center gap-1">
-                <span className="text-5xl font-bold text-white">$10</span>
+                <span className="text-5xl font-bold text-white">$10.99</span>
                 <span className="text-gray-400 text-lg mb-1.5">/month</span>
               </div>
               <p className="text-gray-500 text-sm mt-1">Cancel anytime · Billed monthly</p>
@@ -105,8 +105,8 @@ export default function SubscribePage() {
                 {loading
                   ? 'Redirecting to checkout…'
                   : session
-                  ? 'Subscribe now — $10/month'
-                  : 'Get started — $10/month'}
+                  ? 'Subscribe now — $10.99/month'
+                  : 'Get started — $10.99/month'}
               </button>
 
               {!session && (
