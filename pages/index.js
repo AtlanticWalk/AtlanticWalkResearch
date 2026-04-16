@@ -381,7 +381,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           </div>
 
           {/* Inline subscribe CTA */}
-          <div className="mt-6 border border-gray-700 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-900/30">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3">
             <div>
               <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
               <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
