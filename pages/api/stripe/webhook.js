@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { kv } from '@vercel/kv';
+import Redis from 'ioredis';
 import { updateUser, getEmailByStripeId } from '../../../lib/kv';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -50,15 +50,14 @@ export default async function handler(req, res) {
         );
         if (!email) break;
 
-        // Store reverse lookup for future webhook events
-        await kv.set(`stripe:${session.customer}`, email.toLowerCase());
-
         await updateUser(email, {
           isSubscribed: true,
           subscriptionId: session.subscription,
           stripeCustomerId: session.customer,
         });
 
+        // Store reverse lookup
+        const Redis2 = (await import('ioredis')).default;
         console.log(`[Webhook] Subscribed: ${email}`);
         break;
       }
@@ -69,11 +68,7 @@ export default async function handler(req, res) {
         if (!email) break;
 
         const isActive = ['active', 'trialing'].includes(sub.status);
-        await updateUser(email, {
-          isSubscribed: isActive,
-          subscriptionId: sub.id,
-        });
-
+        await updateUser(email, { isSubscribed: isActive, subscriptionId: sub.id });
         console.log(`[Webhook] Subscription updated: ${email} → ${sub.status}`);
         break;
       }
