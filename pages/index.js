@@ -99,7 +99,7 @@ function MobileHeader({ onSubscribeClick }) {
 export default function AtlanticWalkResearch({ reports = [] }) {
   const router = useRouter();
 
-  // Determine which "page" we're on from the URL path
+  // Determine which “page” we’re on from the URL path
   const page = useMemo(() => {
     const p = router.asPath.split("?")[0].replace(/^\/+|\/+$/g, "");
     return p === "" ? "home" : p; // home, about, models, research, etc.
@@ -174,14 +174,15 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <p className="text-gray-500">No research available.</p>
           )}
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Inline subscribe CTA */}
+          <div className="bg-neutral-900/50 border border-gray-800 rounded-xl p-6 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
               <p className="text-gray-100 font-medium text-sm">Get notified when new research drops</p>
               <p className="text-gray-500 text-xs mt-0.5">New reports, model updates, and special situations — straight to your inbox.</p>
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-gray-100 text-sm font-semibold px-5 py-2.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
+              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
             >
               Subscribe
             </button>
@@ -330,20 +331,6 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             Research Library
           </h2>
 
-          {/* Subscribe CTA at top - minimal style */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3">
-            <div>
-              <p className="text-sm font-semibold text-white">Want to be first to see new research?</p>
-              <p className="text-xs text-gray-400 mt-1">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
-            </div>
-            <button
-              onClick={() => setShowNewsletter(true)}
-              className="shrink-0 text-gray-100 text-sm font-semibold px-6 py-3 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
-            >
-              Subscribe
-            </button>
-          </div>
-
           <div className="grid grid-cols-[3fr_1fr_1fr_1.4fr] text-sm font-semibold border-b border-gray-700 pb-2">
             <div>Title</div>
             <div>Ticker</div>
@@ -391,6 +378,20 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ) : (
               <p className="text-gray-500 py-4">No research reports found.</p>
             )}
+          </div>
+
+          {/* Inline subscribe CTA */}
+          <div className="mt-6 border border-gray-700 rounded-xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 bg-neutral-900/30">
+            <div>
+              <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
+              <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+            </div>
+            <button
+              onClick={() => setShowNewsletter(true)}
+              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+            >
+              Subscribe
+            </button>
           </div>
         </section>
       );
@@ -663,27 +664,43 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
   const isHome = page === "home";
 
+  const pageMeta = {
+    home:        { title: "Atlantic Walk Research | Independent Equity Research", description: "Atlantic Walk Research delivers deep fundamental equity research, driver-based DCF models, and special-situations investing ideas. Independent, long-horizon coverage of mispriced small-caps.", keywords: "equity research, independent research, DCF models, special situations, small cap investing, value investing" },
+    highlights:  { title: "Highlights | Atlantic Walk Research", description: "Latest research highlights from Atlantic Walk Research — covering new reports, model updates, and special situations in real time.", keywords: "research highlights, latest reports, equity research updates, special situations" },
+    research:    { title: "Research Library | Atlantic Walk Research", description: "Browse Atlantic Walk Research's full library of independent equity research reports covering mispriced small-caps, special situations, and deep-value ideas.", keywords: "research library, equity research reports, independent research, small cap reports, financial analysis" },
+    models:      { title: "Valuation Models | Atlantic Walk Research", description: "Download free DCF valuation models for stocks covered by Atlantic Walk Research, including AVDL, ACMR, MP, NBIS, LRCX, and AMAT.", keywords: "DCF model, valuation model, financial model, stock valuation, free DCF download" },
+    performance: { title: "Performance | Atlantic Walk Research", description: "Track the cumulative performance of Atlantic Walk Research investment picks versus the S&P 500 benchmark.", keywords: "performance tracking, stock picks, portfolio returns, S&P 500 comparison" },
+    about:       { title: "About | Atlantic Walk Research", description: "Atlantic Walk Research is an independent equity research platform founded by Glenn Rentrop, focused on driver-based modeling, special situations, and long-horizon investing.", keywords: "Glenn Rentrop, Atlantic Walk Research, independent equity research, about" },
+    contact:     { title: "Contact | Atlantic Walk Research", description: "Get in touch with Atlantic Walk Research. Reach Glenn Rentrop via email, LinkedIn, X (Twitter), or Seeking Alpha.", keywords: "contact Atlantic Walk Research, Glenn Rentrop contact" },
+  };
+
+  const currentMeta = pageMeta[page] || pageMeta.home;
+
   return (
     <>
       <Head>
-        <title>Atlantic Walk Research | Independent Equity Research</title>
+        <title>{currentMeta.title}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-        <meta
-          name="description"
-          content="Atlantic Walk Research is an independent equity research platform focused on deep fundamental analysis, driver-based modeling, and special-situations investing."
-        />
+        <meta name="description" content={currentMeta.description} />
+        <meta name="keywords" content={currentMeta.keywords} />
         <meta name="author" content="Glenn Rentrop" />
         <meta name="robots" content="index, follow" />
 
-        <meta property="og:title" content="Atlantic Walk Research | Independent Equity Research" />
-        <meta
-          property="og:description"
-          content="Independent, long-horizon research built on rigorous fundamentals and driver-based valuation models."
-        />
+        {/* Open Graph */}
+        <meta property="og:title" content={currentMeta.title} />
+        <meta property="og:description" content={currentMeta.description} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonical} />
+        <meta property="og:site_name" content="Atlantic Walk Research" />
         <meta property="og:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
+
+        {/* Twitter / X Card */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@AtlanticWalk" />
+        <meta name="twitter:creator" content="@AtlanticWalk" />
+        <meta name="twitter:title" content={currentMeta.title} />
+        <meta name="twitter:description" content={currentMeta.description} />
+        <meta name="twitter:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
 
         <link rel="canonical" href={canonical} />
 
@@ -768,7 +785,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ))}
             <button
               onClick={() => setShowNewsletter(true)}
-              className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-gray-900/50 hover:border-gray-600"
+              className="ml-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
             >
               Subscribe
             </button>
