@@ -3,6 +3,7 @@ import path from "path";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { reportsMeta } from "../../data/reportsMeta";
 
 const REPORTS_DIR = path.join(process.cwd(), "public", "reports");
 
@@ -23,22 +24,37 @@ export async function getStaticProps({ params }) {
   const filePath = path.join(REPORTS_DIR, `${slug}.pdf`);
   if (!fs.existsSync(filePath)) return { notFound: true };
 
+  const meta = reportsMeta.find((m) => m.slug === slug) || null;
+
   return {
     props: {
       slug,
       pdfSrc: `/reports/${slug}.pdf`,
+      meta,
     },
   };
 }
 
-export default function ReportPage({ slug, pdfSrc }) {
+export default function ReportPage({ slug, pdfSrc, meta }) {
   const router = useRouter();
 
   const title = useMemo(
-    () => slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
-    [slug]
+    () => meta?.title || slug.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()),
+    [slug, meta]
   );
 
+  const description = useMemo(
+    () => meta?.description || `Independent equity research report on ${title} by Atlantic Walk Research.`,
+    [title, meta]
+  );
+
+  const keywords = useMemo(
+    () => meta?.keywords?.join(", ") || "equity research, financial analysis, Atlantic Walk Research",
+    [meta]
+  );
+
+  const datePublished = meta?.date || null;
+  const ticker = meta?.ticker || null;
   const pageUrl = `https://atlanticwalkresearch.com/research/${slug}`;
 
   const articleSchema = useMemo(
@@ -46,28 +62,39 @@ export default function ReportPage({ slug, pdfSrc }) {
       "@context": "https://schema.org",
       "@type": "Article",
       headline: title,
-      author: { "@type": "Person", name: "Glenn Rentrop" },
+      description: description,
+      keywords: keywords,
+      author: {
+        "@type": "Person",
+        name: "Glenn Rentrop",
+        url: "https://atlanticwalkresearch.com/about",
+        sameAs: [
+          "https://www.linkedin.com/in/grentrop/",
+          "https://x.com/AtlanticWalk",
+        ],
+      },
       publisher: {
         "@type": "Organization",
         name: "Atlantic Walk Research",
+        url: "https://atlanticwalkresearch.com",
         logo: {
           "@type": "ImageObject",
           url: "https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png",
         },
       },
       url: pageUrl,
-      mainEntityOfPage: pageUrl,
+      mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+      ...(datePublished && { datePublished }),
+      ...(ticker && { about: { "@type": "Thing", name: ticker } }),
     }),
-    [title, pageUrl]
+    [title, description, keywords, pageUrl, datePublished, ticker]
   );
 
-  // ✅ Always return to the real Research Library route
   const handleReturnToLibrary = (e) => {
     e.preventDefault();
     router.push("/research");
   };
 
-  // ---- PDF.js canvas renderer ----
   const containerRef = useRef(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -102,7 +129,6 @@ export default function ReportPage({ slug, pdfSrc }) {
         const container = containerRef.current;
         if (!container) return;
 
-        // clear old renders
         container.innerHTML = "";
 
         for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
@@ -113,7 +139,6 @@ export default function ReportPage({ slug, pdfSrc }) {
 
           const viewport = page.getViewport({ scale });
 
-          // Wrapper: center page but NO background/border/shadow
           const wrap = document.createElement("div");
           wrap.style.display = "flex";
           wrap.style.justifyContent = "center";
@@ -131,8 +156,6 @@ export default function ReportPage({ slug, pdfSrc }) {
           canvas.style.display = "block";
           canvas.style.maxWidth = "100%";
           canvas.style.height = "auto";
-
-          // IMPORTANT: remove any rounding/border/shadow (true “float”)
           canvas.style.borderRadius = "0";
           canvas.style.boxShadow = "none";
           canvas.style.border = "none";
@@ -155,24 +178,35 @@ export default function ReportPage({ slug, pdfSrc }) {
     }
 
     renderPdf();
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [pdfSrc, scale, renderKey]);
 
   return (
-    // ✅ No bg-black / no forced text color. Let your global site background shine through.
     <div className="min-h-screen">
       <Head>
         <title>{title} | Atlantic Walk Research</title>
-        <meta name="description" content={`Full research report on ${title}.`} />
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="author" content="Glenn Rentrop" />
+        <link rel="canonical" href={pageUrl} />
+
+        {/* Open Graph */}
         <meta property="og:title" content={`${title} | Atlantic Walk Research`} />
-        <meta
-          property="og:description"
-          content={`Independent equity research report on ${title}.`}
-        />
+        <meta property="og:description" content={description} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={pageUrl} />
+        <meta property="og:site_name" content="Atlantic Walk Research" />
+        <meta property="og:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
+        {datePublished && <meta property="article:published_time" content={datePublished} />}
+
+        {/* Twitter / X Card */}
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:site" content="@AtlanticWalk" />
+        <meta name="twitter:creator" content="@AtlanticWalk" />
+        <meta name="twitter:title" content={`${title} | Atlantic Walk Research`} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="https://atlanticwalkresearch.com/atlantic_walk_logo_transparent.png" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
@@ -238,9 +272,14 @@ export default function ReportPage({ slug, pdfSrc }) {
         </div>
       </div>
 
-      {/* ✅ Content area: transparent */}
       <div className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-bold mb-2 text-white">{title}</h1>
+        {ticker && <p className="text-gray-400 text-sm mb-1">{ticker}</p>}
+        {datePublished && (
+          <p className="text-gray-500 text-xs mb-6">
+            Published {new Date(datePublished + "T00:00:00").toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+          </p>
+        )}
 
         {loading && (
           <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>
