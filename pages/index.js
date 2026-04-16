@@ -38,9 +38,7 @@ function MobileHeader({ onSubscribeClick, session }) {
     ["About", "/about"],
     ["Contact", "/contact"],
   ];
-  const authItems = session
-    ? [["Members", "/members"]]
-    : [["Log in", "/login"], ["Sign up", "/signup"]];
+
 
   return (
     <div className="md:hidden fixed top-0 left-0 right-0 z-50">
@@ -93,16 +91,7 @@ function MobileHeader({ onSubscribeClick, session }) {
             >
               Subscribe
             </button>
-            {authItems.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setOpen(false)}
-                className="py-2 px-2 text-left rounded-lg hover:bg-white/5"
-              >
-                {label}
-              </Link>
-            ))}
+
           </nav>
         </div>
       </div>
@@ -807,40 +796,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                 Subscribe
               </button>
             </div>
-            {/* Auth buttons on the right */}
-            <div className="flex items-center gap-2 shrink-0">
-              {session ? (
-                <>
-                  <Link
-                    href="/members"
-                    className="text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
-                  >
-                    Members
-                  </Link>
-                  <button
-                    onClick={() => signOut({ callbackUrl: "/" })}
-                    className="text-gray-400 text-sm font-medium px-3 py-1.5 rounded-lg transition hover:text-gray-200"
-                  >
-                    Sign out
-                  </button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="text-gray-400 text-sm font-medium px-3 py-1.5 rounded-lg transition hover:text-gray-200"
-                  >
-                    Log in
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
-                  >
-                    Sign up
-                  </Link>
-                </>
-              )}
-            </div>
+
           </nav>
         )}
 
