@@ -16,9 +16,10 @@ import {
   ReferenceLine,
 } from "recharts";
 import NewsletterModal from "../components/Newsletter";
+import { useSession, signOut } from "next-auth/react";
 
 /* --- Mobile header + drawer (mobile only) --- */
-function MobileHeader({ onSubscribeClick }) {
+function MobileHeader({ onSubscribeClick, session }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -37,6 +38,9 @@ function MobileHeader({ onSubscribeClick }) {
     ["About", "/about"],
     ["Contact", "/contact"],
   ];
+  const authItems = session
+    ? [["Members", "/members"]]
+    : [["Log in", "/login"], ["Sign up", "/signup"]];
 
   return (
     <div className="md:hidden fixed top-0 left-0 right-0 z-50">
@@ -89,6 +93,16 @@ function MobileHeader({ onSubscribeClick }) {
             >
               Subscribe
             </button>
+            {authItems.map(([label, href]) => (
+              <Link
+                key={href}
+                href={href}
+                onClick={() => setOpen(false)}
+                className="py-2 px-2 text-left rounded-lg hover:bg-white/5"
+              >
+                {label}
+              </Link>
+            ))}
           </nav>
         </div>
       </div>
@@ -98,6 +112,7 @@ function MobileHeader({ onSubscribeClick }) {
 
 export default function AtlanticWalkResearch({ reports = [] }) {
   const router = useRouter();
+  const { data: session } = useSession();
 
   // Determine which “page” we’re on from the URL path
   const page = useMemo(() => {
@@ -766,29 +781,66 @@ export default function AtlanticWalkResearch({ reports = [] }) {
           style={{ backgroundImage: "url('/backgrounds/home-bg-mobile.JPG')" }}
         />
 
-        {!isHome && <MobileHeader onSubscribeClick={() => setShowNewsletter(true)} />}
+        {!isHome && <MobileHeader onSubscribeClick={() => setShowNewsletter(true)} session={session} />}
 
         {!isHome && (
-          <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 justify-center gap-6 py-4 text-base font-semibold text-gray-300 items-center">
-            {[
-              ["Home", "/"],
-              ["Highlights", "/highlights"],
-              ["Models", "/models"],
-              ["Research", "/research"],
-              ["Performance", "/performance"],
-              ["About", "/about"],
-              ["Contact", "/contact"],
-            ].map(([label, href]) => (
-              <Link key={href} href={href} className="hover:text-white transition">
-                {label}
-              </Link>
-            ))}
-            <button
-              onClick={() => setShowNewsletter(true)}
-              className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
-            >
-              Subscribe
-            </button>
+          <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-4 text-base font-semibold text-gray-300 items-center px-6">
+            {/* Centered nav links */}
+            <div className="flex-1 flex justify-center gap-6 items-center">
+              {[
+                ["Home", "/"],
+                ["Highlights", "/highlights"],
+                ["Models", "/models"],
+                ["Research", "/research"],
+                ["Performance", "/performance"],
+                ["About", "/about"],
+                ["Contact", "/contact"],
+              ].map(([label, href]) => (
+                <Link key={href} href={href} className="hover:text-white transition">
+                  {label}
+                </Link>
+              ))}
+              <button
+                onClick={() => setShowNewsletter(true)}
+                className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
+              >
+                Subscribe
+              </button>
+            </div>
+            {/* Auth buttons on the right */}
+            <div className="flex items-center gap-2 shrink-0">
+              {session ? (
+                <>
+                  <Link
+                    href="/members"
+                    className="text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
+                  >
+                    Members
+                  </Link>
+                  <button
+                    onClick={() => signOut({ callbackUrl: "/" })}
+                    className="text-gray-400 text-sm font-medium px-3 py-1.5 rounded-lg transition hover:text-gray-200"
+                  >
+                    Sign out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="text-gray-400 text-sm font-medium px-3 py-1.5 rounded-lg transition hover:text-gray-200"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
+                  >
+                    Sign up
+                  </Link>
+                </>
+              )}
+            </div>
           </nav>
         )}
 
