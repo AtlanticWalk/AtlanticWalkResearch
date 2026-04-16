@@ -99,7 +99,7 @@ function MobileHeader({ onSubscribeClick }) {
 export default function AtlanticWalkResearch({ reports = [] }) {
   const router = useRouter();
 
-  // Determine which “page” we’re on from the URL path
+  // Determine which "page" we're on from the URL path
   const page = useMemo(() => {
     const p = router.asPath.split("?")[0].replace(/^\/+|\/+$/g, "");
     return p === "" ? "home" : p; // home, about, models, research, etc.
@@ -111,19 +111,15 @@ export default function AtlanticWalkResearch({ reports = [] }) {
 
   // Auto-trigger newsletter popup after 5s on Research or Highlights pages
   useEffect(() => {
-  if ((page === "research" || page === "highlights") && !newsletterShown) {
-    const hasSubscribed = typeof window !== "undefined" &&
-      localStorage.getItem("awr_newsletter_subscribed") === "true";
-
-    if (!hasSubscribed) {
+    if ((page === "research" || page === "highlights") && !newsletterShown) {
       const timer = setTimeout(() => {
         setShowNewsletter(true);
         setNewsletterShown(true);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }
-}, [page, newsletterShown]);
+  }, [page, newsletterShown]);
+
   useEffect(() => {
     if (page === "performance") {
       const fetchData = async () => {
@@ -186,9 +182,14 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+              className="shrink-0 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition overflow-hidden relative"
+              style={{
+                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
+                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
+              }}
             >
-              Subscribe
+              <span className="relative z-10">Subscribe</span>
+              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
             </button>
           </div>
         </section>
@@ -392,9 +393,14 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             </div>
             <button
               onClick={() => setShowNewsletter(true)}
-              className="shrink-0 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition"
+              className="shrink-0 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition overflow-hidden relative"
+              style={{
+                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
+                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
+              }}
             >
-              Subscribe
+              <span className="relative z-10">Subscribe</span>
+              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
             </button>
           </div>
         </section>
@@ -773,9 +779,14 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             ))}
             <button
               onClick={() => setShowNewsletter(true)}
-              className="ml-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition"
+              className="ml-2 text-white text-sm font-semibold px-4 py-1.5 rounded-lg transition overflow-hidden relative"
+              style={{
+                background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
+                boxShadow: "0 0 20px rgba(37,99,235,0.35)",
+              }}
             >
-              Subscribe
+              <span className="relative z-10">Subscribe</span>
+              <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition duration-200" />
             </button>
           </nav>
         )}
