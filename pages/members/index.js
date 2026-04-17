@@ -44,7 +44,7 @@ const SECTIONS = [
     badge: 'Coming Soon',
     badgeColor: 'bg-gray-500/10 text-gray-400 border border-gray-600/20',
     items: [],
-    emptyLabel: 'Weekly notes on what\'s in focus and why.',
+    emptyLabel: "Weekly notes on what's in focus and why.",
   },
   {
     id: 'interviews',
@@ -54,7 +54,7 @@ const SECTIONS = [
     badge: 'Coming Soon',
     badgeColor: 'bg-gray-500/10 text-gray-400 border border-gray-600/20',
     items: [],
-    emptyLabel: 'Direct primary research — the edge most investors don\'t have.',
+    emptyLabel: "Direct primary research — the edge most investors don't have.",
   },
 ];
 
@@ -100,6 +100,7 @@ export default function MembersPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [billingLoading, setBillingLoading] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
   const isWelcome = router.query.welcome === 'true';
 
   // Middleware handles the auth redirect, but double-check here
@@ -128,6 +129,16 @@ export default function MembersPage() {
     setBillingLoading(false);
     if (data.url) window.location.href = data.url;
   };
+
+  const handleCancelSubscription = async () => {
+    setCancelLoading(true);
+    const res = await fetch('/api/stripe/portal', { method: 'POST' });
+    const data = await res.json();
+    setCancelLoading(false);
+    if (data.url) window.location.href = data.url;
+  };
+
+  const isComplimentary = session.user.isComplimentary;
 
   return (
     <>
@@ -158,13 +169,15 @@ export default function MembersPage() {
             <p className="text-gray-400 text-sm mt-1">{session.user.email}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
-            <button
-              onClick={handleManageBilling}
-              disabled={billingLoading}
-              className="text-gray-300 text-xs font-medium px-3 py-1.5 rounded-lg border border-gray-700 hover:bg-white/5 transition disabled:opacity-50"
-            >
-              {billingLoading ? 'Loading…' : 'Manage billing'}
-            </button>
+            {!isComplimentary && (
+              <button
+                onClick={handleManageBilling}
+                disabled={billingLoading}
+                className="text-gray-300 text-xs font-medium px-3 py-1.5 rounded-lg border border-gray-700 hover:bg-white/5 transition disabled:opacity-50"
+              >
+                {billingLoading ? 'Loading…' : 'Manage billing'}
+              </button>
+            )}
             <button
               onClick={() => signOut({ callbackUrl: '/' })}
               className="text-gray-400 text-xs font-medium px-3 py-1.5 rounded-lg border border-gray-700 hover:bg-white/5 transition"
@@ -175,9 +188,22 @@ export default function MembersPage() {
         </div>
 
         {/* Membership status */}
-        <div className="mb-8 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
-          <span className="text-gray-400 text-sm">Active membership · $10/month</span>
+        <div className="mb-8 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+            <span className="text-gray-400 text-sm">
+              {isComplimentary ? 'Complimentary membership' : 'Active membership · $10.99/month'}
+            </span>
+          </div>
+          {!isComplimentary && (
+            <button
+              onClick={handleCancelSubscription}
+              disabled={cancelLoading}
+              className="text-red-500/70 hover:text-red-400 text-xs transition disabled:opacity-50"
+            >
+              {cancelLoading ? 'Loading…' : 'Cancel subscription'}
+            </button>
+          )}
         </div>
 
         {/* Content sections */}
