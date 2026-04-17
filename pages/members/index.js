@@ -96,14 +96,112 @@ function SectionCard({ section }) {
   );
 }
 
+function ChangePasswordForm({ onClose }) {
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (newPassword !== confirm) return setError('Passwords do not match.');
+    if (newPassword.length < 8) return setError('New password must be at least 8 characters.');
+
+    setLoading(true);
+    const res = await fetch('/api/user/change-password', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ currentPassword, newPassword }),
+    });
+    const data = await res.json();
+    setLoading(false);
+
+    if (res.ok) {
+      setSuccess(true);
+      setTimeout(onClose, 2000);
+    } else {
+      setError(data.error || 'Something went wrong.');
+    }
+  };
+
+  return (
+    <div className="bg-neutral-900/80 border border-gray-800 rounded-xl p-6 mt-4">
+      <div className="flex items-center justify-between mb-5">
+        <h3 className="text-white font-semibold">Change password</h3>
+        <button onClick={onClose} className="text-gray-500 hover:text-gray-300 transition text-sm">✕</button>
+      </div>
+
+      {success ? (
+        <div className="flex items-center gap-2 text-emerald-400 text-sm">
+          <span>✓</span> Password updated successfully.
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-medium text-gray-400 mb-1">Current password</label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+              className="w-full bg-neutral-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-400 mb-1">New password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              placeholder="At least 8 characters"
+              className="w-full bg-neutral-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-medium text-gray-400 mb-1">Confirm new password</label>
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+              placeholder="••••••••"
+              className="w-full bg-neutral-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm placeholder-gray-600 focus:outline-none focus:border-blue-500 transition"
+            />
+          </div>
+
+          {error && (
+            <p className="text-red-400 text-xs bg-red-900/20 border border-red-800 rounded-lg px-3 py-2">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-sm font-semibold py-2 rounded-lg transition"
+          >
+            {loading ? 'Updating…' : 'Update password'}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
 export default function MembersPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [billingLoading, setBillingLoading] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const isWelcome = router.query.welcome === 'true';
 
-  // Middleware handles the auth redirect, but double-check here
   if (status === 'loading') {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -169,6 +267,12 @@ export default function MembersPage() {
             <p className="text-gray-400 text-sm mt-1">{session.user.email}</p>
           </div>
           <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+            <button
+              onClick={() => setShowChangePassword(!showChangePassword)}
+              className="text-gray-300 text-xs font-medium px-3 py-1.5 rounded-lg border border-gray-700 hover:bg-white/5 transition"
+            >
+              Change password
+            </button>
             {!isComplimentary && (
               <button
                 onClick={handleManageBilling}
@@ -187,8 +291,13 @@ export default function MembersPage() {
           </div>
         </div>
 
+        {/* Change password form (inline toggle) */}
+        {showChangePassword && (
+          <ChangePasswordForm onClose={() => setShowChangePassword(false)} />
+        )}
+
         {/* Membership status */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex items-center justify-between mt-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
             <span className="text-gray-400 text-sm">
