@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { reportsMeta } from '../data/reportsMeta';
 import NewsletterModal from '../components/Newsletter';
+import SiteNav from '../components/SiteNav';
 
 // ── Static stock metadata ─────────────────────────────────────────────────────
 // Only put things here that can't be inferred from files:
@@ -301,35 +302,9 @@ export default function ResearchPacksPage({ stocks }) {
         />
       </Head>
 
-      {/* Nav */}
-      <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-4 text-sm font-semibold text-gray-300 flex items-center px-6">
-        <div className="flex-1 flex justify-center gap-6 items-center">
-          {[
-            ['Home', '/'],
-            ['Highlights', '/highlights'],
-            ['Research Packages', '/research-packs'],
-            ['Performance', '/performance'],
-            ['About', '/about'],
-            ['Contact', '/contact'],
-          ].map(([label, href]) => (
-            <a
-              key={href}
-              href={href}
-              className={`hover:text-white transition ${href === '/research-packs' ? 'text-white' : ''}`}
-            >
-              {label}
-            </a>
-          ))}
-          <button
-            onClick={() => setShowNewsletter(true)}
-            className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
-          >
-            Subscribe
-          </button>
-        </div>
-      </nav>
+      <SiteNav onSubscribeClick={() => setShowNewsletter(true)} />
 
-      <main className="max-w-3xl mx-auto px-4 pt-28 pb-24">
+      <main className="max-w-3xl mx-auto px-4 pt-20 md:pt-28 pb-24">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Research Packages</h1>
           <p className="text-gray-300 text-base mt-1">
