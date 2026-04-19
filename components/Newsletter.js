@@ -93,7 +93,7 @@ export default function NewsletterModal({ isOpen, onClose }) {
                 Stay in the Loop
               </h3>
               <p className="text-gray-400 text-sm mb-6 leading-relaxed">
-                Get notified when new research packs and company updates are published. No noise &mdash; just the updates that matter.
+                Get notified when new research packages and company updates are published. No noise &mdash; just the updates that matter.
               </p>
 
               {/* Form */}
