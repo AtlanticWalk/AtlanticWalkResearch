@@ -153,7 +153,7 @@ function StockRow({ stock }) {
   const hasModel = !!stock.modelUrl;
 
   return (
-    <div className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+    <div className="border-b border-gray-800 last:border-b-0">
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center gap-4 px-5 py-4 hover:bg-white/[0.04] transition-colors text-left"
@@ -338,7 +338,7 @@ export default function ResearchPacksPage({ stocks }) {
         </div>
 
         {/* Stock list */}
-        <div className="space-y-3">
+        <div className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl overflow-hidden shadow-lg">
           {stocks.map((stock) => (
             <StockRow key={stock.ticker} stock={stock} />
           ))}
