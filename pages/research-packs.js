@@ -3,14 +3,12 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 // ── Stock data ────────────────────────────────────────────────────────────────
-// Add new stocks here. Reports sorted newest-first within each stock.
-// Stocks are sorted by lastUpdated descending automatically.
+// Add new stocks here. Stocks are sorted by lastUpdated descending automatically.
 const STOCKS = [
   {
     ticker: 'OUST',
     name: 'Ouster, Inc.',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/ouster.com',
     lastUpdated: '2026-03-03',
     reports: [
       { title: 'Ouster, Inc. — FY25 Earnings Update', date: '2026-03-03', url: '/research/OUSTEARNINGSFY25', external: false },
@@ -23,7 +21,6 @@ const STOCKS = [
     ticker: 'BFLY',
     name: 'Butterfly Network',
     exchange: 'NYSE',
-    logo: 'https://logo.clearbit.com/butterflynetwork.com',
     lastUpdated: '2026-02-28',
     reports: [
       { title: 'Butterfly Network — FY25 Earnings Update', date: '2026-02-28', url: '/research/BFLYEARNINGSFY25', external: false },
@@ -37,7 +34,6 @@ const STOCKS = [
     ticker: 'RARE',
     name: 'Ultragenyx Pharmaceuticals',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/ultragenyx.com',
     lastUpdated: '2026-01-21',
     reports: [
       { title: 'Ultragenyx Pharmaceuticals — From Peak Burn To Profitability', date: '2026-01-21', url: '/research/RAREREPORT', external: false },
@@ -49,7 +45,6 @@ const STOCKS = [
     ticker: 'AVDL',
     name: 'Avadel Pharmaceuticals',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/avadel.com',
     lastUpdated: '2025-11-21',
     reports: [
       { title: 'Avadel Update — Jazz Is Now The Natural Final Buyer', date: '2025-11-21', url: '/research/Avadel-Update', external: false },
@@ -63,7 +58,6 @@ const STOCKS = [
     ticker: 'ACMR',
     name: 'ACM Research',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/acmresearch.com',
     lastUpdated: '2025-06-24',
     reports: [
       { title: 'ACM Research — Margin Expansion And Product Ramp Drive Deep Undervaluation', date: '2025-06-24', url: 'https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation', external: true, source: 'Seeking Alpha' },
@@ -75,7 +69,6 @@ const STOCKS = [
     ticker: 'MP',
     name: 'MP Materials',
     exchange: 'NYSE',
-    logo: 'https://logo.clearbit.com/mpmaterials.com',
     lastUpdated: '2025-05-26',
     reports: [
       { title: 'MP Materials — Onshoring The Rare Earth Supply Chain', date: '2025-05-26', url: 'https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain', external: true, source: 'Seeking Alpha' },
@@ -87,7 +80,6 @@ const STOCKS = [
     ticker: 'NBIS',
     name: 'Nebius Group',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/nebius.com',
     lastUpdated: '2024-12-29',
     reports: [
       { title: 'Nebius Group — AI Infrastructure at a Discount', date: '2024-12-29', url: '/reports/nbis-report.pdf', external: false },
@@ -99,7 +91,6 @@ const STOCKS = [
     ticker: 'LRCX',
     name: 'Lam Research',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/lamresearch.com',
     lastUpdated: '2024-11-30',
     reports: [
       { title: 'Lam Research — Deep Value in Semiconductor Equipment', date: '2024-11-30', url: '/reports/lrcx-report.pdf', external: false },
@@ -111,7 +102,6 @@ const STOCKS = [
     ticker: 'AMAT',
     name: 'Applied Materials',
     exchange: 'NASDAQ',
-    logo: 'https://logo.clearbit.com/appliedmaterials.com',
     lastUpdated: '2024-11-21',
     reports: [
       { title: 'Applied Materials — Deep Value in Semiconductor Equipment', date: '2024-11-21', url: '/reports/amat-report.pdf', external: false },
@@ -130,68 +120,73 @@ function fmtDate(iso) {
   });
 }
 
-function LogoCell({ stock }) {
-  const [imgOk, setImgOk] = useState(true);
-  const initials = stock.ticker.slice(0, 2);
-  const colors = {
-    A: '#3b5bdb', B: '#0ca678', C: '#e8590c', D: '#7048e8',
-    E: '#1864ab', F: '#5c940d', G: '#862e9c', H: '#c92a2a',
-    I: '#0077b6', J: '#e67700', K: '#2f9e44', L: '#1971c2',
-    M: '#9c36b5', N: '#087f5b', O: '#d6336c', P: '#e67700',
-    Q: '#364fc7', R: '#5c940d', S: '#1864ab', T: '#c92a2a',
-    U: '#2b8a3e', V: '#5f3dc4', W: '#1971c2', X: '#e67700',
-    Y: '#0077b6', Z: '#862e9c',
-  };
-  const bg = colors[stock.ticker[0]] || '#374151';
+// Fallback color per first letter
+const LOGO_COLORS = {
+  A: '#3b5bdb', B: '#0ca678', C: '#e8590c', D: '#7048e8',
+  E: '#1864ab', F: '#5c940d', G: '#862e9c', H: '#c92a2a',
+  I: '#0077b6', J: '#e67700', K: '#2f9e44', L: '#1971c2',
+  M: '#9c36b5', N: '#087f5b', O: '#d6336c', P: '#e67700',
+  Q: '#364fc7', R: '#5c940d', S: '#1864ab', T: '#c92a2a',
+  U: '#2b8a3e', V: '#5f3dc4', W: '#1971c2', X: '#e67700',
+  Y: '#0077b6', Z: '#862e9c',
+};
 
-  if (imgOk && stock.logo) {
+function LogoCell({ ticker }) {
+  const [imgOk, setImgOk] = useState(true);
+  const bg = LOGO_COLORS[ticker[0]] || '#374151';
+
+  if (imgOk) {
     return (
-      <img
-        src={stock.logo}
-        alt={stock.name}
-        className="w-8 h-8 rounded-lg object-contain bg-white p-0.5"
-        onError={() => setImgOk(false)}
-      />
+      <div className="w-9 h-9 rounded-lg overflow-hidden bg-white flex items-center justify-center shrink-0 p-0.5">
+        <img
+          src={`/logos/${ticker}.png`}
+          alt={ticker}
+          className="w-full h-full object-contain"
+          onError={() => setImgOk(false)}
+        />
+      </div>
     );
   }
+
   return (
     <div
-      className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
+      className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
       style={{ backgroundColor: bg }}
     >
-      {initials}
+      {ticker.slice(0, 2)}
     </div>
   );
 }
+
+// ── Stock row with accordion ──────────────────────────────────────────────────
 
 function StockRow({ stock }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border border-gray-800 rounded-xl overflow-hidden">
-      {/* Row header — click to expand */}
+    <div className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+      {/* Clickable header row */}
       <button
         onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center gap-4 px-5 py-4 hover:bg-white/[0.03] transition text-left"
+        className="w-full flex items-center gap-4 px-5 py-4 hover:bg-white/[0.04] transition-colors text-left"
       >
-        <LogoCell stock={stock} />
+        <LogoCell ticker={stock.ticker} />
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-white font-bold text-sm">{stock.ticker}</span>
-            <span className="text-xs text-gray-500 border border-gray-700 rounded px-1.5 py-0.5">
+            <span className="text-white font-bold text-sm tracking-wide">{stock.ticker}</span>
+            <span className="text-xs text-gray-500 border border-gray-700 rounded px-1.5 py-0.5 leading-none">
               {stock.exchange}
             </span>
           </div>
           <p className="text-gray-400 text-xs mt-0.5 truncate">{stock.name}</p>
         </div>
 
-        <div className="text-right shrink-0 hidden sm:block">
-          <p className="text-xs text-gray-500">Last updated</p>
-          <p className="text-gray-300 text-xs font-medium">{fmtDate(stock.lastUpdated)}</p>
+        <div className="text-right shrink-0 hidden sm:block mr-1">
+          <p className="text-xs text-gray-600">Last updated</p>
+          <p className="text-gray-400 text-xs font-medium mt-0.5">{fmtDate(stock.lastUpdated)}</p>
         </div>
 
-        {/* Chevron */}
         <svg
           className={`shrink-0 w-4 h-4 text-gray-500 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
           fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
@@ -200,19 +195,19 @@ function StockRow({ stock }) {
         </svg>
       </button>
 
-      {/* Expandable content */}
+      {/* Expandable detail panel */}
       {open && (
-        <div className="border-t border-gray-800 bg-neutral-950/60 px-5 py-5 space-y-5">
+        <div className="border-t border-gray-800 bg-black/30 px-5 py-5 space-y-5">
 
-          {/* Reports */}
+          {/* ── Reports ── */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📄</span>
-              <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Reports & Updates</h4>
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Reports & Updates</h4>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-0.5">
               {stock.reports.map((r, i) => (
-                <div key={i} className="flex items-start justify-between gap-4 py-2 border-b border-gray-800/60 last:border-0">
+                <div key={i} className="flex items-start justify-between gap-4 py-2.5 border-b border-gray-800/50 last:border-0">
                   <div className="flex-1 min-w-0">
                     <p className="text-gray-200 text-sm leading-snug">{r.title}</p>
                     <p className="text-gray-500 text-xs mt-0.5">
@@ -234,11 +229,11 @@ function StockRow({ stock }) {
             </div>
           </div>
 
-          {/* Valuation Model */}
+          {/* ── Valuation Model ── */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📊</span>
-              <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Valuation Model</h4>
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Valuation Model</h4>
             </div>
             {stock.model.available ? (
               <a
@@ -261,11 +256,11 @@ function StockRow({ stock }) {
             )}
           </div>
 
-          {/* Primary Research */}
+          {/* ── Primary Research ── */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">🎙️</span>
-              <h4 className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Primary Research</h4>
+              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Primary Research</h4>
             </div>
             {stock.primaryResearch.available ? (
               <a
@@ -290,7 +285,7 @@ function StockRow({ stock }) {
   );
 }
 
-// ── Page ─────────────────────────────────────────────────────────────────────
+// ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ResearchPacksPage() {
   return (
