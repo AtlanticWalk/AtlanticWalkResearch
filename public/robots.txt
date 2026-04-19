@@ -1,4 +1,14 @@
 User-agent: *
 Allow: /
 
+# Member-only and auth pages — no indexing value
+Disallow: /members
+Disallow: /login
+Disallow: /signup
+Disallow: /subscribe
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /admin
+Disallow: /api/
+
 Sitemap: https://atlanticwalkresearch.com/sitemap.xml
