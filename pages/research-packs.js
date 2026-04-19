@@ -162,17 +162,17 @@ function StockRow({ stock }) {
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-white font-bold text-sm tracking-wide">{stock.ticker}</span>
-            <span className="text-xs text-gray-500 border border-gray-700 rounded px-1.5 py-0.5 leading-none">
+            <span className="text-white font-bold text-base tracking-wide">{stock.ticker}</span>
+            <span className="text-xs text-gray-300 border border-gray-600 rounded px-1.5 py-0.5 leading-none">
               {stock.exchange}
             </span>
           </div>
-          <p className="text-gray-400 text-xs mt-0.5 truncate">{stock.name}</p>
+          <p className="text-gray-300 text-sm mt-0.5 truncate">{stock.name}</p>
         </div>
 
         <div className="text-right shrink-0 hidden sm:block mr-1">
-          <p className="text-xs text-gray-600">Last updated</p>
-          <p className="text-gray-400 text-xs font-medium mt-0.5">{fmtDate(stock.lastUpdated)}</p>
+          <p className="text-xs text-gray-400">Last updated</p>
+          <p className="text-gray-200 text-sm font-medium mt-0.5">{fmtDate(stock.lastUpdated)}</p>
         </div>
 
         <svg
@@ -190,14 +190,14 @@ function StockRow({ stock }) {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📄</span>
-              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Reports & Updates</h4>
+              <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Reports & Updates</h4>
             </div>
             <div className="space-y-0.5">
               {stock.reports.map((r, i) => (
                 <div key={i} className="flex items-start justify-between gap-4 py-2.5 border-b border-gray-800/50 last:border-0">
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-200 text-sm leading-snug">{r.title}</p>
-                    <p className="text-gray-500 text-xs mt-0.5">
+                    <p className="text-gray-100 text-base leading-snug">{r.title}</p>
+                    <p className="text-gray-400 text-sm mt-0.5">
                       {fmtDate(r.date)}
                       {r.source && <span className="ml-2 text-gray-600">· {r.source}</span>}
                     </p>
@@ -205,7 +205,7 @@ function StockRow({ stock }) {
                   <a
                     href={r.url}
                     {...(r.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="shrink-0 text-xs text-blue-400 hover:text-blue-300 transition font-medium mt-0.5"
+                    className="shrink-0 text-sm text-blue-400 hover:text-blue-300 transition font-medium mt-0.5"
                   >
                     {r.external ? 'View ↗' : 'View →'}
                   </a>
@@ -218,13 +218,13 @@ function StockRow({ stock }) {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📊</span>
-              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Valuation Model</h4>
+              <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Valuation Model</h4>
             </div>
             {hasModel ? (
               <a
                 href={stock.modelUrl}
                 download
-                className="inline-flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 transition font-medium border border-emerald-800/50 rounded-lg px-3 py-1.5 hover:bg-emerald-900/20"
+                className="inline-flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 transition font-medium border border-emerald-800/50 rounded-lg px-3 py-1.5 hover:bg-emerald-900/20"
               >
                 <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -232,8 +232,8 @@ function StockRow({ stock }) {
                 Download Excel model
               </a>
             ) : (
-              <span className="inline-flex items-center gap-1.5 text-xs text-gray-600 border border-gray-800 rounded-lg px-3 py-1.5">
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <span className="inline-flex items-center gap-1.5 text-sm text-gray-500 border border-gray-700 rounded-lg px-3 py-1.5">
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Not yet available
@@ -245,7 +245,7 @@ function StockRow({ stock }) {
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">🎙️</span>
-              <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Primary Research</h4>
+              <h4 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">Primary Research</h4>
             </div>
             {stock.primaryResearch.available ? (
               <a
@@ -255,8 +255,8 @@ function StockRow({ stock }) {
                 View interview →
               </a>
             ) : (
-              <span className="inline-flex items-center gap-1.5 text-xs text-gray-600 border border-gray-800 rounded-lg px-3 py-1.5">
-                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <span className="inline-flex items-center gap-1.5 text-sm text-gray-500 border border-gray-700 rounded-lg px-3 py-1.5">
+                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 Not yet available
@@ -331,8 +331,8 @@ export default function ResearchPacksPage({ stocks }) {
 
       <main className="max-w-3xl mx-auto px-4 pt-28 pb-24">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">Research Packages</h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <h1 className="text-3xl font-bold text-white">Research Packages</h1>
+          <p className="text-gray-300 text-base mt-1">
             Every stock we cover — reports, models, and primary research in one place.
           </p>
         </div>
@@ -347,8 +347,8 @@ export default function ResearchPacksPage({ stocks }) {
         {/* Inline subscribe CTA */}
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-gray-800 rounded-xl px-6 py-5 bg-neutral-900/50">
           <div>
-            <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
-            <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+            <p className="text-gray-100 font-semibold text-base">Want to be first to see new research?</p>
+            <p className="text-gray-400 text-sm mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
           </div>
           <button
             onClick={() => setShowNewsletter(true)}
@@ -358,7 +358,7 @@ export default function ResearchPacksPage({ stocks }) {
           </button>
         </div>
 
-        <p className="text-center text-gray-700 text-xs mt-10">
+        <p className="text-center text-gray-500 text-sm mt-10">
           Atlantic Walk Research · Independent Equity Research
         </p>
       </main>
