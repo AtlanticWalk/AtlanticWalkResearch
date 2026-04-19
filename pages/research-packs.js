@@ -1,112 +1,101 @@
 import { useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
+import fs from 'fs';
+import path from 'path';
+import { reportsMeta } from '../data/reportsMeta';
 
-// ── Stock data ────────────────────────────────────────────────────────────────
-// Add new stocks here. Stocks are sorted by lastUpdated descending automatically.
-const STOCKS = [
+// ── Static stock metadata ─────────────────────────────────────────────────────
+// Only put things here that can't be inferred from files:
+//   - company name + exchange
+//   - external reports (Seeking Alpha etc.) that aren't in reportsMeta
+//   - primary research links when available
+//
+// To add a new stock: add an entry here, add reports to reportsMeta.js,
+// and drop the model file in public/models/ named {TICKER}MODEL.xlsx.
+
+const STOCK_META = [
   {
     ticker: 'OUST',
     name: 'Ouster, Inc.',
     exchange: 'NASDAQ',
-    lastUpdated: '2026-03-03',
-    reports: [
-      { title: 'Ouster, Inc. — FY25 Earnings Update', date: '2026-03-03', url: '/research/OUSTEARNINGSFY25', external: false },
-      { title: 'Ouster, Inc. — From LiDAR to Full-Stack Perception', date: '2026-02-23', url: '/research/OUSTERREPORT', external: false },
-    ],
-    model: { available: false },
+    externalReports: [],
     primaryResearch: { available: false },
   },
   {
     ticker: 'BFLY',
     name: 'Butterfly Network',
     exchange: 'NYSE',
-    lastUpdated: '2026-02-28',
-    reports: [
-      { title: 'Butterfly Network — FY25 Earnings Update', date: '2026-02-28', url: '/research/BFLYEARNINGSFY25', external: false },
-      { title: 'Butterfly Network — Update Following J.P. Morgan Healthcare Presentation', date: '2026-01-15', url: '/research/BFLYJPMHEALTHCARE', external: false },
-      { title: 'Butterfly Network — From Device Vendor to Semiconductor Imaging Platform', date: '2025-12-11', url: '/research/BFLYREPORT', external: false },
-    ],
-    model: { available: false },
+    externalReports: [],
     primaryResearch: { available: false },
   },
   {
     ticker: 'RARE',
     name: 'Ultragenyx Pharmaceuticals',
     exchange: 'NASDAQ',
-    lastUpdated: '2026-01-21',
-    reports: [
-      { title: 'Ultragenyx Pharmaceuticals — From Peak Burn To Profitability', date: '2026-01-21', url: '/research/RAREREPORT', external: false },
-    ],
-    model: { available: false },
+    externalReports: [],
     primaryResearch: { available: false },
   },
   {
     ticker: 'AVDL',
     name: 'Avadel Pharmaceuticals',
     exchange: 'NASDAQ',
-    lastUpdated: '2025-11-21',
-    reports: [
-      { title: 'Avadel Update — Jazz Is Now The Natural Final Buyer', date: '2025-11-21', url: '/research/Avadel-Update', external: false },
-      { title: 'Avadel — Why The Alkermes Deal May Collapse And A Bidding War Could Follow', date: '2025-10-25', url: '/research/avadel-addendum', external: false },
-      { title: 'Avadel — Mispriced Leader In Once-Nightly Sleep Therapies', date: '2025-09-21', url: 'https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies', external: true, source: 'Seeking Alpha' },
+    externalReports: [
+      {
+        title: 'Avadel — Mispriced Leader In Once-Nightly Sleep Therapies',
+        date: '2025-09-21',
+        url: 'https://seekingalpha.com/article/4826812-avadel-mispriced-leader-in-once-nightly-sleep-therapies',
+        source: 'Seeking Alpha',
+      },
     ],
-    model: { available: true, url: '/models/AVDLMODEL.xlsx' },
     primaryResearch: { available: false },
   },
   {
     ticker: 'ACMR',
     name: 'ACM Research',
     exchange: 'NASDAQ',
-    lastUpdated: '2025-06-24',
-    reports: [
-      { title: 'ACM Research — Margin Expansion And Product Ramp Drive Deep Undervaluation', date: '2025-06-24', url: 'https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation', external: true, source: 'Seeking Alpha' },
+    externalReports: [
+      {
+        title: 'ACM Research — Margin Expansion And Product Ramp Drive Deep Undervaluation',
+        date: '2025-06-24',
+        url: 'https://seekingalpha.com/article/4799807-acm-research-margin-expansion-and-product-ramp-drive-deep-undervaluation',
+        source: 'Seeking Alpha',
+      },
     ],
-    model: { available: true, url: '/models/ACMRMODEL.xlsx' },
     primaryResearch: { available: false },
   },
   {
     ticker: 'MP',
     name: 'MP Materials',
     exchange: 'NYSE',
-    lastUpdated: '2025-05-26',
-    reports: [
-      { title: 'MP Materials — Onshoring The Rare Earth Supply Chain', date: '2025-05-26', url: 'https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain', external: true, source: 'Seeking Alpha' },
+    externalReports: [
+      {
+        title: 'MP Materials — Onshoring The Rare Earth Supply Chain',
+        date: '2025-05-26',
+        url: 'https://seekingalpha.com/article/4789889-mp-materials-onshoring-rare-earth-supply-chain',
+        source: 'Seeking Alpha',
+      },
     ],
-    model: { available: true, url: '/models/MPMODEL.xlsx' },
     primaryResearch: { available: false },
   },
   {
     ticker: 'NBIS',
     name: 'Nebius Group',
     exchange: 'NASDAQ',
-    lastUpdated: '2024-12-29',
-    reports: [
-      { title: 'Nebius Group — AI Infrastructure at a Discount', date: '2024-12-29', url: '/reports/nbis-report.pdf', external: false },
-    ],
-    model: { available: true, url: '/models/NBISMODEL.xlsx' },
+    externalReports: [],
     primaryResearch: { available: false },
   },
   {
     ticker: 'LRCX',
     name: 'Lam Research',
     exchange: 'NASDAQ',
-    lastUpdated: '2024-11-30',
-    reports: [
-      { title: 'Lam Research — Deep Value in Semiconductor Equipment', date: '2024-11-30', url: '/reports/lrcx-report.pdf', external: false },
-    ],
-    model: { available: true, url: '/models/LRCXMODEL.xlsx' },
+    externalReports: [],
     primaryResearch: { available: false },
   },
   {
     ticker: 'AMAT',
     name: 'Applied Materials',
     exchange: 'NASDAQ',
-    lastUpdated: '2024-11-21',
-    reports: [
-      { title: 'Applied Materials — Deep Value in Semiconductor Equipment', date: '2024-11-21', url: '/reports/amat-report.pdf', external: false },
-    ],
-    model: { available: true, url: '/models/AMAT_MODEL_FULL.xlsx' },
+    externalReports: [],
     primaryResearch: { available: false },
   },
 ];
@@ -120,7 +109,6 @@ function fmtDate(iso) {
   });
 }
 
-// Fallback color per first letter
 const LOGO_COLORS = {
   A: '#3b5bdb', B: '#0ca678', C: '#e8590c', D: '#7048e8',
   E: '#1864ab', F: '#5c940d', G: '#862e9c', H: '#c92a2a',
@@ -147,7 +135,6 @@ function LogoCell({ ticker }) {
       </div>
     );
   }
-
   return (
     <div
       className="w-9 h-9 rounded-lg flex items-center justify-center text-white text-xs font-bold shrink-0"
@@ -158,14 +145,14 @@ function LogoCell({ ticker }) {
   );
 }
 
-// ── Stock row with accordion ──────────────────────────────────────────────────
+// ── Stock row ─────────────────────────────────────────────────────────────────
 
 function StockRow({ stock }) {
   const [open, setOpen] = useState(false);
+  const hasModel = !!stock.modelUrl;
 
   return (
     <div className="bg-neutral-900 bg-opacity-50 border border-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow">
-      {/* Clickable header row */}
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center gap-4 px-5 py-4 hover:bg-white/[0.04] transition-colors text-left"
@@ -195,11 +182,10 @@ function StockRow({ stock }) {
         </svg>
       </button>
 
-      {/* Expandable detail panel */}
       {open && (
         <div className="border-t border-gray-800 bg-black/30 px-5 py-5 space-y-5">
 
-          {/* ── Reports ── */}
+          {/* Reports */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📄</span>
@@ -212,9 +198,7 @@ function StockRow({ stock }) {
                     <p className="text-gray-200 text-sm leading-snug">{r.title}</p>
                     <p className="text-gray-500 text-xs mt-0.5">
                       {fmtDate(r.date)}
-                      {r.external && r.source && (
-                        <span className="ml-2 text-gray-600">· {r.source}</span>
-                      )}
+                      {r.source && <span className="ml-2 text-gray-600">· {r.source}</span>}
                     </p>
                   </div>
                   <a
@@ -229,15 +213,15 @@ function StockRow({ stock }) {
             </div>
           </div>
 
-          {/* ── Valuation Model ── */}
+          {/* Model */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">📊</span>
               <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Valuation Model</h4>
             </div>
-            {stock.model.available ? (
+            {hasModel ? (
               <a
-                href={stock.model.url}
+                href={stock.modelUrl}
                 download
                 className="inline-flex items-center gap-2 text-xs text-emerald-400 hover:text-emerald-300 transition font-medium border border-emerald-800/50 rounded-lg px-3 py-1.5 hover:bg-emerald-900/20"
               >
@@ -256,7 +240,7 @@ function StockRow({ stock }) {
             )}
           </div>
 
-          {/* ── Primary Research ── */}
+          {/* Primary Research */}
           <div>
             <div className="flex items-center gap-2 mb-3">
               <span className="text-sm">🎙️</span>
@@ -287,7 +271,7 @@ function StockRow({ stock }) {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function ResearchPacksPage() {
+export default function ResearchPacksPage({ stocks }) {
   return (
     <>
       <Head>
@@ -298,7 +282,6 @@ export default function ResearchPacksPage() {
         />
       </Head>
 
-      {/* Nav */}
       <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-4 text-sm font-semibold text-gray-300 flex items-center px-6">
         <div className="flex-1 flex justify-center gap-6 items-center">
           {[
@@ -321,7 +304,6 @@ export default function ResearchPacksPage() {
       </nav>
 
       <main className="max-w-3xl mx-auto px-4 pt-28 pb-24">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-white">Research Packs</h1>
           <p className="text-gray-400 text-sm mt-1">
@@ -329,9 +311,8 @@ export default function ResearchPacksPage() {
           </p>
         </div>
 
-        {/* Stock list */}
         <div className="space-y-3">
-          {STOCKS.map((stock) => (
+          {stocks.map((stock) => (
             <StockRow key={stock.ticker} stock={stock} />
           ))}
         </div>
@@ -342,4 +323,65 @@ export default function ResearchPacksPage() {
       </main>
     </>
   );
+}
+
+// ── Build-time data ───────────────────────────────────────────────────────────
+
+export async function getStaticProps() {
+  // 1. Group internal reports from reportsMeta by ticker
+  //    ticker field is like "NASDAQ: AVDL" — extract the symbol after the colon
+  const internalByTicker = {};
+  for (const r of reportsMeta) {
+    const ticker = r.ticker?.split(':').pop()?.trim();
+    if (!ticker) continue;
+    if (!internalByTicker[ticker]) internalByTicker[ticker] = [];
+    internalByTicker[ticker].push({
+      title: r.title,
+      date: r.date,
+      url: `/research/${r.slug}`,
+      external: false,
+      source: null,
+    });
+  }
+
+  // 2. Scan public/models/ — extract ticker from filename by stripping MODEL suffix
+  //    Handles: AVDLMODEL.xlsx, AMAT_MODEL_FULL.xlsx, BFLYMODEL.xlsx etc.
+  const modelsDir = path.join(process.cwd(), 'public', 'models');
+  const modelsByTicker = {};
+  if (fs.existsSync(modelsDir)) {
+    const files = fs.readdirSync(modelsDir).filter((f) => f.endsWith('.xlsx'));
+    for (const file of files) {
+      const ticker = file.replace('.xlsx', '').replace(/_?MODEL.*/i, '').toUpperCase();
+      if (ticker) modelsByTicker[ticker] = `/models/${file}`;
+    }
+  }
+
+  // 3. Merge static metadata with dynamic data, sort stocks by lastUpdated desc
+  const stocks = STOCK_META.map((meta) => {
+    const internal = internalByTicker[meta.ticker] || [];
+    const external = (meta.externalReports || []).map((r) => ({ ...r, external: true }));
+
+    // Combine and sort all reports newest-first
+    const reports = [...internal, ...external].sort(
+      (a, b) => new Date(b.date || 0) - new Date(a.date || 0)
+    );
+
+    const lastUpdated = reports.length > 0 ? reports[0].date : null;
+    const modelUrl = modelsByTicker[meta.ticker] || null;
+
+    return {
+      ticker: meta.ticker,
+      name: meta.name,
+      exchange: meta.exchange,
+      lastUpdated,
+      reports,
+      modelUrl,
+      primaryResearch: meta.primaryResearch,
+    };
+  });
+
+  // Sort stocks by most recently updated first
+  stocks.sort((a, b) => new Date(b.lastUpdated || 0) - new Date(a.lastUpdated || 0));
+
+  return { props: { stocks } };
 }
