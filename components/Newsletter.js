@@ -50,13 +50,13 @@ export default function NewsletterModal({ isOpen, onClose }) {
         style={{ animation: "modalIn 0.3s cubic-bezier(0.16,1,0.3,1) both" }}
       >
         {/* Gradient border effect */}
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/30 via-transparent to-purple-500/20 pointer-events-none z-10" />
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-gray-500/10 via-transparent to-gray-600/5 pointer-events-none z-10" />
 
         {/* Card background */}
-        <div className="relative bg-gradient-to-br from-neutral-950 via-neutral-900 to-blue-950/40 border border-white/10 rounded-2xl p-8">
+        <div className="relative bg-gradient-to-b from-neutral-900 to-neutral-950 border border-gray-700/60 rounded-2xl p-8">
 
           {/* Top glow line */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-blue-400/70 to-transparent" />
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-gray-500/50 to-transparent" />
 
           {/* Close button */}
           <button
@@ -82,8 +82,8 @@ export default function NewsletterModal({ isOpen, onClose }) {
           ) : (
             <>
               {/* Icon */}
-              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-blue-500/15 border border-blue-500/25 mb-5">
-                <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
+              <div className="flex items-center justify-center w-11 h-11 rounded-xl bg-gray-700/50 border border-gray-600/40 mb-5">
+                <svg className="w-5 h-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
               </div>
@@ -104,15 +104,15 @@ export default function NewsletterModal({ isOpen, onClose }) {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="your@email.com"
                   required
-                  className="w-full bg-white/5 border border-white/10 focus:border-blue-500/70 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-600 text-sm outline-none transition duration-200"
+                  className="w-full bg-white/5 border border-white/10 focus:border-gray-400/60 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-600 text-sm outline-none transition duration-200"
                 />
                 <button
                   type="submit"
                   disabled={status === "loading"}
                   className="relative w-full overflow-hidden rounded-xl py-3 text-sm font-semibold text-white transition-all duration-200 disabled:opacity-60"
                   style={{
-                    background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #4f46e5 100%)",
-                    boxShadow: "0 0 20px rgba(37,99,235,0.35)",
+                    background: "linear-gradient(135deg, #3f3f46 0%, #27272a 60%, #18181b 100%)",
+                    boxShadow: "0 2px 12px rgba(0,0,0,0.5)",
                   }}
                 >
                   <span className="relative z-10">
