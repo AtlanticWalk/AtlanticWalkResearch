@@ -32,8 +32,7 @@ function MobileHeader({ onSubscribeClick, session }) {
   const items = [
     ["Home", "/"],
     ["Highlights", "/highlights"],
-    ["Models", "/models"],
-    ["Research", "/research"],
+    ["Research Packs", "/research-packs"],
     ["Performance", "/performance"],
     ["About", "/about"],
     ["Contact", "/contact"],
@@ -779,8 +778,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               {[
                 ["Home", "/"],
                 ["Highlights", "/highlights"],
-                ["Models", "/models"],
-                ["Research", "/research"],
+                ["Research Packs", "/research-packs"],
                 ["Performance", "/performance"],
                 ["About", "/about"],
                 ["Contact", "/contact"],
@@ -834,3 +832,4 @@ export async function getStaticProps() {
   reports.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
   return { props: { reports } };
 }
+
