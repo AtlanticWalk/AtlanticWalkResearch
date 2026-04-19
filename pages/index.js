@@ -32,7 +32,7 @@ function MobileHeader({ onSubscribeClick, session }) {
   const items = [
     ["Home", "/"],
     ["Highlights", "/highlights"],
-    ["Research Packs", "/research-packs"],
+    ["Research", "/research-packs"],
     ["Performance", "/performance"],
     ["About", "/about"],
     ["Contact", "/contact"],
@@ -778,7 +778,7 @@ export default function AtlanticWalkResearch({ reports = [] }) {
               {[
                 ["Home", "/"],
                 ["Highlights", "/highlights"],
-                ["Research Packs", "/research-packs"],
+                ["Research", "/research-packs"],
                 ["Performance", "/performance"],
                 ["About", "/about"],
                 ["Contact", "/contact"],
