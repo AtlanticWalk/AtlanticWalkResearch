@@ -294,7 +294,7 @@ export default function ResearchPacksPage({ stocks }) {
   return (
     <>
       <Head>
-        <title>Research Packs | Atlantic Walk Research</title>
+        <title>Research Packages | Atlantic Walk Research</title>
         <meta
           name="description"
           content="Browse all stocks covered by Atlantic Walk Research. Each pack includes full research reports, valuation models, and primary research."
@@ -307,7 +307,7 @@ export default function ResearchPacksPage({ stocks }) {
           {[
             ['Home', '/'],
             ['Highlights', '/highlights'],
-            ['Research Packs', '/research-packs'],
+            ['Research Packages', '/research-packs'],
             ['Performance', '/performance'],
             ['About', '/about'],
             ['Contact', '/contact'],
@@ -331,7 +331,7 @@ export default function ResearchPacksPage({ stocks }) {
 
       <main className="max-w-3xl mx-auto px-4 pt-28 pb-24">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-white">Research Packs</h1>
+          <h1 className="text-2xl font-bold text-white">Research Packages</h1>
           <p className="text-gray-400 text-sm mt-1">
             Every stock we cover — reports, models, and primary research in one place.
           </p>
