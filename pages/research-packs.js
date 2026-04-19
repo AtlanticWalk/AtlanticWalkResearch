@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import fs from 'fs';
 import path from 'path';
 import { reportsMeta } from '../data/reportsMeta';
+import NewsletterModal from '../components/Newsletter';
 
 // ── Static stock metadata ─────────────────────────────────────────────────────
 // Only put things here that can't be inferred from files:
@@ -272,6 +273,24 @@ function StockRow({ stock }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function ResearchPacksPage({ stocks }) {
+  const [showNewsletter, setShowNewsletter] = useState(false);
+  const [newsletterShown, setNewsletterShown] = useState(false);
+
+  // Auto-trigger newsletter popup after 5s (same behaviour as research/highlights pages)
+  useEffect(() => {
+    if (newsletterShown) return;
+    const alreadySubscribed =
+      typeof window !== 'undefined' &&
+      localStorage.getItem('awr_newsletter_subscribed') === 'true';
+    if (alreadySubscribed) return;
+
+    const timer = setTimeout(() => {
+      setShowNewsletter(true);
+      setNewsletterShown(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [newsletterShown]);
+
   return (
     <>
       <Head>
@@ -282,6 +301,7 @@ export default function ResearchPacksPage({ stocks }) {
         />
       </Head>
 
+      {/* Nav */}
       <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-4 text-sm font-semibold text-gray-300 flex items-center px-6">
         <div className="flex-1 flex justify-center gap-6 items-center">
           {[
@@ -300,6 +320,12 @@ export default function ResearchPacksPage({ stocks }) {
               {label}
             </a>
           ))}
+          <button
+            onClick={() => setShowNewsletter(true)}
+            className="ml-2 text-gray-100 text-sm font-semibold px-4 py-1.5 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
+          >
+            Subscribe
+          </button>
         </div>
       </nav>
 
@@ -311,16 +337,36 @@ export default function ResearchPacksPage({ stocks }) {
           </p>
         </div>
 
+        {/* Stock list */}
         <div className="space-y-3">
           {stocks.map((stock) => (
             <StockRow key={stock.ticker} stock={stock} />
           ))}
         </div>
 
-        <p className="text-center text-gray-700 text-xs mt-14">
+        {/* Inline subscribe CTA */}
+        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-gray-800 rounded-xl px-6 py-5 bg-neutral-900/50">
+          <div>
+            <p className="text-gray-100 font-medium text-sm">Want to be first to see new research?</p>
+            <p className="text-gray-500 text-xs mt-0.5">Subscribe for research alerts — no spam, unsubscribe anytime.</p>
+          </div>
+          <button
+            onClick={() => setShowNewsletter(true)}
+            className="shrink-0 text-gray-100 text-sm font-semibold px-6 py-3 rounded-lg transition border border-gray-700 hover:bg-white/5 hover:border-gray-600"
+          >
+            Subscribe
+          </button>
+        </div>
+
+        <p className="text-center text-gray-700 text-xs mt-10">
           Atlantic Walk Research · Independent Equity Research
         </p>
       </main>
+
+      <NewsletterModal
+        isOpen={showNewsletter}
+        onClose={() => setShowNewsletter(false)}
+      />
     </>
   );
 }
@@ -328,8 +374,6 @@ export default function ResearchPacksPage({ stocks }) {
 // ── Build-time data ───────────────────────────────────────────────────────────
 
 export async function getStaticProps() {
-  // 1. Group internal reports from reportsMeta by ticker
-  //    ticker field is like "NASDAQ: AVDL" — extract the symbol after the colon
   const internalByTicker = {};
   for (const r of reportsMeta) {
     const ticker = r.ticker?.split(':').pop()?.trim();
@@ -344,8 +388,6 @@ export async function getStaticProps() {
     });
   }
 
-  // 2. Scan public/models/ — extract ticker from filename by stripping MODEL suffix
-  //    Handles: AVDLMODEL.xlsx, AMAT_MODEL_FULL.xlsx, BFLYMODEL.xlsx etc.
   const modelsDir = path.join(process.cwd(), 'public', 'models');
   const modelsByTicker = {};
   if (fs.existsSync(modelsDir)) {
@@ -356,16 +398,12 @@ export async function getStaticProps() {
     }
   }
 
-  // 3. Merge static metadata with dynamic data, sort stocks by lastUpdated desc
   const stocks = STOCK_META.map((meta) => {
     const internal = internalByTicker[meta.ticker] || [];
     const external = (meta.externalReports || []).map((r) => ({ ...r, external: true }));
-
-    // Combine and sort all reports newest-first
     const reports = [...internal, ...external].sort(
       (a, b) => new Date(b.date || 0) - new Date(a.date || 0)
     );
-
     const lastUpdated = reports.length > 0 ? reports[0].date : null;
     const modelUrl = modelsByTicker[meta.ticker] || null;
 
@@ -380,7 +418,6 @@ export async function getStaticProps() {
     };
   });
 
-  // Sort stocks by most recently updated first
   stocks.sort((a, b) => new Date(b.lastUpdated || 0) - new Date(a.lastUpdated || 0));
 
   return { props: { stocks } };
