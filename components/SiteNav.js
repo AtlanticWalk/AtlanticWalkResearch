@@ -23,7 +23,7 @@ export default function SiteNav({ onSubscribeClick }) {
       {/* Mobile header */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-50">
         <div className="bg-black/60 backdrop-blur-sm border-b border-gray-800">
-          <div className="px-4 h-14 flex items-center justify-between">
+          <div className="px-4 h-11 flex items-center justify-between">
             <Link
               href="/"
               className="flex items-center gap-2"
@@ -77,7 +77,7 @@ export default function SiteNav({ onSubscribeClick }) {
       </div>
 
       {/* Desktop nav */}
-      <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-4 text-base font-semibold text-gray-300 items-center px-6">
+      <nav className="hidden md:flex fixed top-0 w-full bg-black/60 backdrop-blur-sm border-b border-gray-800 z-50 py-2.5 text-base font-semibold text-gray-300 items-center px-6">
         <div className="flex-1 flex justify-center gap-6 items-center">
           {NAV_ITEMS.map(([label, href]) => (
             <Link key={href} href={href} className="hover:text-white transition">
