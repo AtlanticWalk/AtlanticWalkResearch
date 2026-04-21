@@ -127,7 +127,7 @@ function LogoCell({ ticker }) {
 
   if (imgOk) {
     return (
-      <div className="w-9 h-9 rounded-lg overflow-hidden bg-white flex items-center justify-center shrink-0 p-0.5">
+      <div className="w-9 h-9 rounded-lg overflow-hidden flex items-center justify-center shrink-0">
         <img
           src={`/logos/${ticker}.png`}
           alt={ticker}
