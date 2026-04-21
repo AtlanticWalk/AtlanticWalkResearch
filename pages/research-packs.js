@@ -304,7 +304,7 @@ export default function ResearchPacksPage({ stocks }) {
 
       <SiteNav onSubscribeClick={() => setShowNewsletter(true)} />
 
-      <main className="pt-20 md:pt-28 pb-24 md:pr-[8%]">
+      <main className="pt-20 md:pt-28 pb-24 md:pl-[8%]">
         <div className="max-w-3xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Research Packages</h1>
