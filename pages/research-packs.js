@@ -304,7 +304,8 @@ export default function ResearchPacksPage({ stocks }) {
 
       <SiteNav onSubscribeClick={() => setShowNewsletter(true)} />
 
-      <main className="max-w-3xl mx-auto px-4 pt-20 md:pt-28 pb-24">
+      <main className="pt-20 md:pt-28 pb-24 md:pr-[8%]">
+        <div className="max-w-3xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Research Packages</h1>
           <p className="text-gray-300 text-base mt-1">
@@ -336,6 +337,7 @@ export default function ResearchPacksPage({ stocks }) {
         <p className="text-center text-gray-500 text-sm mt-10">
           Atlantic Walk Research · Independent Equity Research
         </p>
+        </div>
       </main>
 
       <NewsletterModal
