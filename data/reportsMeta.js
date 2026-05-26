@@ -70,6 +70,16 @@ export const reportsMeta = [
     description:
       "Earnings update on Ouster, Inc. focused on the transition from LiDAR hardware vendor to full-stack AI and automation perception platform, opex and margin discipline, and the timing of margin inflection",
     keywords: ["Ouster", "OUST", "AI Perception", "Automation", "LiDAR", "AI stocks", "Technology", "profitability", "Earnings"],
+            {
+    slug: "OUSTCLOSE",
+    title: "Ouster, Inc. - Position Close — Thesis Intact, Valuation Extended",
+    ticker: "NASDAQ: OUST",
+    date: "2026-05-26",
+    description:
+      "Update on OUSTER and closure of position due to extended valuation",
+    keywords: ["Ouster", "OUST", "AI Perception", "Automation", "LiDAR", "AI stocks", "Technology", "profitability", "Earnings"],
+  },
+
   },
 ];
 
