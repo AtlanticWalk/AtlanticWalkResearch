@@ -31,7 +31,7 @@ function copyAll(subscribers) {
 export default function AdminPage() {
   const [password, setPassword]         = useState("");
   const [authed, setAuthed]             = useState(false);
-  const [activeTab, setActiveTab]       = useState("subscribers"); // subscribers | members
+  const [activeTab, setActiveTab]       = useState("subscribers");
   const [subscribers, setSubscribers]   = useState([]);
   const [members, setMembers]           = useState([]);
   const [status, setStatus]             = useState("idle");
@@ -41,10 +41,19 @@ export default function AdminPage() {
   // Create member form
   const [newEmail, setNewEmail]         = useState("");
   const [newNote, setNewNote]           = useState("");
-  const [createStatus, setCreateStatus] = useState("idle"); // idle | loading | success | error
+  const [createStatus, setCreateStatus] = useState("idle");
   const [createMsg, setCreateMsg]       = useState("");
-  const [removingEmail, setRemovingEmail] = useState(null); // email currently being confirmed
-  const [removeStatus, setRemoveStatus]   = useState({});   // { [email]: 'loading'|'done'|'error' }
+  const [removingEmail, setRemovingEmail] = useState(null);
+  const [removeStatus, setRemoveStatus]   = useState({});
+
+  // Announce form
+  const [annSubject,     setAnnSubject]     = useState("");
+  const [annMessage,     setAnnMessage]     = useState("");
+  const [annReportTitle, setAnnReportTitle] = useState("");
+  const [annReportUrl,   setAnnReportUrl]   = useState("");
+  const [annTicker,      setAnnTicker]      = useState("");
+  const [annStatus,      setAnnStatus]      = useState("idle"); // idle | sending | done | error
+  const [annResult,      setAnnResult]      = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -91,7 +100,6 @@ export default function AdminPage() {
         );
         setNewEmail("");
         setNewNote("");
-        // Refresh members list
         const memRes = await fetch(`/api/admin/members?password=${encodeURIComponent(password)}`);
         if (memRes.ok) setMembers(await memRes.json());
       }
@@ -127,6 +135,37 @@ export default function AdminPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const handleAnnounce = async (e) => {
+    e.preventDefault();
+    setAnnStatus("sending");
+    setAnnResult(null);
+    try {
+      const res = await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          subject: annSubject,
+          message: annMessage,
+          reportTitle: annReportTitle,
+          reportUrl: annReportUrl,
+          ticker: annTicker,
+          token: password,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setAnnStatus("error");
+        setAnnResult(data.error || "Unknown error");
+      } else {
+        setAnnStatus("done");
+        setAnnResult(data);
+      }
+    } catch (err) {
+      setAnnStatus("error");
+      setAnnResult(err.message);
+    }
+  };
+
   const filteredSubs = subscribers.filter((s) =>
     s.email?.toLowerCase().includes(search.toLowerCase())
   );
@@ -136,6 +175,9 @@ export default function AdminPage() {
 
   const paidCount = members.filter((m) => m.isSubscribed && !m.isComplimentary).length;
   const freeCount = members.filter((m) => m.isComplimentary).length;
+
+  const inputCls = "w-full bg-neutral-800 border border-gray-700 focus:border-gray-500 rounded-xl px-4 py-3 text-gray-100 placeholder-gray-600 text-sm outline-none transition";
+  const labelCls = "block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1.5";
 
   return (
     <>
@@ -187,7 +229,8 @@ export default function AdminPage() {
               <div className="flex gap-1 mb-8 border-b border-gray-800">
                 {[
                   { id: "subscribers", label: "Newsletter Subscribers" },
-                  { id: "members", label: "Members" },
+                  { id: "members",     label: "Members" },
+                  { id: "announce",    label: "Send Announcement" },
                 ].map((tab) => (
                   <button
                     key={tab.id}
@@ -279,7 +322,6 @@ export default function AdminPage() {
               {/* ── MEMBERS TAB ── */}
               {activeTab === "members" && (
                 <div>
-                  {/* Stats */}
                   <div className="grid grid-cols-3 gap-4 mb-8">
                     <div className="bg-neutral-900 border border-gray-800 rounded-2xl p-5">
                       <p className="text-xs text-gray-500 uppercase tracking-widest mb-1">Total</p>
@@ -298,7 +340,6 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  {/* Create free member form */}
                   <div className="bg-neutral-900 border border-gray-700 rounded-2xl p-6 mb-6">
                     <h2 className="text-sm font-semibold text-white mb-1">Create Free Member</h2>
                     <p className="text-xs text-gray-500 mb-4">
@@ -338,7 +379,6 @@ export default function AdminPage() {
                     )}
                   </div>
 
-                  {/* Members list */}
                   <input
                     type="text"
                     value={search}
@@ -422,6 +462,98 @@ export default function AdminPage() {
                   )}
                 </div>
               )}
+
+              {/* ── ANNOUNCE TAB ── */}
+              {activeTab === "announce" && (
+                <div>
+                  {annStatus === "done" ? (
+                    <div className="bg-neutral-900 border border-gray-800 rounded-2xl p-12 text-center space-y-4">
+                      <div className="w-14 h-14 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto">
+                        <svg className="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <p className="text-white font-semibold text-lg">Sent successfully</p>
+                      <p className="text-gray-400 text-sm">
+                        Delivered to <span className="text-white font-medium">{annResult?.sent}</span> of{" "}
+                        <span className="text-white font-medium">{annResult?.total}</span> subscribers.
+                      </p>
+                      <button
+                        onClick={() => { setAnnStatus("idle"); setAnnResult(null); setAnnSubject(""); setAnnMessage(""); setAnnReportTitle(""); setAnnReportUrl(""); setAnnTicker(""); }}
+                        className="text-sm text-gray-500 hover:text-gray-300 transition underline"
+                      >
+                        Send another
+                      </button>
+                    </div>
+                  ) : (
+                    <form onSubmit={handleAnnounce} className="space-y-5">
+
+                      {/* Subscriber count hint */}
+                      <div className="flex items-center gap-2 text-sm text-gray-500 bg-neutral-900 border border-gray-800 rounded-xl px-4 py-3">
+                        <svg className="w-4 h-4 text-gray-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 00-5-5M9 20H4v-2a4 4 0 015-5m6-4a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        This will be sent to{" "}
+                        <span className="text-white font-semibold">{subscribers.length} subscriber{subscribers.length !== 1 ? "s" : ""}</span>
+                      </div>
+
+                      {/* Subject */}
+                      <div>
+                        <label className={labelCls}>Subject line <span className="text-red-500">*</span></label>
+                        <input type="text" value={annSubject} onChange={e => setAnnSubject(e.target.value)}
+                          placeholder="New Research: Ouster, Inc. — Position Close"
+                          required className={inputCls} />
+                      </div>
+
+                      {/* Message */}
+                      <div>
+                        <label className={labelCls}>Message <span className="text-gray-600 normal-case font-normal">(optional)</span></label>
+                        <textarea value={annMessage} onChange={e => setAnnMessage(e.target.value)} rows={4}
+                          placeholder="A short note to subscribers above the report card…"
+                          className={inputCls + " resize-none"} />
+                      </div>
+
+                      <div className="border-t border-gray-800 pt-1">
+                        <p className={labelCls + " mb-3"}>Report card <span className="text-gray-600 normal-case font-normal">(optional — leave blank to omit)</span></p>
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className={labelCls}>Ticker</label>
+                              <input type="text" value={annTicker} onChange={e => setAnnTicker(e.target.value)}
+                                placeholder="NASDAQ: OUST" className={inputCls} />
+                            </div>
+                            <div>
+                              <label className={labelCls}>Report title</label>
+                              <input type="text" value={annReportTitle} onChange={e => setAnnReportTitle(e.target.value)}
+                                placeholder="Position Close — Thesis Intact, Valuation Extended" className={inputCls} />
+                            </div>
+                          </div>
+                          <div>
+                            <label className={labelCls}>Report URL</label>
+                            <input type="url" value={annReportUrl} onChange={e => setAnnReportUrl(e.target.value)}
+                              placeholder="https://atlanticwalkresearch.com/research/OUSTCLOSE" className={inputCls} />
+                          </div>
+                        </div>
+                      </div>
+
+                      {annStatus === "error" && (
+                        <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+                          {typeof annResult === "string" ? annResult : "Something went wrong. Please try again."}
+                        </p>
+                      )}
+
+                      <button type="submit" disabled={annStatus === "sending"}
+                        className="w-full py-3 rounded-xl text-sm font-semibold text-white disabled:opacity-50 transition"
+                        style={{ background: "linear-gradient(135deg,#3f3f46 0%,#27272a 60%,#18181b 100%)", boxShadow: "0 2px 12px rgba(0,0,0,0.4)" }}>
+                        {annStatus === "sending"
+                          ? "Sending…"
+                          : `Send to ${subscribers.length} subscriber${subscribers.length !== 1 ? "s" : ""}`}
+                      </button>
+                    </form>
+                  )}
+                </div>
+              )}
+
             </div>
           )}
         </div>
