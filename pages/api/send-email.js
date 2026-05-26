@@ -140,7 +140,7 @@ export default async function handler(req, res) {
 
   const { subject, message, reportTitle, reportUrl, ticker, token } = req.body;
 
-  if (!token || token !== process.env.SEND_EMAIL_SECRET) {
+  if (!token || token !== process.env.ADMIN_PASSWORD) {
     return res.status(403).json({ error: 'Forbidden' });
   }
   if (!subject) return res.status(400).json({ error: 'subject is required' });
