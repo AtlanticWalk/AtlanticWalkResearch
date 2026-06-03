@@ -75,7 +75,7 @@ export default function MacroPage({ reports }) {
                   {r.title}
                 </Link>
                 {r.description && (
-                  <p className="text-gray-500 text-sm mt-1 line-clamp-2">{r.description}</p>
+                  <p className="text-gray-400 text-sm mt-1 line-clamp-2">{r.description}</p>
                 )}
               </div>
 
