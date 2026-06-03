@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { reportsMeta } from '../data/reportsMeta';
+import { macroMeta } from '../data/macroMeta';
 import NewsletterModal from '../components/Newsletter';
 import SiteNav from '../components/SiteNav';
 
@@ -20,8 +21,8 @@ export default function HighlightsPage({ reports }) {
     if (newsletterShown) return;
     const alreadySubscribed =
       typeof window !== 'undefined' &&
-      localStorage.getItem('awr_newsletter_subscribed') === 'true' ||
-      localStorage.getItem('awr_newsletter_dismissed') === 'true';
+      (localStorage.getItem('awr_newsletter_subscribed') === 'true' ||
+      localStorage.getItem('awr_newsletter_dismissed') === 'true');
     if (alreadySubscribed) return;
     const t = setTimeout(() => { setShowNewsletter(true); setNewsletterShown(true); }, 5000);
     return () => clearTimeout(t);
@@ -44,7 +45,7 @@ export default function HighlightsPage({ reports }) {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white">Highlights</h1>
           <p className="text-gray-300 text-base mt-1">
-            Every report and update, newest first.
+            The three most recent reports across all research.
           </p>
         </div>
 
@@ -54,16 +55,20 @@ export default function HighlightsPage({ reports }) {
           )}
           {reports.map((r, i) => (
             <div
-              key={r.slug}
+              key={r.slug + r.type}
               className="border-b border-gray-800 last:border-b-0 px-5 py-4 flex items-start justify-between gap-4 hover:bg-white/[0.03] transition-colors"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                  {r.ticker && (
+                  {r.type === 'macro' ? (
+                    <span className="text-xs text-gray-300 border border-gray-600 rounded px-1.5 py-0.5 leading-none shrink-0">
+                      MACRO
+                    </span>
+                  ) : r.ticker ? (
                     <span className="text-xs text-gray-300 border border-gray-600 rounded px-1.5 py-0.5 leading-none shrink-0">
                       {r.ticker.split(':').pop().trim()}
                     </span>
-                  )}
+                  ) : null}
                   <span className="text-xs text-gray-400">{fmtDate(r.date)}</span>
                   {i === 0 && (
                     <span className="text-xs font-semibold text-emerald-400 border border-emerald-800/50 rounded px-1.5 py-0.5 leading-none">
@@ -72,7 +77,7 @@ export default function HighlightsPage({ reports }) {
                   )}
                 </div>
                 <Link
-                  href={`/research/${r.slug}`}
+                  href={r.href}
                   className="text-gray-100 text-base font-medium leading-snug hover:text-white transition"
                 >
                   {r.title}
@@ -83,7 +88,7 @@ export default function HighlightsPage({ reports }) {
               </div>
 
               <Link
-                href={`/research/${r.slug}`}
+                href={r.href}
                 className="shrink-0 text-sm text-blue-400 hover:text-blue-300 transition font-medium mt-1"
               >
                 View →
@@ -119,8 +124,21 @@ export default function HighlightsPage({ reports }) {
 }
 
 export async function getStaticProps() {
-  const reports = [...reportsMeta].sort(
-    (a, b) => new Date(b.date || 0) - new Date(a.date || 0)
-  );
+  const equity = reportsMeta.map((r) => ({
+    ...r,
+    type: 'equity',
+    href: `/research/${r.slug}`,
+  }));
+
+  const macro = macroMeta.map((r) => ({
+    ...r,
+    type: 'macro',
+    href: `/macro/${r.slug}`,
+  }));
+
+  const reports = [...equity, ...macro]
+    .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0))
+    .slice(0, 3);
+
   return { props: { reports } };
 }
