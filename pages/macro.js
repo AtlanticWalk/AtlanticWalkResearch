@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { macroMeta } from '../data/macroMeta';
 import NewsletterModal from '../components/Newsletter';
 import SiteNav from '../components/SiteNav';
@@ -67,30 +68,27 @@ export default function MacroPage({ reports }) {
                     </span>
                   )}
                 </div>
-                <p className="text-gray-100 text-base font-medium leading-snug">
+                <Link
+                  href={`/macro/${r.slug}`}
+                  className="text-gray-100 text-base font-medium leading-snug hover:text-white transition"
+                >
                   {r.title}
-                </p>
-                {r.subtitle && (
-                  <p className="text-gray-400 text-sm mt-0.5">{r.subtitle}</p>
-                )}
+                </Link>
                 {r.description && (
                   <p className="text-gray-500 text-sm mt-1 line-clamp-2">{r.description}</p>
                 )}
               </div>
 
-              <a
-                href={r.pdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 text-sm text-blue-400 hover:text-blue-300 transition font-medium mt-1 whitespace-nowrap"
+              <Link
+                href={`/macro/${r.slug}`}
+                className="shrink-0 text-sm text-blue-400 hover:text-blue-300 transition font-medium mt-1"
               >
-                View ↗
-              </a>
+                View →
+              </Link>
             </div>
           ))}
         </div>
 
-        {/* Subscribe CTA */}
         <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-gray-800 rounded-xl px-6 py-5 bg-neutral-900/50">
           <div>
             <p className="text-gray-100 font-semibold text-base">Get notified when new macro research drops</p>
