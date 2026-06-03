@@ -282,7 +282,8 @@ export default function ResearchPacksPage({ stocks }) {
     if (newsletterShown) return;
     const alreadySubscribed =
       typeof window !== 'undefined' &&
-      localStorage.getItem('awr_newsletter_subscribed') === 'true';
+      localStorage.getItem('awr_newsletter_subscribed') === 'true' ||
+      localStorage.getItem('awr_newsletter_dismissed') === 'true';
     if (alreadySubscribed) return;
 
     const timer = setTimeout(() => {
