@@ -20,7 +20,8 @@ export default function HighlightsPage({ reports }) {
     if (newsletterShown) return;
     const alreadySubscribed =
       typeof window !== 'undefined' &&
-      localStorage.getItem('awr_newsletter_subscribed') === 'true';
+      localStorage.getItem('awr_newsletter_subscribed') === 'true' ||
+      localStorage.getItem('awr_newsletter_dismissed') === 'true';
     if (alreadySubscribed) return;
     const t = setTimeout(() => { setShowNewsletter(true); setNewsletterShown(true); }, 5000);
     return () => clearTimeout(t);
