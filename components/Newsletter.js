@@ -17,6 +17,13 @@ export default function NewsletterModal({ isOpen, onClose }) {
     }
   }, [status, onClose]);
 
+  const handleManualClose = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('awr_newsletter_dismissed', 'true');
+    }
+    onClose();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("loading");
@@ -41,7 +48,7 @@ export default function NewsletterModal({ isOpen, onClose }) {
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/75 backdrop-blur-md"
-        onClick={onClose}
+        onClick={handleManualClose}
       />
 
       {/* Modal */}
@@ -60,7 +67,7 @@ export default function NewsletterModal({ isOpen, onClose }) {
 
           {/* Close button */}
           <button
-            onClick={onClose}
+            onClick={handleManualClose}
             className="absolute top-4 right-4 text-gray-600 hover:text-gray-300 transition text-xl leading-none"
             aria-label="Close"
           >
