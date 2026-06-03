@@ -5,6 +5,7 @@ const NAV_ITEMS = [
   ['Home', '/'],
   ['Highlights', '/highlights'],
   ['Research', '/research-packs'],
+  ['Macro', '/macro'],
   ['Performance', '/performance'],
   ['About', '/about'],
   ['Contact', '/contact'],
