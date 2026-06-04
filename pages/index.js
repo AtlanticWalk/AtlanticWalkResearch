@@ -433,13 +433,11 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   </h3>
 
                   <p className="text-gray-300 leading-relaxed">
-                    Glenn is the founder of Atlantic Walk Research. His coverage spans mispriced
-                    small-caps and special situations across semicap equipment, materials, biotech,
-                    and AI infrastructure — alongside macro thematic research covering defense
-                    procurement, supply chain architecture, and policy-driven investment frameworks.
-                    His work is published on Seeking Alpha and focuses on primary diligence,
-                    original financial modeling, and identifying setups where the consensus
-                    is measurably wrong.
+                    Glenn is the founder of Atlantic Walk Research. His work spans special situations,
+                    macro and thematic investing, and capital flow analysis across a generalist
+                    coverage universe. He brings primary diligence and original financial modeling
+                    to each idea, with a focus on setups where the consensus is measurably wrong.
+                    His research is published on Seeking Alpha and SumZero.
                   </p>
                 </div>
 
