@@ -9,7 +9,7 @@ const PICKS = [
   { symbol: "ACMR",   name: "ACMR",   date: "2025-06-24" },
   { symbol: "AVDL",   name: "AVDL",   date: "2025-09-21" },
   { symbol: "BFLY",   name: "BFLY",   date: "2025-12-10" },
-  { symbol: "RARE",   name: "RARE",   date: "2026-01-21" },
+  { symbol: "RARE",   name: "RARE",   date: "2026-01-21", exitDate: "2026-05-04" },
   { symbol: "OUST",   name: "OUST",   date: "2026-02-23", exitDate: "2026-05-26" },
   { symbol: "RCAT",   name: "RCAT",   date: "2026-05-31" },
   { symbol: "UMAC",   name: "UMAC",   date: "2026-05-31" },
