@@ -172,7 +172,20 @@ export default function MacroReportPage({ slug, pdfSrc, meta }) {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
-        <div className="mb-8 max-w-3xl">
+        {loading && <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>}
+        {err && (
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
+            <div className="font-semibold mb-1">PDF load error</div>
+            <div className="opacity-90">{err}</div>
+          </div>
+        )}
+        {!err && !loading && (
+          <div className="text-white/70 text-sm mb-4">{numPages} page{numPages === 1 ? "" : "s"}</div>
+        )}
+        <div ref={containerRef} />
+
+        {/* Report metadata */}
+        <div className="mt-10 max-w-3xl">
           <h1 className="text-3xl font-bold mb-3 text-white leading-tight">{title}</h1>
           <div className="flex flex-wrap items-center gap-3 mb-5 text-sm text-gray-400">
             <span className="border border-gray-700 rounded px-2 py-0.5 text-gray-300 font-medium">MACRO</span>
@@ -193,18 +206,6 @@ export default function MacroReportPage({ slug, pdfSrc, meta }) {
             </div>
           )}
         </div>
-
-        {loading && <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>}
-        {err && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
-            <div className="font-semibold mb-1">PDF load error</div>
-            <div className="opacity-90">{err}</div>
-          </div>
-        )}
-        {!err && !loading && (
-          <div className="text-white/70 text-sm mb-4">{numPages} page{numPages === 1 ? "" : "s"}</div>
-        )}
-        <div ref={containerRef} />
       </div>
     </div>
   );
