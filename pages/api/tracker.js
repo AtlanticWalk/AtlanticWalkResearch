@@ -1,15 +1,19 @@
 // pages/api/tracker.js
 
 const PICKS = [
-  { symbol: "^GSPC", name: "S&P500", date: "2024-11-21" },
-  { symbol: "AMAT", name: "AMAT", date: "2024-11-21" },
-  { symbol: "LRCX", name: "LRCX", date: "2024-11-30" },
-  { symbol: "NBIS", name: "NBIS", date: "2024-12-29" },
-  { symbol: "MP", name: "MP", date: "2025-05-26" },
-  { symbol: "ACMR", name: "ACMR", date: "2025-06-24" },
-  { symbol: "AVDL", name: "AVDL", date: "2025-09-21" },
-  { symbol: "BFLY", name: "BFLY", date: "2025-12-10" },
-  { symbol: "RARE", name: "RARE", date: "2026-01-21" },
+  { symbol: "^GSPC",  name: "S&P500", date: "2024-11-21" },
+  { symbol: "AMAT",   name: "AMAT",   date: "2024-11-21" },
+  { symbol: "LRCX",   name: "LRCX",   date: "2024-11-30" },
+  { symbol: "NBIS",   name: "NBIS",   date: "2024-12-29" },
+  { symbol: "MP",     name: "MP",     date: "2025-05-26" },
+  { symbol: "ACMR",   name: "ACMR",   date: "2025-06-24" },
+  { symbol: "AVDL",   name: "AVDL",   date: "2025-09-21" },
+  { symbol: "BFLY",   name: "BFLY",   date: "2025-12-10" },
+  { symbol: "RARE",   name: "RARE",   date: "2026-01-21" },
+  { symbol: "OUST",   name: "OUST",   date: "2026-02-23", exitDate: "2026-05-26" },
+  { symbol: "RCAT",   name: "RCAT",   date: "2026-05-31" },
+  { symbol: "UMAC",   name: "UMAC",   date: "2026-05-31" },
+  { symbol: "AVEX",   name: "AVEX",   date: "2026-05-31" },
 ];
 
 // Helper: last close ON or BEFORE target date (robust for mismatched calendars)
@@ -130,23 +134,30 @@ export async function buildTrackerData({ months = 12 } = {}) {
     let count = 0;
 
     for (const stock of stocksDaily) {
-      const { name, date: pickDate, dataDaily: seriesDaily } = stock;
+      const { name, date: pickDate, dataDaily: seriesDaily, exitDate } = stock;
 
       if (new Date(spW.date) < new Date(pickDate)) {
         entry[name] = null;
         continue;
       }
 
-      // Base = DAILY close ON or BEFORE pickDate (fixes mid-week pick dates)
+      // Base = DAILY close ON or BEFORE pickDate
       const base = getCloseOnOrBefore(seriesDaily, pickDate);
 
-      // Now = DAILY close ON or BEFORE the weekly anchor date (usually that Friday)
-      const now = getCloseOnOrBefore(seriesDaily, spW.date);
+      // For closed positions, cap "now" at the exit date so line goes flat after exit
+      const effectiveDate = (exitDate && new Date(spW.date) > new Date(exitDate))
+        ? exitDate
+        : spW.date;
+      const now = getCloseOnOrBefore(seriesDaily, effectiveDate);
 
       if (base != null && now != null) {
         entry[name] = ((now / base) - 1) * 100;
-        blendSum += entry[name];
-        count++;
+        // Only include in portfolio blend while position is still open
+        const stillOpen = !exitDate || new Date(spW.date) <= new Date(exitDate);
+        if (stillOpen) {
+          blendSum += entry[name];
+          count++;
+        }
       } else {
         entry[name] = null;
       }
