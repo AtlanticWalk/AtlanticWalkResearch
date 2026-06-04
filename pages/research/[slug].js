@@ -270,8 +270,26 @@ export default function ReportPage({ slug, pdfSrc, meta, related }) {
       </div>
 
       <div className="mx-auto max-w-6xl px-4 py-10">
-        {/* Report header — fully crawlable text for Google */}
-        <div className="mb-8 max-w-3xl">
+        {/* PDF viewer */}
+        {loading && (
+          <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>
+        )}
+        {err && (
+          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
+            <div className="font-semibold mb-1">PDF load error</div>
+            <div className="opacity-90">{err}</div>
+          </div>
+        )}
+        {!err && !loading && (
+          <div className="text-white/70 text-sm mb-4">
+            {numPages} page{numPages === 1 ? "" : "s"}
+          </div>
+        )}
+
+        <div ref={containerRef} />
+
+        {/* Report metadata */}
+        <div className="mt-10 max-w-3xl">
           <h1 className="text-3xl font-bold mb-3 text-white leading-tight">{title}</h1>
 
           <div className="flex flex-wrap items-center gap-3 mb-5 text-sm text-gray-400">
@@ -291,10 +309,8 @@ export default function ReportPage({ slug, pdfSrc, meta, related }) {
             <span className="text-gray-600">Atlantic Walk Research</span>
           </div>
 
-          {/* Visible description — critical for Google to understand page content */}
           <p className="text-gray-300 text-base leading-relaxed mb-5">{description}</p>
 
-          {/* Keyword tags */}
           {meta?.keywords?.length > 0 && (
             <div className="flex flex-wrap gap-2">
               {meta.keywords.map((kw) => (
@@ -308,24 +324,6 @@ export default function ReportPage({ slug, pdfSrc, meta, related }) {
             </div>
           )}
         </div>
-
-        {/* PDF viewer */}
-        {loading && (
-          <div className="text-white/80 text-sm mb-4">Loading PDF pages…</div>
-        )}
-        {err && (
-          <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 mb-6">
-            <div className="font-semibold mb-1">PDF load error</div>
-            <div className="opacity-90">{err}</div>
-          </div>
-        )}
-        {!err && !loading && (
-          <div className="text-white/70 text-sm mb-4">
-            {numPages} page{numPages === 1 ? "" : "s"}
-          </div>
-        )}
-
-        <div ref={containerRef} />
 
         {/* Related reports — internal links boost SEO and keep readers on site */}
         {related.length > 0 && (
