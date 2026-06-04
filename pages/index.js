@@ -644,10 +644,10 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   <Line type="monotone" dataKey="LRCX" stroke="#a0d911" name="LRCX" dot={false} />
                   <Line type="monotone" dataKey="BFLY" stroke="#8b5cf6" name="BFLY" dot={false} />
                   <Line type="monotone" dataKey="RARE" stroke="#0F766E" name="RARE" dot={false} />
-                  <Line type="monotone" dataKey="OUST" stroke="#f59e0b" name="OUST (closed)" dot={false} strokeDasharray="5 5" />
-                  <Line type="monotone" dataKey="RCAT" stroke="#ec4899" name="RCAT" dot={false} />
-                  <Line type="monotone" dataKey="UMAC" stroke="#6366f1" name="UMAC" dot={false} />
-                  <Line type="monotone" dataKey="AVEX" stroke="#14b8a6" name="AVEX" dot={false} />
+                  <Line type="monotone" dataKey="OUST" stroke="#94a3b8" name="OUST (closed)" dot={false} strokeDasharray="5 5" />
+                  <Line type="monotone" dataKey="RCAT" stroke="#f472b6" name="RCAT" dot={false} />
+                  <Line type="monotone" dataKey="UMAC" stroke="#a78bfa" name="UMAC" dot={false} />
+                  <Line type="monotone" dataKey="AVEX" stroke="#34d399" name="AVEX" dot={false} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
