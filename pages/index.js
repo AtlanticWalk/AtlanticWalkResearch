@@ -412,9 +412,9 @@ export default function AtlanticWalkResearch({ reports = [] }) {
             <div className="pt-4 border-t border-gray-700 space-y-2">
               <h3 className="text-lg font-semibold text-gray-100">Mission</h3>
               <p className="text-gray-300 leading-relaxed">
-                Turn complex policy, capital allocation, and structural change
-                into clear, asymmetric investment ideas through driver-based
-                models, rigorous research, and long-horizon thinking.
+                Independent research at the intersection of deep fundamentals and macro structure.
+                We build driver-based models on mispriced equities and publish thematic frameworks
+                where policy, capital, and structural change create asymmetric opportunity.
               </p>
             </div>
 
@@ -433,10 +433,13 @@ export default function AtlanticWalkResearch({ reports = [] }) {
                   </h3>
 
                   <p className="text-gray-300 leading-relaxed">
-                    Glenn focuses on driver-based financial modeling, special
-                    situations, and long-horizon opportunities across semicap,
-                    materials, biotech, and AI. His work emphasizes clarity,
-                    primary diligence, and asymmetric payoff profiles.
+                    Glenn is the founder of Atlantic Walk Research. His coverage spans mispriced
+                    small-caps and special situations across semicap equipment, materials, biotech,
+                    and AI infrastructure — alongside macro thematic research covering defense
+                    procurement, supply chain architecture, and policy-driven investment frameworks.
+                    His work is published on Seeking Alpha and focuses on primary diligence,
+                    original financial modeling, and identifying setups where the consensus
+                    is measurably wrong.
                   </p>
                 </div>
 
